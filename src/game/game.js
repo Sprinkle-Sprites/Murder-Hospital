@@ -1,6 +1,5 @@
-import Phaser from 'phaser'
-import BootScene from '@/game/scenes/BootScene'
-import PlayScene from '@/game/scenes/PlayScene'
+import Phaser from "phaser";
+import MainScene from "@/game/scenes/MainScene";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -9,15 +8,17 @@ function launch(containerId) {
     height: 600,
     parent: containerId,
     physics: {
-      default: 'arcade',
+      default: "arcade",
       arcade: {
-        gravity: { y: 300 },
-        debug: false
-      }
+        gravity: {
+          y: 0,
+        },
+        debug: true,
+      },
     },
-    scene: [BootScene, PlayScene]
-  })
+    scene: [MainScene],
+  });
 }
 
-export default launch
-export { launch }
+export default launch;
+export { launch };
