@@ -17,7 +17,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [Preloader],
+    scene: [Preloader, MainScene],
   });
 }
 
