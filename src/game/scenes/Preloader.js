@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import monsterA from "@/game/assets/characters/Monster-A/Monster-A-down.png";
+import interiorA from "@/game/assets/tiles/Interior-Hospital-A.png";
+import board from "@/game/assets/tiles/board.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -75,7 +76,8 @@ export default class Preloader extends Phaser.Scene {
 
     ///load any assests needed for game
     //needs image to load to show percentage bar
-    this.load.image("monsterA", monsterA);
+    this.load.image("tiles", interiorA);
+    this.load.tilemapTiledJSON("board", board);
   } //end of preload
 
   readyScene() {
@@ -83,7 +85,7 @@ export default class Preloader extends Phaser.Scene {
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
       // have it lead to title sceene
-        this.scene.start('MainScene')
+      this.scene.start("MainScene");
     }
   }
 }
