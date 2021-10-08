@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import MainScene from "@/game/scenes/MainScene";
+import Preloader from "@/game/scenes/Preloader";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -16,7 +17,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [MainScene],
+    scene: [Preloader],
   });
 }
 
