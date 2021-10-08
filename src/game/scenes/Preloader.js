@@ -72,7 +72,7 @@ export default class Preloader extends Phaser.Scene {
       }.bind(this)
     );
 
-    this.timedEvent = this.time.delayedCall(3000, this.readyScene, [], this);
+    this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
 
     ///load any assests needed for game
     //needs image to load to show percentage bar
