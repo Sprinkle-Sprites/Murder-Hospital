@@ -2,6 +2,13 @@ import Phaser from "phaser";
 import interiorA from "@/game/assets/tiles/Interior-Hospital-A.png";
 import board from "@/game/assets/tiles/board.json";
 
+//IMPORTS FOR RADIOLOGY
+import InteriorA from "@/game/assets/tiles/Interior-Hospital-A.png";
+import InteriorB from "@/game/assets/tiles/Interior-Hospital-B.png";
+import InteriorC from "@/game/assets/tiles/Interior-Hospital-C.png";
+import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
+import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
+
 export default class Preloader extends Phaser.Scene {
   constructor() {
     super("preloader");
@@ -78,6 +85,13 @@ export default class Preloader extends Phaser.Scene {
     //needs image to load to show percentage bar
     this.load.image("tiles", interiorA);
     this.load.tilemapTiledJSON("board", board);
+
+    //TILES FOR RADIOLOGY
+    this.load.image("Interior-A", InteriorA);
+    this.load.image("Interior-B", InteriorB);
+    this.load.image("Interior-C", InteriorC);
+    this.load.image("Interior-Alt", InteriorAlt);
+    this.load.image("Lab-3", Lab3);
   } //end of preload
 
   readyScene() {
@@ -85,7 +99,7 @@ export default class Preloader extends Phaser.Scene {
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
       // have it lead to title sceene
-      this.scene.start("MainScene");
+      this.scene.start("Radiology");
     }
   }
 }
