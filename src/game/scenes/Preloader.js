@@ -89,6 +89,10 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("lockerRoom", lockerRoom);
 
     this.load.tilemapTiledJSON("board", board);
+
+    // for (let i = 1; i <= 8; i++) {
+    //   this.load.image(`dice-image-${i}`, `/assets/dice/dieRed${i}.png`);
+    // }
   } //end of preload
 
   readyScene() {
