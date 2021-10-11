@@ -21,6 +21,19 @@ class MainScene extends Scene {
   }
 
   create() {
+    this.createMap();
+    this.createPlayer();
+  }
+
+  update() {
+    this.player.update();
+  }
+
+  resizeCollider(obj, num) {
+    obj.body.setSize(obj.width - num, obj.height - num, true);
+  }
+
+  createMap() {
     const map = this.make.tilemap({ key: "board" });
     const tileset = map.addTilesetImage(
       "Interior-Hospital-A",
@@ -171,6 +184,7 @@ class MainScene extends Scene {
     this.resizeMapLayer(bloodSplatter);
     this.resizeMapLayer(pharmacyRoom);
 
+    //LAYER COLLIDERS
     wallsLayer.setCollisionByProperty({ collides: true });
 
     //count down timer
