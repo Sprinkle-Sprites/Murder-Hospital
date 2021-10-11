@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import interiorA from "@/game/assets/tiles/Interior-Hospital-A.png";
 import board from "@/game/assets/tiles/board.json";
-import dice1 from "@/game/assets/dice/dieRed1.png";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -79,7 +78,6 @@ export default class Preloader extends Phaser.Scene {
     //needs image to load to show percentage bar
     this.load.image("tiles", interiorA);
     this.load.tilemapTiledJSON("board", board);
-    this.load.image(`dice-image-1`, dice1);
 
     // for (let i = 1; i <= 8; i++) {
     //   this.load.image(`dice-image-${i}`, `/assets/dice/dieRed${i}.png`);
