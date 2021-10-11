@@ -65,7 +65,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.createAnims();
 
-    //IF ANYARROW KEY IS PRESSED...
+    //IF ANY ARROW KEY IS PRESSED...
     if (
       keys.right.isDown ||
       keys.left.isDown ||
