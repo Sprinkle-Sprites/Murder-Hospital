@@ -1,6 +1,7 @@
 import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
 import MainTimer from "@/game/scenes/MainTimer";
+import rollDie from "@/game/Dice";
 
 const INTERIOR_HOSPITAL_C = "Interior-Hospital-C";
 
