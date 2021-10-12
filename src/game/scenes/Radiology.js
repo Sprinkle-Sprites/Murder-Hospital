@@ -2,6 +2,8 @@ import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
 import radiology from "@/game/assets/tiles/radiology.json";
 
+import collider from "@/game/assets/collider.png";
+
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
@@ -10,11 +12,25 @@ class Radiology extends Scene {
   preload() {
     Player.preload(this);
     this.load.tilemapTiledJSON("radiology", radiology);
+
+    //LIGHTSWITCHES
+    this.load.image("lightSwitch 1", collider);
+    this.load.image("lightSwitch 2", collider);
+    this.load.image("lightSwitch 3", collider);
+    this.load.image("lightSwitch 4", collider);
+
+    //XRAY BOARDS
+    this.load.image("Xray 1", collider);
+    this.load.image("Xray 2", collider);
+    this.load.image("Xray 3", collider);
   }
 
   create() {
     this.createPlayer();
     this.createMap();
+    this.createSwitch();
+    this.createXrayBoards();
+    this.createColliders();
   }
 
   update() {
@@ -105,14 +121,18 @@ class Radiology extends Scene {
     //LAYER COLLIDERS
     borderLayer.setCollisionByProperty({ collides: true });
     wallLayer.setCollisionByProperty({ collides: true });
+    wallLayer2Lab.setCollisionByProperty({ collides: true });
+    bedsLayer.setCollisionByProperty({ collides: true });
 
     //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
     this.physics.add.collider(this.player, borderLayer);
     this.physics.add.collider(this.player, wallLayer);
+    this.physics.add.collider(this.player, wallLayer2Lab);
+    this.physics.add.collider(this.player, bedsLayer);
 
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // wallLayer.renderDebug(debugGraphics, {
+    // borderLayer.renderDebug(debugGraphics, {
     //   tileColor: null,
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
@@ -131,10 +151,107 @@ class Radiology extends Scene {
     //ADJUSTS COLLIDER TO SURROUND PLAYER
     this.time.addEvent({
       delay: 100,
-      callback: () => this.resizeCollider(this.player, 50),
+      callback: () => this.resizeCollider(this.player, 20),
       callbackScope: this,
       loop: false,
     });
+  }
+
+  createSwitch() {
+    this.switch1 = this.physics.add
+      .sprite(190, 30, "lightSwitch 1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    this.switch2 = this.physics.add
+      .sprite(650, 30, "lightSwitch 2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    this.switch3 = this.physics.add
+      .sprite(220, 305, "lightSwitch 3")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    this.switch4 = this.physics.add
+      .sprite(670, 305, "lightSwitch 4")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    this.resizeCollider(this.switch1, 20);
+    this.resizeCollider(this.switch2, 20);
+    this.resizeCollider(this.switch3, 20);
+    this.resizeCollider(this.switch4, 20);
+  }
+
+  createXrayBoards() {
+    this.Xray1 = this.physics.add
+      .sprite(695, 22, "Xray 1")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(50, 25, true);
+
+    this.Xray2 = this.physics.add
+      .sprite(612, 300, "Xray 2")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(50, 25, true);
+
+    this.Xray3 = this.physics.add
+      .sprite(175, 300, "Xray 3")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(50, 25, true);
+  }
+
+  createColliders() {
+    this.physics.add.overlap(
+      this.player,
+      this.switch1,
+      this.onSwitchCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.switch2,
+      this.onSwitchCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.switch3,
+      this.onSwitchCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.switch4,
+      this.onSwitchCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.Xray1,
+      this.onXrayCollision,
+      null,
+      this
+    );
+  }
+
+  onSwitchCollision() {
+    console.log("LIGHTSWITCH");
+  }
+
+  onXrayCollision() {
+    console.log("XRAY");
   }
 }
 
