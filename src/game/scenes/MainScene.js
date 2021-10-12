@@ -1,7 +1,7 @@
 import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
 import MainTimer from "@/game/scenes/MainTimer";
-import rollDie from "@/game/Dice";
+import rollDie from "../Dice";
 
 const INTERIOR_HOSPITAL_C = "Interior-Hospital-C";
 
@@ -23,10 +23,6 @@ class MainScene extends Scene {
   create() {
     this.createMap();
     this.createPlayer();
-  }
-
-  update() {
-    this.player.update();
   }
 
   resizeCollider(obj, num) {
@@ -202,7 +198,7 @@ class MainScene extends Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
     // });
-  } //end of create
+  } //end of createMap
 
   handleCountdownFinished() {
     this.player.active = false;
@@ -213,11 +209,6 @@ class MainScene extends Scene {
         fontSize: 30,
       })
       .setOrigin(0.5);
-  }
-
-  update() {
-    this.player.update();
-    this.mainTimer.update();
   }
 
   createPlayer() {
@@ -239,8 +230,9 @@ class MainScene extends Scene {
     return player;
   }
 
-  resizeCollider(obj, num) {
-    obj.body.setSize(obj.width - num, obj.height - num, true);
+  update() {
+    this.player.update();
+    this.mainTimer.update();
   }
 }
 
