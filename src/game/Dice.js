@@ -1,3 +1,4 @@
+// load dice images
 let images = [
   "dieRed1.png",
   "dieRed2.png",
@@ -9,26 +10,31 @@ let images = [
   "dieRed8.png",
 ];
 
+//return list of elements that include "img"
 let dice = document.querySelectorAll("img");
 
 function rollDie() {
-  //   return Math.ceil(Math.random() * 8);
-  dice.forEach(function(die) {
+  //give dice shake property to simulate shaking die
+  dice.forEach((die) => {
     die.classList.add("shake");
   });
-  setTimeout(function() {
+
+  // have dice change after a second
+  setTimeout(() => {
     dice.forEach(function(die) {
       die.classList.remove("shake");
     });
-    let dieOneValue = Math.floor(Math.random() * 8);
+    let dieValue = Math.floor(Math.random() * 8);
 
-    console.log(dieOneValue);
+    //console.log(dieValue); //use die value to connect to room
+
     document
       .querySelector("#die-1")
-      .setAttribute("src", `/dice/${images[dieOneValue]}`);
+      .setAttribute("src", `/dice/${images[dieValue]}`);
   }, 1000);
 }
-
-rollDie();
+document
+  .getElementById("investigate-btn")
+  .addEventListener("click", rollDie, true);
 
 export default rollDie;
