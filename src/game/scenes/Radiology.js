@@ -3,10 +3,12 @@ import Player from "@/game/Player";
 import radiology from "@/game/assets/tiles/radiology.json";
 
 import collider from "@/game/assets/collider.png";
+import combination_code from "@/game/assets/popups/locker_combo.png";
 
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
+    this.bool = false;
   }
 
   preload() {
@@ -23,6 +25,9 @@ class Radiology extends Scene {
     this.load.image("Xray 1", collider);
     this.load.image("Xray 2", collider);
     this.load.image("Xray 3", collider);
+
+    //POP UP
+    this.load.image("pop-up-image", combination_code);
   }
 
   create() {
@@ -248,11 +253,16 @@ class Radiology extends Scene {
 
   onSwitchCollision() {
     console.log("LIGHTSWITCH");
+    const text = this.add.text(20, 300, "Oh man, where'd the lights go? You've lost 5 minutes", {fontSize: 30, backgroundColor: "black"})
+    setTimeout
   }
 
   onXrayCollision() {
-    console.log("XRAY");
+    console.log("XRAY")
+    const popUp = this.add.image(400, 300, "pop-up-image")
+    setTimeout(() => (popUp.destroy()), 5000)
   }
+
 }
 
 export default Radiology;
