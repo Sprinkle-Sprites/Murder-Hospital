@@ -244,6 +244,22 @@ class Radiology extends Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.player,
+      this.Xray2,
+      this.onXrayCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.Xray3,
+      this.onXrayCollision,
+      null,
+      this
+    );
   }
 
   onSwitchCollision() {
