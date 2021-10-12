@@ -86,7 +86,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
 
-    ///load any assests needed for game
+    ///load any assets needed for game
     //needs image to load to show percentage bar
     this.load.image("tiles", interiorA);
     this.load.image("floor", Lab2);
@@ -110,7 +110,7 @@ export default class Preloader extends Phaser.Scene {
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
       // have it lead to title sceene
-      this.scene.start("Radiology");
+      this.scene.start("MainScene");
     }
   }
 }
