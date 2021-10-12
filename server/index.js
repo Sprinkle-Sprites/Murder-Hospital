@@ -48,6 +48,9 @@ const startListening = () => {
   const server = app.listen(PORT, () => {
     console.log(`Crime happening on port ${PORT}`);
   });
+
+  const io = socket(server);
+  require("./socket")(io);
 };
 
 async function bootApp() {
