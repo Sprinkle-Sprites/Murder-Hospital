@@ -26,7 +26,7 @@ export default class RoomTimer {
    * @param {number} duration
    */
 
-  start(callback, duration = 30000) {
+  start(callback, duration = 5000) {
     this.stop();
 
     this.finishedCallback = callback;

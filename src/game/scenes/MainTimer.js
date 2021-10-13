@@ -71,7 +71,7 @@ export default class MainTimer {
     const seconds = remaining / 1000;
     const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
     const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-
+    console.log("this is the time", minutes)
     this.label.text = `Game Time:\n ${minutes}:${partInSeconds}`;
   }
 }
