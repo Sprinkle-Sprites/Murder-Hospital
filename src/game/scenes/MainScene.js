@@ -3,8 +3,6 @@ import Player from "@/game/Player";
 import MainTimer from "@/game/scenes/MainTimer";
 import rollDie from "../Dice";
 
-const INTERIOR_HOSPITAL_C = "Interior-Hospital-C";
-
 class MainScene extends Scene {
   constructor() {
     super({ key: "MainScene" });
@@ -33,7 +31,7 @@ class MainScene extends Scene {
     const map = this.make.tilemap({ key: "board" });
     const tileset = map.addTilesetImage(
       "Interior-Hospital-A",
-      "tiles",
+      "Interior-A",
       16,
       16,
       0,
@@ -50,18 +48,25 @@ class MainScene extends Scene {
     );
 
     const waiting_Room = map.addTilesetImage(
-      INTERIOR_HOSPITAL_C,
-      "intC",
+      "Interior-Hospital-C",
+      "Interior-C",
       16,
       16,
       0,
       0
     );
-    const icu = map.addTilesetImage(INTERIOR_HOSPITAL_C, "intC", 16, 16, 0, 0);
+    const icu = map.addTilesetImage(
+      "Interior-Hospital-C",
+      "Interior-C",
+      16,
+      16,
+      0,
+      0
+    );
 
     const patient_Room = map.addTilesetImage(
-      INTERIOR_HOSPITAL_C,
-      "intC",
+      "Interior-Hospital-C",
+      "Interior-C",
       16,
       16,
       0,
@@ -70,7 +75,7 @@ class MainScene extends Scene {
 
     const surgery = map.addTilesetImage(
       "Interior-Hospital-Alt",
-      "intAlt",
+      "Interior-Alt",
       16,
       16,
       0,
@@ -79,16 +84,23 @@ class MainScene extends Scene {
 
     const morgue = map.addTilesetImage(
       "Interior-Hospital-Alt",
-      "intAlt",
+      "Interior-Alt",
       16,
       16,
       0,
       0
     );
 
-    const xRay = map.addTilesetImage(INTERIOR_HOSPITAL_C, "intC", 16, 16, 0, 0);
+    const xRay = map.addTilesetImage(
+      "Interior-Hospital-C",
+      "Interior-C",
+      16,
+      16,
+      0,
+      0
+    );
 
-    const lab = map.addTilesetImage("Laboratory-3", "lab", 16, 16, 0, 0);
+    const lab = map.addTilesetImage("Laboratory-3", "Lab-3", 16, 16, 0, 0);
 
     const lockers = map.addTilesetImage(
       "Locker Room",
@@ -101,7 +113,7 @@ class MainScene extends Scene {
 
     const blood = map.addTilesetImage(
       "Interior-Hospital-Alt",
-      "intAlt",
+      "Interior-Alt",
       16,
       16,
       0,
@@ -110,7 +122,7 @@ class MainScene extends Scene {
 
     const pharmacy = map.addTilesetImage(
       "Interior-Hospital-C",
-      "intC",
+      "Interior-C",
       16,
       16,
       0,
