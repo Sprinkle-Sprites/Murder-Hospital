@@ -100,7 +100,7 @@ class MainScene extends Scene {
       0
     );
 
-    const lab = map.addTilesetImage("Laboratory-3", "lab", 16, 16, 0, 0);
+    const lab = map.addTilesetImage("Laboratory-3", "Lab-3", 16, 16, 0, 0);
 
     const lockers = map.addTilesetImage(
       "Locker Room",
