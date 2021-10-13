@@ -243,11 +243,18 @@ class MainScene extends Scene {
     return player;
   }
 
-  rollRoom() {}
+  rollRoom() {
+    let value = document.getElementById("diceValue").getAttribute("value");
+    if (value > 0 && value % 2 === 0) {
+      console.log(value);
+      this.scene.start("Radiology");
+    }
+  }
 
   update() {
     this.player.update();
     this.mainTimer.update();
+    this.rollRoom();
   }
 }
 
