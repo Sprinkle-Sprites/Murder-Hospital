@@ -3,10 +3,13 @@ import Player from "@/game/Player";
 import radiology from "@/game/assets/tiles/radiology.json";
 
 import collider from "@/game/assets/collider.png";
+import combination_code from "@/game/assets/popups/locker_combo.png";
+import messageBox from "@/game/assets/popups/messageBox.png";
 
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
+    this.bool = false;
   }
 
   preload() {
@@ -23,6 +26,10 @@ class Radiology extends Scene {
     this.load.image("Xray 1", collider);
     this.load.image("Xray 2", collider);
     this.load.image("Xray 3", collider);
+
+    //POP UP
+    this.load.image("pop-up-image", combination_code);
+    this.load.image("message box", messageBox);
   }
 
   create() {
@@ -204,6 +211,16 @@ class Radiology extends Scene {
       .setSize(50, 25, true);
   }
 
+  createMessageBox(text) {
+    const clueBox = this.add.image("messageBox", messageBox);
+    const textBox = this.add.text(
+      clueBox.width * 0.5,
+      clueBox.height * 0.5,
+      text
+    );
+    textBox.runWordWrap();
+  }
+
   createColliders() {
     this.physics.add.overlap(
       this.player,
@@ -264,10 +281,44 @@ class Radiology extends Scene {
 
   onSwitchCollision() {
     console.log("LIGHTSWITCH");
+    this.width = this.sys.canvas.width;
+    this.height = this.sys.canvas.height;
+    const text = this.add
+      .text(
+        this.width * 0.5,
+        this.height * 0.5,
+        "Oh man, where'd the lights go? You've lost 5 minutes",
+        {
+          fontSize: 30,
+          backgroundColor: "black",
+          wordWrap: { width: 300, useAdvancedWrap: true },
+          strokeThickness: 5,
+          stroke: "#69070c",
+          padding: {
+            top: this.height * 0.4,
+          },
+          align: "center",
+          fixedWidth: this.width,
+          fixedHeight: this.height,
+        }
+      )
+      .setOrigin(0.5, 0.5);
+    // setTimeout;
   }
 
   onXrayCollision() {
     console.log("XRAY");
+    const popUp = this.add.image(400, 300, "pop-up-image");
+    setTimeout(() => {
+      popUp.destroy();
+      this.cameras.main.fadeOut(250, 0, 0, 0);
+      this.cameras.main.once(
+        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+        () => {
+          this.scene.start("MainScene");
+        }
+      );
+    }, 5000);
   }
 }
 
