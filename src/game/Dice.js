@@ -1,7 +1,7 @@
 //load image files
 
 let images = [
-  "dieRed1.png", // set first two array images to die image 1
+  " ",
   "dieRed1.png",
   "dieRed2.png",
   "dieRed3.png",
