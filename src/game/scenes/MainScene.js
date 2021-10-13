@@ -11,6 +11,7 @@ class MainScene extends Scene {
   }
 
   preload() {
+    console.log("iWORK");
     Player.preload(this);
   }
 
@@ -21,6 +22,7 @@ class MainScene extends Scene {
   }
 
   create() {
+    this.cameras.main.fadeIn(250, 0, 0, 0);
     this.createMap();
     this.createPlayer();
   }
@@ -217,8 +219,8 @@ class MainScene extends Scene {
     );
 
     //scalling player's height and width
-    player.displayHeight = 20;
-    player.displayWidth = 20;
+    player.displayHeight = 15;
+    player.displayWidth = 15;
 
     this.time.addEvent({
       delay: 100,
