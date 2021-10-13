@@ -1,22 +1,16 @@
 import Phaser from "phaser";
-import interiorA from "@/game/assets/tiles/Interior-Hospital-A.png";
-import interiorC from "@/game/assets/tiles/Interior-Hospital-C.png";
-import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
-import interiorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
-import laboratory from "@/game/assets/tiles/Laboratory-3.png";
-import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
-import board from "@/game/assets/tiles/board.json";
-
-//IMPORTS FOR RADIOLOGY
 import InteriorA from "@/game/assets/tiles/Interior-Hospital-A.png";
 import InteriorB from "@/game/assets/tiles/Interior-Hospital-B.png";
 import InteriorC from "@/game/assets/tiles/Interior-Hospital-C.png";
 import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
+import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
+import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import board from "@/game/assets/tiles/board.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
-    super("preloader");
+    super("Preloader");
   }
   init() {
     //called everytime the scene restarts
@@ -86,31 +80,24 @@ export default class Preloader extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
 
-    ///load any assests needed for game
-    //needs image to load to show percentage bar
-    this.load.image("tiles", interiorA);
-    this.load.image("floor", Lab2);
-    this.load.image("intC", interiorC);
-    this.load.image("intAlt", interiorAlt);
-    this.load.image("lab", laboratory);
-    this.load.image("lockerRoom", lockerRoom);
-
-    this.load.tilemapTiledJSON("board", board);
-
-    //TILES FOR RADIOLOGY
+    // load any assests needed for game
     this.load.image("Interior-A", InteriorA);
     this.load.image("Interior-B", InteriorB);
     this.load.image("Interior-C", InteriorC);
     this.load.image("Interior-Alt", InteriorAlt);
+    this.load.image("floor", Lab2);
+    this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
+
+    this.load.tilemapTiledJSON("board", board);
   } //end of preload
 
   readyScene() {
     this.readyCount++;
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
-      // have it lead to title sceene
-      this.scene.start("Radiology");
+      // have it lead to first scene
+      this.scene.start("MainScene");
     }
   }
 }
