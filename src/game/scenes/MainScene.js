@@ -9,7 +9,6 @@ class MainScene extends Scene {
   }
 
   preload() {
-    console.log("iWORK");
     Player.preload(this);
   }
 
@@ -244,9 +243,19 @@ class MainScene extends Scene {
     return player;
   }
 
+  rollRoom() {
+    if (document.getElementById("investigate-btn")) {
+      console.log(`Ouch I've been clicked`);
+    }
+    // if (rollDie() % 2 === 0) {
+    //   this.scene.start("Radiology");
+    // }
+  }
+
   update() {
     this.player.update();
     this.mainTimer.update();
+    this.rollRoom();
   }
 }
 

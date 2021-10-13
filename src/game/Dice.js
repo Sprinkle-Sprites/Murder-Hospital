@@ -1,4 +1,4 @@
-//load image files
+// //load image files
 
 let images = [
   " ",
@@ -14,30 +14,32 @@ let images = [
 // select all elements that have img
 let dice = document.querySelectorAll("img");
 
+let dieValue;
+
 function rollDie() {
   // add a shake property to so that dice "shakes"
   dice.forEach((die) => {
     die.classList.add("shake");
   });
 
+  // dieValue must be a number from 1 - 8
+  dieValue = Math.floor(Math.random() * 8) + 1;
+
   setTimeout(() => {
     dice.forEach((die) => {
       die.classList.remove("shake");
     });
-
-    //dieValue must be a number from 1 - 8
-    let dieValue = Math.floor(Math.random() * 8) + 1;
-    console.log(dieValue); //connect dieValue to room
+    //console.log(`Hi Gabby, my value is ${dieValue}`); //connect dieValue to room
 
     document
       .querySelector("#die-1")
       .setAttribute("src", `/dice/${images[dieValue]}`);
   }, 1000);
+
+  return dieValue;
 }
 document
   .getElementById("investigate-btn")
   .addEventListener("click", rollDie, true);
-
-rollDie();
 
 export default rollDie;
