@@ -18,7 +18,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [Preloader, MainScene, Radiology],
+    scene: [Preloader, Radiology, MainScene],
   });
 }
 
