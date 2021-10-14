@@ -245,10 +245,35 @@ class MainScene extends Scene {
 
   rollRoom() {
     let value = document.getElementById("diceValue").getAttribute("value");
-    if (value > 0 && value % 2 === 0) {
-      console.log(value);
+
+    // code to check if dice works
+    if (parseInt(value) > 0 && parseInt(value) % 2 === 0) {
       this.scene.start("Radiology");
+    } else {
+      return "More rooms need to be made";
     }
+
+    // pseudocode for rooms
+    // need to fade in to scene
+    // if (parseInt(value) === 1) {
+    //   this.scene.start("ICU");
+    // } else if (parseInt(value) === 2) {
+    //   this.scene.start("Locker Room");
+    // } else if (parseInt(value) === 3) {
+    //   this.scene.start("Patients Room");
+    // } else if (parseInt(value) === 4) {
+    //   this.scene.start("Surgery");
+    // } else if (parseInt(value) === 5) {
+    //   this.scene.start("Laboratory");
+    // } else if (parseInt(value) === 6) {
+    //   this.scene.start("Pharmacy");
+    // } else if (parseInt(value) === 7) {
+    //   this.scene.start("Morgue");
+    // } else if (parseInt(value) === 8) {
+    //   this.scene.start("Radiology");
+    // } else {
+    //   return "You need to investigate a room";
+    // }
   }
 
   update() {
