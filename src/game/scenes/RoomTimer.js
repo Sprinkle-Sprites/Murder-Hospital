@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-export default class MainTimer {
+export default class RoomTimer {
   /** @type {Phaser.Scene} */
   scene;
   /** @type {Phaser.GameObjects.Text} */
@@ -26,7 +26,7 @@ export default class MainTimer {
    * @param {number} duration
    */
 
-  start(callback, duration = 3600000) {
+  start(callback, duration = 5000) {
     this.stop();
 
     this.finishedCallback = callback;
@@ -37,7 +37,7 @@ export default class MainTimer {
       delay: duration,
       callback: () => {
         //text to display when timer ends
-        this.label.text = "Game Time: 00:00";
+        this.label.text = "Your Time: \n 00:00";
         this.stop();
 
         if (callback) {
@@ -68,10 +68,7 @@ export default class MainTimer {
     }
     const elapsed = this.timerEvent.getElapsed();
     const remaining = this.duration - elapsed;
-    const seconds = remaining / 1000;
-    const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
-    const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-    console.log("this is the time", minutes)
-    this.label.text = `Game Time:\n ${minutes}:${partInSeconds}`;
+    const seconds = this.zeroPad((remaining / 1000).toFixed(0), 2);
+    this.label.text = `Your Time: \n 00:${seconds}`
   }
 }

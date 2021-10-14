@@ -197,7 +197,7 @@ class MainScene extends Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
 
     //count down timer
-    const timerLabel = this.add.text(700, 35, "60", { fontSize: 30 });
+    const timerLabel = this.add.text(620, 35, "60", { fontSize: 20, backgroundColor:"black", padding: 10});
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
 
