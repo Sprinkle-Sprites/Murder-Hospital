@@ -1,20 +1,25 @@
 import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
-import radiology from "@/game/assets/tiles/radiology.json";
+import {
+  resizeMapLayer,
+  resizeCollider,
+  createMessage,
+  nextSceneFunc,
+} from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
-import messageBox from "@/game/assets/popups/messageBox.png";
+
+import RoomTimer from "@/game/scenes/RoomTimer";
+import MainTimerScene from "@/game/scenes/MainTimerScene";
 
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
-    this.bool = false;
   }
 
   preload() {
     Player.preload(this);
-    this.load.tilemapTiledJSON("radiology", radiology);
 
     //LIGHTSWITCHES
     this.load.image("lightSwitch 1", collider);
@@ -29,10 +34,10 @@ class Radiology extends Scene {
 
     //POP UP
     this.load.image("pop-up-image", combination_code);
-    this.load.image("message box", messageBox);
   }
 
   create() {
+    this.scene.launch("MainTimerScene");
     this.createPlayer();
     this.createMap();
     this.createSwitch();
@@ -40,18 +45,7 @@ class Radiology extends Scene {
     this.createColliders();
   }
 
-  update() {
-    this.player.update();
-  }
 
-  resizeCollider(obj, num) {
-    obj.body.setSize(obj.width - num, obj.height - num, true);
-  }
-
-  resizeMapLayer(layer) {
-    layer.displayWidth = this.sys.canvas.width;
-    layer.displayHeight = this.sys.canvas.height;
-  }
 
   createMap() {
     const map = this.make.tilemap({ key: "radiology" });
@@ -113,17 +107,23 @@ class Radiology extends Scene {
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
-    this.resizeMapLayer(floorLayer);
-    this.resizeMapLayer(borderLayer);
-    this.resizeMapLayer(wallLayer);
-    this.resizeMapLayer(detailsLayer);
-    this.resizeMapLayer(detailsAltLayer);
-    this.resizeMapLayer(wallLayer2);
-    this.resizeMapLayer(wallLayer2Alt);
-    this.resizeMapLayer(wallLayer2Lab);
-    this.resizeMapLayer(bedsLayer);
-    this.resizeMapLayer(bedsLayerAlt);
-    this.resizeMapLayer(detailsLayer2);
+    const layers = [
+      floorLayer,
+      borderLayer,
+      wallLayer,
+      detailsLayer,
+      detailsAltLayer,
+      wallLayer2,
+      wallLayer2Alt,
+      wallLayer2Lab,
+      bedsLayer,
+      bedsLayerAlt,
+      detailsLayer2,
+    ];
+
+    for (let i = 0; i < layers.length; i++) {
+      resizeMapLayer(this, layers[i]);
+    }
 
     //LAYER COLLIDERS
     borderLayer.setCollisionByProperty({ collides: true });
@@ -137,6 +137,11 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, wallLayer2Lab);
     this.physics.add.collider(this.player, bedsLayer);
 
+    //COUNTDOWN TIMER
+    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -144,6 +149,25 @@ class Radiology extends Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     // });
+  }
+
+  handleRoomCountdownFinished() {
+    this.player.active = false;
+    const { width, height } = this.scale;
+    this.add
+      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+        fontSize: 30, backgroundColor: "black"
+      })
+      .setOrigin(0.5);
+    setTimeout(() => {
+      this.cameras.main.fadeOut(250, 0, 0, 0);
+      this.cameras.main.once(
+        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+        () => {
+          this.scene.launch("MainScene");
+        }
+      )
+    }, 2000)
   }
 
   createPlayer() {
@@ -158,10 +182,15 @@ class Radiology extends Scene {
     //ADJUSTS COLLIDER TO SURROUND PLAYER
     this.time.addEvent({
       delay: 100,
-      callback: () => this.resizeCollider(this.player, 20),
+      callback: () => resizeCollider(this.player, 20, 20),
       callbackScope: this,
       loop: false,
     });
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 
   createSwitch() {
@@ -185,40 +214,31 @@ class Radiology extends Scene {
       .setOrigin(0, 0)
       .setDepth(-2);
 
-    this.resizeCollider(this.switch1, 20);
-    this.resizeCollider(this.switch2, 20);
-    this.resizeCollider(this.switch3, 20);
-    this.resizeCollider(this.switch4, 20);
+    //SCALES COLLIDERS ON LIGHTSWITCHES TO APPROPRIATE SIZE
+    const switches = [this.switch1, this.switch2, this.switch3, this.switch4];
+    for (let i = 0; i < switches.length; i++) {
+      resizeCollider(switches[i], 20, 20);
+    }
   }
 
   createXrayBoards() {
-    this.Xray1 = this.physics.add
+    this.xray1 = this.physics.add
       .sprite(695, 22, "Xray 1")
       .setOrigin(0, 0)
       .setDepth(-2)
       .setSize(50, 25, true);
 
-    this.Xray2 = this.physics.add
+    this.xray2 = this.physics.add
       .sprite(612, 300, "Xray 2")
       .setOrigin(0, 0)
       .setDepth(-2)
       .setSize(50, 25, true);
 
-    this.Xray3 = this.physics.add
-      .sprite(175, 300, "Xray 3")
+    this.xray3 = this.physics.add
+      .sprite(173, 300, "Xray 3")
       .setOrigin(0, 0)
       .setDepth(-2)
       .setSize(50, 25, true);
-  }
-
-  createMessageBox(text) {
-    const clueBox = this.add.image("messageBox", messageBox);
-    const textBox = this.add.text(
-      clueBox.width * 0.5,
-      clueBox.height * 0.5,
-      text
-    );
-    textBox.runWordWrap();
   }
 
   createColliders() {
@@ -256,7 +276,7 @@ class Radiology extends Scene {
 
     this.physics.add.overlap(
       this.player,
-      this.Xray1,
+      this.xray1,
       this.onXrayCollision,
       null,
       this
@@ -264,7 +284,7 @@ class Radiology extends Scene {
 
     this.physics.add.overlap(
       this.player,
-      this.Xray2,
+      this.xray2,
       this.onXrayCollision,
       null,
       this
@@ -272,7 +292,7 @@ class Radiology extends Scene {
 
     this.physics.add.overlap(
       this.player,
-      this.Xray3,
+      this.xray3,
       this.onXrayCollision,
       null,
       this
@@ -280,45 +300,23 @@ class Radiology extends Scene {
   }
 
   onSwitchCollision() {
-    console.log("LIGHTSWITCH");
-    this.width = this.sys.canvas.width;
-    this.height = this.sys.canvas.height;
-    const text = this.add
-      .text(
-        this.width * 0.5,
-        this.height * 0.5,
-        "Oh man, where'd the lights go? You've lost 5 minutes",
-        {
-          fontSize: 30,
-          backgroundColor: "black",
-          wordWrap: { width: 300, useAdvancedWrap: true },
-          strokeThickness: 5,
-          stroke: "#69070c",
-          padding: {
-            top: this.height * 0.4,
-          },
-          align: "center",
-          fixedWidth: this.width,
-          fixedHeight: this.height,
-        }
-      )
-      .setOrigin(0.5, 0.5);
-    // setTimeout;
+    const lightSwitchMessage =
+      "Oh man, where'd the lights go? You've lost 5 minutes";
+
+    this.player.disableBody();
+    createMessage(this, lightSwitchMessage);
+    nextSceneFunc(this, "MainScene");
   }
 
   onXrayCollision() {
-    console.log("XRAY");
     const popUp = this.add.image(400, 300, "pop-up-image");
-    setTimeout(() => {
-      popUp.destroy();
-      this.cameras.main.fadeOut(250, 0, 0, 0);
-      this.cameras.main.once(
-        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-        () => {
-          this.scene.start("MainScene");
-        }
-      );
-    }, 5000);
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
   }
 }
 
