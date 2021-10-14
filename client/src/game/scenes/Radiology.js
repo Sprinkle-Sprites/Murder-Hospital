@@ -46,7 +46,6 @@ class Radiology extends Scene {
   }
 
 
-
   createMap() {
     const map = this.make.tilemap({ key: "radiology" });
     const InteriorA = map.addTilesetImage(
