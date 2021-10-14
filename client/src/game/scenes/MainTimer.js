@@ -37,11 +37,7 @@ export default class MainTimer {
       delay: duration,
       callback: () => {
         //text to display when timer ends
-<<<<<<< HEAD
         this.label.text = "Game Time: 00:00";
-=======
-        this.label.text = "0";
->>>>>>> 26e717fc3a5ad0ef02b9ab82fd57d3437a231842
         this.stop();
 
         if (callback) {
@@ -75,11 +71,6 @@ export default class MainTimer {
     const seconds = remaining / 1000;
     const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
     const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-<<<<<<< HEAD
     this.label.text = `Game Time:\n ${minutes}:${partInSeconds}`;
-=======
-
-    this.label.text = `${minutes}:${partInSeconds}`;
->>>>>>> 26e717fc3a5ad0ef02b9ab82fd57d3437a231842
   }
 }
