@@ -11,7 +11,7 @@ import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
-import MainTimerScene from "@/game/scenes/MainTimerScene";
+// import MainTimerScene from "@/game/scenes/MainTimerScene";
 
 class Radiology extends Scene {
   constructor() {
@@ -37,6 +37,7 @@ class Radiology extends Scene {
   }
 
   create() {
+    // this.scene.launch("MainTimerScene");
     this.createPlayer();
     this.createMap();
     this.createSwitch();
@@ -158,15 +159,7 @@ class Radiology extends Scene {
         fontSize: 30, backgroundColor: "black"
       })
       .setOrigin(0.5);
-    setTimeout(() => {
-      this.cameras.main.fadeOut(250, 0, 0, 0);
-      this.cameras.main.once(
-        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-        () => {
-          this.scene.launch("MainScene");
-        }
-      )
-    }, 2000)
+    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -190,6 +183,7 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
   }
 
   createSwitch() {
