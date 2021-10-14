@@ -3,30 +3,26 @@ import Player from "@/game/Player";
 import MainTimer from "@/game/scenes/MainTimer";
 import rollDie from "../Dice";
 
+import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
+
 class MainScene extends Scene {
   constructor() {
     super({ key: "MainScene" });
   }
 
   preload() {
-    console.log("iWORK");
     Player.preload(this);
-  }
-
-  //helper function to resize layers to fit the play area
-  resizeMapLayer(layer) {
-    layer.displayWidth = this.sys.canvas.width;
-    layer.displayHeight = this.sys.canvas.height;
   }
 
   create() {
     this.cameras.main.fadeIn(250, 0, 0, 0);
-    this.createMap();
     this.createPlayer();
+    this.createMap();
   }
 
-  resizeCollider(obj, num) {
-    obj.body.setSize(obj.width - num, obj.height - num, true);
+  update() {
+    this.player.update();
+    this.mainTimer.update();
   }
 
   createMap() {
@@ -132,67 +128,94 @@ class MainScene extends Scene {
     );
 
     //create layers
-    const floorLayer = map.createLayer("Ground", floorTileset);
-    const wallsLayer = map.createLayer("WallsLayer", tileset);
-    const waitingRoom = map.createLayer("Waiting Room", waiting_Room);
-    const icuRoom = map.createLayer("ICU", icu);
-    const patientRoom = map.createLayer("Patient's Room", patient_Room);
-    const surgeryRoom = map.createLayer("Surgery", surgery);
-    const labRoom = map.createLayer("Laboratory", lab);
-    const morgueRoom = map.createLayer("Morgue", morgue);
-    const xRayRoom = map.createLayer("X-ray", xRay);
-    const lockerRoom = map.createLayer("Locker Room", lockers);
-    const bloodSplatter = map.createLayer("Blood", blood);
-    const pharmacyRoom = map.createLayer("Pharmacy", pharmacy);
-    this.player = this.createPlayer();
+    const floorLayer = map.createLayer("Ground", floorTileset).setDepth(-1);
+    const wallsLayer = map.createLayer("WallsLayer", tileset).setDepth(-1);
+    const waitingRoom = map
+      .createLayer("Waiting Room", waiting_Room)
+      .setDepth(-1);
+    const icuRoom = map.createLayer("ICU", icu).setDepth(-1);
+    const patientRoom = map
+      .createLayer("Patient's Room", patient_Room)
+      .setDepth(-1);
+    const surgeryRoom = map.createLayer("Surgery", surgery).setDepth(-1);
+    const labRoom = map.createLayer("Laboratory", lab).setDepth(-1);
+    const morgueRoom = map.createLayer("Morgue", morgue).setDepth(-1);
+    const xRayRoom = map.createLayer("X-ray", xRay).setDepth(-1);
+    const lockerRoom = map.createLayer("Locker Room", lockers).setDepth(-1);
+    const bloodSplatter = map.createLayer("Blood", blood).setDepth(-1);
+    const pharmacyRoom = map.createLayer("Pharmacy", pharmacy).setDepth(-1);
 
-    this.add.text(70, 120, "ICU", { fontFamily: "Helvetica", color: "black" });
-    this.add.text(240, 120, "Locker Room", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(450, 120, "Patients Room", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(685, 220, "Surgery", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(675, 400, "Laboratory", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(475, 530, "Pharmacy", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(200, 530, "Morgue", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(70, 275, "X-Ray", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
-    this.add.text(360, 325, "Waiting Room", {
-      fontFamily: "Helvetica",
-      color: "black",
-    });
+    this.add
+      .text(70, 120, "ICU", { fontFamily: "Helvetica", color: "black" })
+      .setDepth(-1);
+    this.add
+      .text(240, 120, "Locker Room", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(450, 120, "Patients Room", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(685, 220, "Surgery", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(675, 400, "Laboratory", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(475, 530, "Pharmacy", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(200, 530, "Morgue", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(70, 275, "X-Ray", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
+    this.add
+      .text(360, 325, "Waiting Room", {
+        fontFamily: "Helvetica",
+        color: "black",
+      })
+      .setDepth(-1);
 
     //resize
-    this.resizeMapLayer(floorLayer);
-    this.resizeMapLayer(wallsLayer);
-    this.resizeMapLayer(waitingRoom);
-    this.resizeMapLayer(icuRoom);
-    this.resizeMapLayer(patientRoom);
-    this.resizeMapLayer(surgeryRoom);
-    this.resizeMapLayer(labRoom);
-    this.resizeMapLayer(morgueRoom);
-    this.resizeMapLayer(xRayRoom);
-    this.resizeMapLayer(lockerRoom);
-    this.resizeMapLayer(bloodSplatter);
-    this.resizeMapLayer(pharmacyRoom);
+    const layers = [
+      floorLayer,
+      wallsLayer,
+      waitingRoom,
+      icuRoom,
+      patientRoom,
+      surgeryRoom,
+      labRoom,
+      morgueRoom,
+      xRayRoom,
+      lockerRoom,
+      bloodSplatter,
+      pharmacyRoom,
+    ];
+
+    for (let i = 0; i < layers.length; i++) {
+      resizeMapLayer(this, layers[i]);
+    }
 
     //LAYER COLLIDERS
     wallsLayer.setCollisionByProperty({ collides: true });
@@ -204,9 +227,9 @@ class MainScene extends Scene {
 
     //set colliders
     this.physics.add.collider(this.player, wallsLayer);
+
     // collider debuger
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
-
     // wallsLayer.renderDebug(debugGraphics, {
     //   tileColor: null,
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
@@ -226,27 +249,20 @@ class MainScene extends Scene {
   }
 
   createPlayer() {
-    const player = this.physics.add.existing(
+    this.player = this.physics.add.existing(
       new Player(this, 350, 250, "player1")
     );
 
     //scalling player's height and width
-    player.displayHeight = 15;
-    player.displayWidth = 15;
+    this.player.displayHeight = 15;
+    this.player.displayWidth = 15;
 
     this.time.addEvent({
       delay: 100,
-      callback: () => this.resizeCollider(player, 20),
+      callback: () => resizeCollider(this.player, 20, 20),
       callbackScope: this,
       loop: false,
     });
-
-    return player;
-  }
-
-  update() {
-    this.player.update();
-    this.mainTimer.update();
   }
 }
 
