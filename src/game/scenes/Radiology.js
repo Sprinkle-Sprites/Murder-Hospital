@@ -10,6 +10,9 @@ import {
 import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 
+import RoomTimer from "@/game/scenes/RoomTimer";
+import MainTimerScene from "@/game/scenes/MainTimerScene";
+
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
@@ -34,6 +37,7 @@ class Radiology extends Scene {
   }
 
   create() {
+    this.scene.launch("MainTimerScene");
     this.createPlayer();
     this.createMap();
     this.createSwitch();
@@ -41,9 +45,7 @@ class Radiology extends Scene {
     this.createColliders();
   }
 
-  update() {
-    this.player.update();
-  }
+
 
   createMap() {
     const map = this.make.tilemap({ key: "radiology" });
@@ -135,6 +137,11 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, wallLayer2Lab);
     this.physics.add.collider(this.player, bedsLayer);
 
+    //COUNTDOWN TIMER
+    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -142,6 +149,25 @@ class Radiology extends Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     // });
+  }
+
+  handleRoomCountdownFinished() {
+    this.player.active = false;
+    const { width, height } = this.scale;
+    this.add
+      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+        fontSize: 30, backgroundColor: "black"
+      })
+      .setOrigin(0.5);
+    setTimeout(() => {
+      this.cameras.main.fadeOut(250, 0, 0, 0);
+      this.cameras.main.once(
+        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+        () => {
+          this.scene.launch("MainScene");
+        }
+      )
+    }, 2000)
   }
 
   createPlayer() {
@@ -160,6 +186,11 @@ class Radiology extends Scene {
       callbackScope: this,
       loop: false,
     });
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 
   createSwitch() {

@@ -99,7 +99,7 @@ export default class Preloader extends Phaser.Scene {
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
       // have it lead to first scene
-      this.scene.start("MainScene");
+      this.scene.start("Radiology");
     }
   }
 }
