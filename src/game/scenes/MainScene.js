@@ -197,7 +197,7 @@ class MainScene extends Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
 
     //count down timer
-    const timerLabel = this.add.text(700, 35, "60", { fontSize: 30 });
+    const timerLabel = this.add.text(620, 35, "60", { fontSize: 20, backgroundColor:"black", padding: 10});
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
 
@@ -244,11 +244,35 @@ class MainScene extends Scene {
   }
 
   rollRoom() {
-    if (document.getElementById("investigate-btn")) {
-      console.log(`Ouch I've been clicked`);
+    let value = document.getElementById("diceValue").getAttribute("value");
+
+    // code to check if dice works
+    if (parseInt(value) > 0 && parseInt(value) % 2 === 0) {
+      this.scene.start("Radiology");
+    } else {
+      return "More rooms need to be made";
     }
-    // if (rollDie() % 2 === 0) {
+
+    // pseudocode for rooms
+    // need to fade in to scene
+    // if (parseInt(value) === 1) {
+    //   this.scene.start("ICU");
+    // } else if (parseInt(value) === 2) {
+    //   this.scene.start("Locker Room");
+    // } else if (parseInt(value) === 3) {
+    //   this.scene.start("Patients Room");
+    // } else if (parseInt(value) === 4) {
+    //   this.scene.start("Surgery");
+    // } else if (parseInt(value) === 5) {
+    //   this.scene.start("Laboratory");
+    // } else if (parseInt(value) === 6) {
+    //   this.scene.start("Pharmacy");
+    // } else if (parseInt(value) === 7) {
+    //   this.scene.start("Morgue");
+    // } else if (parseInt(value) === 8) {
     //   this.scene.start("Radiology");
+    // } else {
+    //   return "You need to investigate a room";
     // }
   }
 

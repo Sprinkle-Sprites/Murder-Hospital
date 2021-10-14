@@ -34,10 +34,13 @@ function rollDie() {
     document
       .querySelector("#die-1")
       .setAttribute("src", `/dice/${images[dieValue]}`);
+
+    document.querySelector("#diceValue").setAttribute("value", `${dieValue}`);
   }, 1000);
 
   return dieValue;
 }
+
 document
   .getElementById("investigate-btn")
   .addEventListener("click", rollDie, true);
