@@ -8,6 +8,7 @@ import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
+import surgery from "@/game/assets/tiles/surgery.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -92,6 +93,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
+    this.load.tilemapTiledJSON("surgery", surgery)
   } //end of preload
 
   readyScene() {

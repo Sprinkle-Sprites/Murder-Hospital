@@ -8,8 +8,8 @@ import {
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import bar_of_soap from "@/game/assets/bar-of-soap.png"
-import rubber_glove from "@/game/assets/rubber_glove.png"
+import bar_of_soap from "@/game/assets/popups/bar_of_soap.png"
+import rubber_glove from "@/game/assets/popups/rubber_glove.png"
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
@@ -187,49 +187,49 @@ class Surgery extends Scene {
   }
 
   createCannister(){
-    this.cannister1 = this.physics.add
-      .sprite(550, 305, "gasCannister1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.cannister1 = this.physics.add
+    //   .sprite(550, 305, "gasCannister1")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.cannister2 = this.physics.add
-      .sprite(400, 200, "gasCannister2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.cannister2 = this.physics.add
+    //   .sprite(400, 200, "gasCannister2")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.cannister3 = this.physics.add
-      .sprite(400, 100, "gasCannister3")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.cannister3 = this.physics.add
+    //   .sprite(400, 100, "gasCannister3")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.cannister4 = this.physics.add
-      .sprite(200, 700, "gasCannister4")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.cannister4 = this.physics.add
+    //   .sprite(200, 700, "gasCannister4")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
     //need to scale to appropriate size here
   }
 
   createSink(){
-    this.sink1 = this.physics.add
-      .sprite(100, 200, "sink1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.sink1 = this.physics.add
+    //   .sprite(100, 200, "sink1")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.sink2 = this.physics.add
-      .sprite(150, 250, "sink2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.sink2 = this.physics.add
+    //   .sprite(150, 250, "sink2")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.sink3 = this.physics.add
-      .sprite(200, 300, "sink3")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.sink3 = this.physics.add
+    //   .sprite(200, 300, "sink3")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
-    this.sink4 = this.physics.add
-      .sprite(250, 350, "sink4")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+    // this.sink4 = this.physics.add
+    //   .sprite(250, 350, "sink4")
+    //   .setOrigin(0, 0)
+    //   .setDepth(-2);
 
     //need to scale to appropriate size here
   }
