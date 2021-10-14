@@ -268,7 +268,7 @@ class MainScene extends Scene {
     let value = document.getElementById("diceValue").getAttribute("value");
 
     // code to check if dice works
-    if (parseInt(value) > 0 && parseInt(value) % 2 === 0) {
+    if (parseInt(value) > 0) {
       this.scene.start("Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
@@ -281,18 +281,25 @@ class MainScene extends Scene {
     //   this.scene.start("ICU");
     // } else if (parseInt(value) === 2) {
     //   this.scene.start("Locker Room");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 3) {
     //   this.scene.start("Patients Room");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 4) {
     //   this.scene.start("Surgery");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 5) {
     //   this.scene.start("Laboratory");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 6) {
     //   this.scene.start("Pharmacy");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 7) {
     //   this.scene.start("Morgue");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 8) {
     //   this.scene.start("Radiology");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else {
     //   return "You need to investigate a room";
     // }
