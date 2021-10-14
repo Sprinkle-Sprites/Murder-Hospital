@@ -1,6 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
-import MainTimer from "@/game/scenes/MainTimer";
+import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
@@ -215,15 +215,6 @@ class MainScene extends Scene {
     //LAYER COLLIDERS
     wallsLayer.setCollisionByProperty({ collides: true });
 
-    //count down timer
-    const timerLabel = this.add.text(620, 35, "60", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.mainTimer = new MainTimer(this, timerLabel);
-    this.mainTimer.start(this.handleCountdownFinished.bind(this));
-
     //set colliders
     this.physics.add.collider(this.player, wallsLayer);
 
@@ -235,17 +226,6 @@ class MainScene extends Scene {
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
     // });
   } //end of createMap
-
-  handleCountdownFinished() {
-    this.player.active = false;
-
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "You've been captured", {
-        fontSize: 30,
-      })
-      .setOrigin(0.5);
-  }
 
   createPlayer() {
     this.player = this.physics.add.existing(
@@ -307,7 +287,6 @@ class MainScene extends Scene {
 
   update() {
     this.player.update();
-    this.mainTimer.update();
     this.rollRoom();
   }
 }
