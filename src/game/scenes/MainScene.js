@@ -259,27 +259,27 @@ class MainScene extends Scene {
     // pseudocode for rooms
     // need to fade in to scene
     // if (parseInt(value) === 1) {
-    //   this.scene.start("ICU");
+    //   nextSceneFunc(this, "ICU");
     // } else if (parseInt(value) === 2) {
-    //   this.scene.start("Locker Room");
+    //   nextSceneFunc(this, "Locker Room");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 3) {
-    //   this.scene.start("Patients Room");
+    //   nextSceneFunc(this, "Patients Room");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 4) {
-    //   this.scene.start("Surgery");
+    //   nextSceneFunc(this, "Surgery");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 5) {
-    //   this.scene.start("Laboratory");
+    //   nextSceneFunc(this, "Laboratory");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 6) {
-    //   this.scene.start("Pharmacy");
+    //   nextSceneFunc(this, "Pharmacy");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 7) {
-    //   this.scene.start("Morgue");
+    //   nextSceneFunc(this, "Morgue");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 8) {
-    //   this.scene.start("Radiology");
+    //   nextSceneFunc(this, "Radiology");
     //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else {
     //   return "You need to investigate a room";
