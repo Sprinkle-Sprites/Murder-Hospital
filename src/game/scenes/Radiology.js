@@ -37,7 +37,6 @@ class Radiology extends Scene {
   }
 
   create() {
-    this.scene.launch("MainTimerScene");
     this.createPlayer();
     this.createMap();
     this.createSwitch();
