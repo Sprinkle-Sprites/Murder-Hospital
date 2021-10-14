@@ -93,7 +93,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
-    this.load.tilemapTiledJSON("surgery", surgery)
+    this.load.tilemapTiledJSON("surgery", surgery);
   } //end of preload
 
   readyScene() {
@@ -102,7 +102,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("MainScene");
+      this.scene.start("Surgery");
     }
   }
 }

@@ -8,14 +8,14 @@ import {
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import bar_of_soap from "@/game/assets/popups/bar_of_soap.png"
-import rubber_glove from "@/game/assets/popups/rubber_glove.png"
+import bar_of_soap from "@/game/assets/popups/bar_of_soap.png";
+import rubber_glove from "@/game/assets/popups/rubber_glove.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-class Surgery extends Scene {
+export default class Surgery extends Scene {
   constructor() {
-    super ({key: "Surgery"});
+    super({ key: "Surgery" });
   }
 
   preload() {
@@ -88,7 +88,9 @@ class Surgery extends Scene {
     //LAYERS
     const floorLayer = map.createLayer("surgery-floor", InteriorB).setDepth(-1);
     const wallLayer = map.createLayer("surgery-wall", InteriorA).setDepth(-1);
-    const backgroundLayer = map.createLayer("surgery-background", InteriorAlt).setDepth(-1);
+    const backgroundLayer = map
+      .createLayer("surgery-background", InteriorAlt)
+      .setDepth(-1);
     const detailsAltLayer = map
       .createLayer("surgery-details-alt", InteriorAlt)
       .setDepth(-1);
@@ -120,7 +122,11 @@ class Surgery extends Scene {
     this.physics.add.collider(this.player, detailsCLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const roomTimerLabel = this.add.text(100, 35, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
@@ -138,7 +144,8 @@ class Surgery extends Scene {
     const { width, height } = this.scale;
     this.add
       .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30, backgroundColor: "black"
+        fontSize: 30,
+        backgroundColor: "black",
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
@@ -178,66 +185,57 @@ class Surgery extends Scene {
       .setOrigin(0, 0)
       .setDepth(-2);
 
-      this.gurney3 = this.physics.add
+    this.gurney3 = this.physics.add
       .sprite(220, 305, "gurney3")
       .setOrigin(0, 0)
       .setDepth(-2);
 
-     //need to scale to appropriate size here
+    //need to scale to appropriate size here
   }
 
-  createCannister(){
+  createCannister() {
     // this.cannister1 = this.physics.add
     //   .sprite(550, 305, "gasCannister1")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.cannister2 = this.physics.add
     //   .sprite(400, 200, "gasCannister2")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.cannister3 = this.physics.add
     //   .sprite(400, 100, "gasCannister3")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.cannister4 = this.physics.add
     //   .sprite(200, 700, "gasCannister4")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     //need to scale to appropriate size here
   }
 
-  createSink(){
+  createSink() {
     // this.sink1 = this.physics.add
     //   .sprite(100, 200, "sink1")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.sink2 = this.physics.add
     //   .sprite(150, 250, "sink2")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.sink3 = this.physics.add
     //   .sprite(200, 300, "sink3")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     // this.sink4 = this.physics.add
     //   .sprite(250, 350, "sink4")
     //   .setOrigin(0, 0)
     //   .setDepth(-2);
-
     //need to scale to appropriate size here
   }
 
-  createColliders(){
+  createColliders() {
     //where they collide
   }
 
   //then, on collision functions for gurney, gas cannister and sink
-
 }
