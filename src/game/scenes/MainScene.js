@@ -20,11 +20,6 @@ class MainScene extends Scene {
     this.createMap();
   }
 
-  update() {
-    this.player.update();
-    this.mainTimer.update();
-  }
-
   createMap() {
     const map = this.make.tilemap({ key: "board" });
     const tileset = map.addTilesetImage(
@@ -267,8 +262,6 @@ class MainScene extends Scene {
       callbackScope: this,
       loop: false,
     });
-
-    return player;
   }
 
   rollRoom() {
