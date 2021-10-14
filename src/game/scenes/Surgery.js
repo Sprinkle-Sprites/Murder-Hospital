@@ -13,7 +13,7 @@ import rubber_glove from "@/game/assets/popups/rubber_glove.png"
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-class Surgery extends Scene {
+export default class Surgery extends Scene {
   constructor() {
     super ({key: "Surgery"});
   }
@@ -86,14 +86,14 @@ class Surgery extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("surgery-floor", InteriorB).setDepth(-1);
-    const wallLayer = map.createLayer("surgery-wall", InteriorA).setDepth(-1);
-    const backgroundLayer = map.createLayer("surgery-background", InteriorAlt).setDepth(-1);
+    const floorLayer = map.createLayer("surgeryFloor", InteriorB).setDepth(-1);
+    const wallLayer = map.createLayer("surgeryWalls", InteriorA).setDepth(-1);
+    const backgroundLayer = map.createLayer("surgeryBackground", InteriorAlt).setDepth(-1);
     const detailsAltLayer = map
-      .createLayer("surgery-details-alt", InteriorAlt)
+      .createLayer("surgeryDetailsAlt", InteriorAlt)
       .setDepth(-1);
     const detailsCLayer = map
-      .createLayer("surgery-details-C", InteriorC)
+      .createLayer("surgeryDetailsC", InteriorC)
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
