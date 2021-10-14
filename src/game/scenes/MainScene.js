@@ -4,6 +4,7 @@ import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
+import { nextSceneFunc } from "../HelperFunctions";
 
 class MainScene extends Scene {
   constructor() {
@@ -249,7 +250,7 @@ class MainScene extends Scene {
 
     // code to check if dice works
     if (parseInt(value) > 0) {
-      this.scene.start("Radiology");
+      nextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "More rooms need to be made";

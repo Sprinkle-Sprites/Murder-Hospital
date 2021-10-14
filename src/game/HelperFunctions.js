@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 export function resizeCollider(obj, width, height) {
   obj.body.setSize(obj.width - width, obj.height - height, true);
 }
@@ -37,5 +39,5 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 5000);
+  }, 2000);
 }
