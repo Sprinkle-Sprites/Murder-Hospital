@@ -257,7 +257,6 @@ class MainScene extends Scene {
     }
 
     // pseudocode for rooms
-    // need to fade in to scene
     // if (parseInt(value) === 1) {
     //   nextSceneFunc(this, "ICU");
     // } else if (parseInt(value) === 2) {
