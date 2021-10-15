@@ -13,7 +13,7 @@ import rubber_glove from "@/game/assets/popups/rubber_glove.png"
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-export default class Surgery extends Scene {
+class Surgery extends Scene {
   constructor() {
     super ({key: "Surgery"});
   }
@@ -37,6 +37,11 @@ export default class Surgery extends Scene {
     this.load.image("sink2", collider);
     this.load.image("sink3", collider);
     this.load.image("sink4", collider);
+    this.load.image("sink5", collider);
+
+    //POPUPS
+    this.load.image("glove", rubber_glove);
+    this.load.image("soap", bar_of_soap);
   }
 
   create() {
@@ -45,6 +50,7 @@ export default class Surgery extends Scene {
     this.createGurney();
     this.createCannister();
     this.createSink();
+    this.createColliders();
   }
 
   createMap() {
@@ -124,7 +130,7 @@ export default class Surgery extends Scene {
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
-    //COLLIDER DEBUG COLOR
+    // //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
     //   tileColor: null,
@@ -146,7 +152,7 @@ export default class Surgery extends Scene {
 
   createPlayer() {
     this.player = this.physics.add.existing(
-      new Player(this, 250, 250, "player1")
+      new Player(this, 300, 300, "player1")
     );
 
     //ADJUSTS PLAYER SPRITE SIZE
@@ -169,75 +175,128 @@ export default class Surgery extends Scene {
 
   createGurney() {
     this.gurney1 = this.physics.add
-      .sprite(190, 30, "gurney1")
+      .sprite(555, 90, "gurney1")
       .setOrigin(0, 0)
-      .setDepth(-2);
+      .setDepth(-2).setSize(85, 35, true)
 
     this.gurney2 = this.physics.add
-      .sprite(490, 30, "gurney2")
+      .sprite(690, 400, "gurney2")
       .setOrigin(0, 0)
-      .setDepth(-2);
+      .setDepth(-2).setSize(85, 35, true);
 
       this.gurney3 = this.physics.add
-      .sprite(220, 305, "gurney3")
+      .sprite(385, 470, "gurney3")
       .setOrigin(0, 0)
-      .setDepth(-2);
-
-     //need to scale to appropriate size here
+      .setDepth(-2).setSize(45, 70, true);
   }
 
   createCannister(){
-    // this.cannister1 = this.physics.add
-    //   .sprite(550, 305, "gasCannister1")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.cannister1 = this.physics.add
+      .sprite(50, 72, "gasCannister1")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(22,32);
 
-    // this.cannister2 = this.physics.add
-    //   .sprite(400, 200, "gasCannister2")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.cannister2 = this.physics.add
+      .sprite(322, 72, "gasCannister2")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(37,20);
 
-    // this.cannister3 = this.physics.add
-    //   .sprite(400, 100, "gasCannister3")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.cannister3 = this.physics.add
+      .sprite(740, 195, "gasCannister3")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(22,30);
 
-    // this.cannister4 = this.physics.add
-    //   .sprite(200, 700, "gasCannister4")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
-
-    //need to scale to appropriate size here
+    this.cannister4 = this.physics.add
+      .sprite(330, 395, "gasCannister4")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(22,30);
   }
 
   createSink(){
-    // this.sink1 = this.physics.add
-    //   .sprite(100, 200, "sink1")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.sink1 = this.physics.add
+      .sprite(45, 160, "sink1")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(45,83);
 
-    // this.sink2 = this.physics.add
-    //   .sprite(150, 250, "sink2")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.sink2 = this.physics.add
+      .sprite(260, 130, "sink2")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(30,94);
 
-    // this.sink3 = this.physics.add
-    //   .sprite(200, 300, "sink3")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.sink3 = this.physics.add
+      .sprite(165, 535, "sink3")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(103,40);
 
-    // this.sink4 = this.physics.add
-    //   .sprite(250, 350, "sink4")
-    //   .setOrigin(0, 0)
-    //   .setDepth(-2);
+    this.sink4 = this.physics.add
+      .sprite(740, 130, "sink4")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(41,29);
 
-    //need to scale to appropriate size here
+      this.sink5 = this.physics.add
+      .sprite(740, 460, "sink5")
+      .setOrigin(0, 0)
+      .setDepth(-2).setSize(41,29);
   }
 
   createColliders(){
-    //where they collide
+    this.physics.add.overlap(
+      this.player,
+      this.gurney1,
+      this.onGurneyCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.cannister1,
+      this.onCannisterCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.sink1,
+      this.onSinkCollision,
+      null,
+      this
+    );
   }
 
-  //then, on collision functions for gurney, gas cannister and sink
+
+  onGurneyCollision() {
+    //set size here
+    const popUp = this.add.image(400, 300, "glove");
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onCannisterCollision() {
+    const cannisterMessage =
+      "Huh, it's a gas cannister. It's heavy.";
+    this.player.disableBody();
+    createMessage(this, cannisterMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onSinkCollision() {
+    const popUp = this.add.image(400, 300, "soap");
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
+  }
 
 }
+
+export default Surgery
