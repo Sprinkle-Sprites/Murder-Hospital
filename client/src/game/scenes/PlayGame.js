@@ -1,6 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import MainScene from "@/game/scenes/MainScene";
-import MainTimer from "@/game/scenes/MainTimer"
+import MainTimerScene from "@/game/scenes/MainTimerScene"
 
 class PlayGame extends Scene {
   constructor(){
@@ -8,7 +8,7 @@ class PlayGame extends Scene {
   }
 
   create(){
+    this.scene.launch("MainTimerScene");
     this.scene.launch("MainScene");
-    this.scene.launch("MainTimer");
 }
 }
