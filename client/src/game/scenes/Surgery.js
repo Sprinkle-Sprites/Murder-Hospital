@@ -8,14 +8,14 @@ import {
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import bar_of_soap from "@/game/assets/popups/bar_of_soap.png"
-import rubber_glove from "@/game/assets/popups/rubber_glove.png"
+import bar_of_soap from "@/game/assets/popups/bar_of_soap.png";
+import rubber_glove from "@/game/assets/popups/rubber_glove.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-class Surgery extends Scene {
+export default class Surgery extends Scene {
   constructor() {
-    super ({key: "Surgery"});
+    super({ key: "Surgery" });
   }
 
   preload() {
@@ -144,7 +144,8 @@ class Surgery extends Scene {
     const { width, height } = this.scale;
     this.add
       .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30, backgroundColor: "black"
+        fontSize: 30,
+        backgroundColor: "black",
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
