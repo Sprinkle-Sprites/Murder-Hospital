@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
    <div :id="containerId" v-if="downloaded" />
     <div class="placeholder" v-else>
         Downloading...
@@ -8,18 +7,9 @@
 
 <script>
 
-export default {
-=======
-  <div :id="containerId" v-if="downloaded" />
-  <!-- <div class="placeholder" v-else>
-    Downloading ...
-  </div> -->
-</template>
+import {io} from 'socket.io-client';
 
-<script>
 export default {
-  name: 'Game',
->>>>>>> 26e717fc3a5ad0ef02b9ab82fd57d3437a231842
   data() {
     return {
       downloaded: false,
@@ -40,18 +30,9 @@ export default {
 }
 </script>
 
-<<<<<<< HEAD
 <style lang="scss" scoped>
 .placeholder {
   font-size: 2rem;
   font-family: 'Courier New', Courier, monospace;
 }
-=======
-// <style lang="scss" scoped>
-// .placeholder {
-//   font-size: 2rem;
-//   font-family: 'Courier New', Courier, monospace;
-//
-
->>>>>>> 26e717fc3a5ad0ef02b9ab82fd57d3437a231842
 </style>

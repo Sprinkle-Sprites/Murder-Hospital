@@ -6,11 +6,11 @@ import playerRight from "@/game/assets/characters/Dr-Frankenstien-A/Dr-Frankenst
 import playerLeft from "@/game/assets/characters/Dr-Frankenstien-A/Dr-Frankenstien-A-left.png";
 import playerIdle from "@/game/assets/characters/Dr-Frankenstien-A/Dr-Frankenstien-A-idle.png";
 
-import playerDown2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-down.png";
-import playerUp2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-up.png";
-import playerRight2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-right.png";
-import playerLeft2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-left.png";
-import playerIdle2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-down.png";
+// import playerDown2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-down.png";
+// import playerUp2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-up.png";
+// import playerRight2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-right.png";
+// import playerLeft2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-left.png";
+// import playerIdle2 from "@/game/assets/characters/Dr-Frankenstien-B/Dr-Frankenstien-B-down.png";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, texture) {
@@ -56,30 +56,30 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       frameWidth: 72,
       frameHeight: 96,
     });
-    scene.load.spritesheet("player-down2", playerDown2, {
-      frameWidth: 72,
-      frameHeight: 96,
-    });
+    // scene.load.spritesheet("player-down2", playerDown2, {
+    //   frameWidth: 72,
+    //   frameHeight: 96,
+    // });
 
-    scene.load.spritesheet("player-up2", playerUp2, {
-      frameWidth: 72,
-      frameHeight: 96,
-    });
+    // scene.load.spritesheet("player-up2", playerUp2, {
+    //   frameWidth: 72,
+    //   frameHeight: 96,
+    // });
 
-    scene.load.spritesheet("player-right2", playerRight2, {
-      frameWidth: 72,
-      frameHeight: 96,
-    });
+    // scene.load.spritesheet("player-right2", playerRight2, {
+    //   frameWidth: 72,
+    //   frameHeight: 96,
+    // });
 
-    scene.load.spritesheet("player-left2", playerLeft2, {
-      frameWidth: 72,
-      frameHeight: 96,
-    });
+    // scene.load.spritesheet("player-left2", playerLeft2, {
+    //   frameWidth: 72,
+    //   frameHeight: 96,
+    // });
 
-    scene.load.spritesheet("player-idle2", playerIdle2, {
-      frameWidth: 72,
-      frameHeight: 96,
-    });
+    // scene.load.spritesheet("player-idle2", playerIdle2, {
+    //   frameWidth: 72,
+    //   frameHeight: 96,
+    // });
   }
 
   update() {
@@ -125,7 +125,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   createAnims() {
-    if (this.texture === 1) {
+    // if (this.texture === 1) {
       this.anims.create({
         key: "player_down_anim",
         frames: this.anims.generateFrameNumbers("player-down"),
@@ -160,43 +160,42 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         frameRate: 5,
         repeat: -1,
       });
-    } else if (this.texture === 2) {
-      this.anims.create({
-        key: "player_down_anim",
-        frames: this.anims.generateFrameNumbers("player-down2"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    // } else if (this.texture === 2) {
+    //   this.anims.create({
+    //     key: "player_down_anim",
+    //     frames: this.anims.generateFrameNumbers("player-down2"),
+    //     frameRate: 7,
+    //     repeat: -1,
+    //   });
 
-      this.anims.create({
-        key: "player_up_anim",
-        frames: this.anims.generateFrameNumbers("player-up2"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    //   this.anims.create({
+    //     key: "player_up_anim",
+    //     frames: this.anims.generateFrameNumbers("player-up2"),
+    //     frameRate: 7,
+    //     repeat: -1,
+    //   });
 
-      this.anims.create({
-        key: "player_right_anim",
-        frames: this.anims.generateFrameNumbers("player-right2"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    //   this.anims.create({
+    //     key: "player_right_anim",
+    //     frames: this.anims.generateFrameNumbers("player-right2"),
+    //     frameRate: 7,
+    //     repeat: -1,
+    //   });
 
-      this.anims.create({
-        key: "player_left_anim",
-        frames: this.anims.generateFrameNumbers("player-left2"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    //   this.anims.create({
+    //     key: "player_left_anim",
+    //     frames: this.anims.generateFrameNumbers("player-left2"),
+    //     frameRate: 7,
+    //     repeat: -1,
+    //   });
 
-      this.anims.create({
-        key: "player_idle_anim",
-        frames: this.anims.generateFrameNumbers("player-idle2"),
-        frameRate: 5,
-        repeat: -1,
-      });
+    //   this.anims.create({
+    //     key: "player_idle_anim",
+    //     frames: this.anims.generateFrameNumbers("player-idle2"),
+    //     frameRate: 5,
+    //     repeat: -1,
+    //   });
     }
   }
-}
 
 export default Player;

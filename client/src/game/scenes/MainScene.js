@@ -32,7 +32,7 @@ class MainScene extends Scene {
     //   localStorage.setItem("users", JSON.stringify(players));
     // }
 
-    this.createPlayer(JSON.parse(localStorage.getItem("users")));
+    this.createPlayer();
 
     this.createMap();
   }
@@ -244,10 +244,9 @@ class MainScene extends Scene {
     // });
   } //end of createMap
 
-  createPlayer(playerNumber) {
-    console.log("Players Number", playerNumber);
+  createPlayer() {
     this.player = this.physics.add.existing(
-      new Player(this, 350, 250, playerNumber)
+      new Player(this, 350, 250, "player1")
     );
 
     //scalling player's height and width
