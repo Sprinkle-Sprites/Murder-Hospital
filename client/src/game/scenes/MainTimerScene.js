@@ -9,7 +9,7 @@ class MainSceneTimer extends Scene {
   }
 
   create(){
-    const timerLabel = this.add.text(620, 35, "60", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const timerLabel = this.add.text(610, 0, "60", { fontSize: 20, backgroundColor:"black", padding: 5});
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
   }
