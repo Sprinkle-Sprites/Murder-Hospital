@@ -11,7 +11,7 @@ import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
-// import MainTimerScene from "@/game/scenes/MainTimerScene";
+import MainTimer from "./MainTimer";
 
 class Radiology extends Scene {
   constructor() {
@@ -37,15 +37,12 @@ class Radiology extends Scene {
   }
 
   create() {
-    // this.scene.launch("MainTimerScene");
     this.createPlayer();
     this.createMap();
     this.createSwitch();
     this.createXrayBoards();
     this.createColliders();
   }
-
-
 
   createMap() {
     const map = this.make.tilemap({ key: "radiology" });
@@ -138,10 +135,21 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, bedsLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const roomTimerLabel = this.add.text(100, 35, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
+    const timerLabel = this.add.text(620, 35, "60", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+    this.mainTimer = new MainTimer(this, timerLabel);
+    this.mainTimer.start(this.handleCountdownFinished.bind(this));
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -156,10 +164,19 @@ class Radiology extends Scene {
     const { width, height } = this.scale;
     this.add
       .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30, backgroundColor: "black"
+        fontSize: 30,
+        backgroundColor: "black",
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
+  }
+  handleCountdownFinished() {
+    const { width, height } = this.scale;
+    this.add
+      .text(width * 0.5, height * 0.5, "You've been captured", {
+        fontSize: 30,
+      })
+      .setOrigin(0.5);
   }
 
   createPlayer() {
@@ -178,12 +195,6 @@ class Radiology extends Scene {
       callbackScope: this,
       loop: false,
     });
-  }
-
-  update() {
-    this.player.update();
-    this.roomTimer.update();
-
   }
 
   createSwitch() {
@@ -298,7 +309,11 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    nextSceneFunc(this, "MainScene");
+    this.mainTimer.minusFive;
+    console.log("iWork!", this.mainTimer.minusFive());
+    console.log("RadioMins", this.mainTimer.minutes);
+    // console.log("minus5", this.mainTimer.minusFive());
+    // nextSceneFunc(this, "MainScene");
   }
 
   onXrayCollision() {
@@ -310,6 +325,11 @@ class Radiology extends Scene {
       loop: false,
     });
     nextSceneFunc(this, "MainScene");
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 }
 
