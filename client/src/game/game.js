@@ -2,7 +2,8 @@ import Phaser from "phaser";
 import MainScene from "@/game/scenes/MainScene";
 import Preloader from "@/game/scenes/Preloader";
 import Radiology from "@/game/scenes/Radiology";
-import MainTimerScene from "@/game/scenes/MainTimerScene"
+import MainTimerScene from "@/game/scenes/MainTimerScene";
+import Surgery from "@/game/scenes/Surgery"
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -19,7 +20,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [Preloader, Radiology, MainScene, MainTimerScene],
+    scene: [Preloader, Radiology, Surgery, MainScene, MainTimerScene],
   });
 }
 
