@@ -10,10 +10,11 @@ import {
 import collider from "@/game/assets/collider.png";
 import bar_of_soap from "@/game/assets/popups/bar_of_soap.png";
 import rubber_glove from "@/game/assets/popups/rubber_glove.png";
+import scapel from "@/game/assets/popups/scapel.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-export default class Surgery extends Scene {
+class Surgery extends Scene {
   constructor() {
     super({ key: "Surgery" });
   }
@@ -30,7 +31,6 @@ export default class Surgery extends Scene {
     this.load.image("gasCannister1", collider);
     this.load.image("gasCannister2", collider);
     this.load.image("gasCannister3", collider);
-    this.load.image("gasCannister4", collider);
 
     //SINKS
     this.load.image("sink1", collider);
@@ -39,9 +39,14 @@ export default class Surgery extends Scene {
     this.load.image("sink4", collider);
     this.load.image("sink5", collider);
 
+    //TABLES
+    this.load.image("table1", collider);
+    this.load.image("table2", collider);
+
     //POPUPS
     this.load.image("glove", rubber_glove);
     this.load.image("soap", bar_of_soap);
+    this.load.image("scapel", scapel)
   }
 
   create() {
@@ -50,6 +55,7 @@ export default class Surgery extends Scene {
     this.createGurney();
     this.createCannister();
     this.createSink();
+    this.createTable();
     this.createColliders();
   }
 
@@ -132,7 +138,7 @@ export default class Surgery extends Scene {
 
     // //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // borderLayer.renderDebug(debugGraphics, {
+    // detailsAltLayer.renderDebug(debugGraphics, {
     //   tileColor: null,
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
@@ -153,7 +159,7 @@ export default class Surgery extends Scene {
 
   createPlayer() {
     this.player = this.physics.add.existing(
-      new Player(this, 300, 300, "player1")
+      new Player(this, 350, 300, "player1")
     );
 
     //ADJUSTS PLAYER SPRITE SIZE
@@ -167,11 +173,6 @@ export default class Surgery extends Scene {
       callbackScope: this,
       loop: false,
     });
-  }
-
-  update() {
-    this.player.update();
-    this.roomTimer.update();
   }
 
   createGurney() {
@@ -195,49 +196,56 @@ export default class Surgery extends Scene {
     this.cannister1 = this.physics.add
       .sprite(50, 72, "gasCannister1")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(22,32);
+      .setDepth(-2).setSize(22,32, true);
 
     this.cannister2 = this.physics.add
-      .sprite(322, 72, "gasCannister2")
+      .sprite(740, 195, "gasCannister2")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(37,20);
+      .setDepth(-2).setSize(22,30, true);
 
     this.cannister3 = this.physics.add
-      .sprite(740, 195, "gasCannister3")
+      .sprite(330, 395, "gasCannister3")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(22,30);
-
-    this.cannister4 = this.physics.add
-      .sprite(330, 395, "gasCannister4")
-      .setOrigin(0, 0)
-      .setDepth(-2).setSize(22,30);
+      .setDepth(-2).setSize(22,30, true);
   }
 
   createSink(){
     this.sink1 = this.physics.add
       .sprite(45, 160, "sink1")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(45,83);
+      .setDepth(-2).setSize(45,83, true);
 
     this.sink2 = this.physics.add
       .sprite(260, 130, "sink2")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(30,94);
+      .setDepth(-2).setSize(30,94, true);
 
     this.sink3 = this.physics.add
       .sprite(165, 535, "sink3")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(103,40);
+      .setDepth(-2).setSize(103,40, true);
 
     this.sink4 = this.physics.add
       .sprite(740, 130, "sink4")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(41,29);
+      .setDepth(-2).setSize(41,29, true);
 
       this.sink5 = this.physics.add
       .sprite(740, 460, "sink5")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(41,29);
+      .setDepth(-2).setSize(41,29, true);
+  }
+
+  createTable(){
+    this.table1 = this.physics.add
+    .sprite(400, 188, "table1")
+    .setOrigin(0, 0)
+    .setDepth(-2).setSize(30,30, true);
+
+    this.table2 = this.physics.add
+    .sprite(620, 114, "table2")
+    .setOrigin(0, 0)
+    .setDepth(-2).setSize(30,30, true);
   }
 
   createColliders(){
@@ -264,12 +272,20 @@ export default class Surgery extends Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.player,
+      this.table1,
+      this.onTableCollision,
+      null,
+      this
+    );
   }
 
 
   onGurneyCollision() {
-    //set size here
     const popUp = this.add.image(400, 300, "glove");
+    popUp.setScale(.25, .25);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
@@ -282,13 +298,13 @@ export default class Surgery extends Scene {
   onCannisterCollision() {
     const cannisterMessage =
       "Huh, it's a gas cannister. It's heavy.";
-    this.player.disableBody();
+      this.player.disableBody();
     createMessage(this, cannisterMessage);
     nextSceneFunc(this, "MainScene");
   }
 
   onSinkCollision() {
-    const popUp = this.add.image(400, 300, "soap");
+    const popUp = this.add.image(400, 300, "soap").setScale(.5,.5);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
@@ -296,6 +312,22 @@ export default class Surgery extends Scene {
       loop: false,
     });
     nextSceneFunc(this, "MainScene");
+  }
+
+  onTableCollision() {
+    const popUp = this.add.image(400, 300, "scapel").setScale(.5,.5);
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 
 }
