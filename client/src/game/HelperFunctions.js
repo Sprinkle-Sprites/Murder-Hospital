@@ -4,7 +4,7 @@ export function resizeCollider(obj, width, height) {
 
 export function resizeMapLayer(scene, layer) {
   layer.displayWidth = scene.sys.canvas.width;
-  layer.displayHeight = scene.sys.canvas.height;
+  layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
 export function createMessage(scene, message) {
