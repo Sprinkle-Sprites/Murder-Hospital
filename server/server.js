@@ -26,3 +26,8 @@ io.on("connection", function (socket) {
 http.listen(3000, function () {
   console.log("Server started!");
 });
+
+//Client Socket sends game data from Phaser -- what are all the actions that have to be transmitted -- spawning, moving, rendering with the character
+//Server Socket recieves data and emits to all players
+//Client Sockets recieve game data and send it to Phaser
+//Then Phaser Renders

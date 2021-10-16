@@ -93,7 +93,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
-    this.load.tilemapTiledJSON("surgery", surgery)
+    this.load.tilemapTiledJSON("surgery", surgery);
   } //end of preload
 
   readyScene() {

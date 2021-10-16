@@ -69,6 +69,6 @@ export default class RoomTimer {
     const elapsed = this.timerEvent.getElapsed();
     const remaining = this.duration - elapsed;
     const seconds = this.zeroPad((remaining / 1000).toFixed(0), 2);
-    this.label.text = `Your Time: \n 00:${seconds}`
+    this.label.text = `Your Time: 00:${seconds}`
   }
 }
