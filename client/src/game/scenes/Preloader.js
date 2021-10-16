@@ -6,6 +6,7 @@ import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
 import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import creepyDoll from "@/game/assets/tiles/creepy_toys.png"
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
@@ -91,6 +92,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("floor", Lab2);
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
+    this.load.image("Creepy-Doll", creepyDoll)
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
