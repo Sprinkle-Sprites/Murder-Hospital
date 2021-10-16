@@ -9,6 +9,7 @@ import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
+import patients_room from "@/game/assets/tiles/patients_room.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -94,6 +95,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
     this.load.tilemapTiledJSON("surgery", surgery)
+    this.load.tilemapTiledJSON("patient", patients_room)
   } //end of preload
 
   readyScene() {
@@ -102,7 +104,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("Surgery");
+      this.scene.start("PatientRoom");
     }
   }
 }
