@@ -140,7 +140,7 @@ class PatientRoom extends Scene {
     this.physics.add.collider(this.player, backgroundLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const roomTimerLabel = this.add.text(10, 610, "", { fontSize: 20, backgroundColor:"black", padding: 10});
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
