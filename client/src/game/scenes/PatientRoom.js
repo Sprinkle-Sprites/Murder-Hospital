@@ -1,4 +1,5 @@
 import Phaser, { Scene } from "phaser";
+import eventsCenter from "@/game/eventsCenter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -273,6 +274,7 @@ class PatientRoom extends Scene {
   onFlowerCollision() {
     const popUp = this.add.image(400, 300, "flowers").setScale(.5,.5);
     this.player.disableBody();
+    eventsCenter.emit('update-bank', "flowers")
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -285,6 +287,7 @@ class PatientRoom extends Scene {
   onBedCollision () {
     const popUp = this.add.image(400, 300, "blanket").setScale(.5,.5);
     this.player.disableBody();
+    eventsCenter.emit('update-bank', "blanket")
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),

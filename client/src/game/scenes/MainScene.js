@@ -266,8 +266,15 @@ class MainScene extends Scene {
     let value = document.getElementById("diceValue").getAttribute("value");
 
     // code to check if dice works
-    if (parseInt(value) > 0) {
+    if (parseInt(value) > 0 && parseInt(value) <= 2) {
       nextSceneFunc(this, "Radiology");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) > 2 && parseInt(value) <= 5) {
+      nextSceneFunc(this, "Surgery");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+
+    } else if (parseInt(value) > 5 && parseInt(value) <= 8) {
+      nextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "More rooms need to be made";

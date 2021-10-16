@@ -1,4 +1,5 @@
 import Phaser, { Scene } from "phaser";
+import eventsCenter from "@/game/eventsCenter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -287,6 +288,7 @@ class Surgery extends Scene {
     const popUp = this.add.image(400, 300, "glove");
     popUp.setScale(.25, .25);
     this.player.disableBody();
+    eventsCenter.emit('update-bank', "glove")
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -306,6 +308,7 @@ class Surgery extends Scene {
   onSinkCollision() {
     const popUp = this.add.image(400, 300, "soap").setScale(.5,.5);
     this.player.disableBody();
+    eventsCenter.emit('update-bank', "soap")
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -317,6 +320,7 @@ class Surgery extends Scene {
   onTableCollision() {
     const popUp = this.add.image(400, 300, "scapel").setScale(.5,.5);
     this.player.disableBody();
+    eventsCenter.emit('update-bank', "scapel")
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),

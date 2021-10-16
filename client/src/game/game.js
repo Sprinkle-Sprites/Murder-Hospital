@@ -5,11 +5,13 @@ import Radiology from "@/game/scenes/Radiology";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import Surgery from "@/game/scenes/Surgery"
 import PatientRoom from "@/game/scenes/PatientRoom";
+import ClueBank from "@/game/scenes/ClueBank";
 
 function launch(containerId) {
   return new Phaser.Game({
     type: Phaser.AUTO,
-    width: 800,
+    mode: Phaser.Scale.FIT,
+    width: 1000,
     height: 650,
     parent: containerId,
     physics: {
@@ -21,7 +23,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [Preloader, Radiology, Surgery, MainScene, MainTimerScene, PatientRoom],
+    scene: [Preloader, Radiology, Surgery, MainScene, MainTimerScene, PatientRoom, ClueBank],
   });
 }
 
