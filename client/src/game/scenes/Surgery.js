@@ -132,7 +132,7 @@ class Surgery extends Scene {
     this.physics.add.collider(this.player, detailsCLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(0, 610, "", { fontSize: 20, backgroundColor:"black", padding: 5});
+    const roomTimerLabel = this.add.text(10, 610, "", { fontSize: 20, backgroundColor:"black", padding: 5});
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 

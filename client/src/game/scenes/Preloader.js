@@ -6,9 +6,11 @@ import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
 import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import creepyDoll from "@/game/assets/tiles/creepy_toys.png"
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
+import patients_room from "@/game/assets/tiles/patients_room.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -90,10 +92,12 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("floor", Lab2);
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
+    this.load.image("Creepy-Doll", creepyDoll)
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
-    this.load.tilemapTiledJSON("surgery", surgery);
+    this.load.tilemapTiledJSON("surgery", surgery)
+    this.load.tilemapTiledJSON("patient", patients_room)
   } //end of preload
 
   readyScene() {
@@ -102,7 +106,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("Surgery");
+      this.scene.start("PatientRoom");
     }
   }
 }
