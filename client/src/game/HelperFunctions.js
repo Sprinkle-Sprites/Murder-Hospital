@@ -1,10 +1,12 @@
+import Phaser from "phaser";
+
 export function resizeCollider(obj, width, height) {
   obj.body.setSize(obj.width - width, obj.height - height, true);
 }
 
 export function resizeMapLayer(scene, layer) {
   layer.displayWidth = scene.sys.canvas.width;
-  layer.displayHeight = scene.sys.canvas.height;
+  layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
 export function createMessage(scene, message) {
@@ -37,5 +39,5 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 5000);
+  }, 2000);
 }
