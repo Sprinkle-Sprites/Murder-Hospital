@@ -265,7 +265,7 @@ class MainScene extends Scene {
     let value = document.getElementById("diceValue").getAttribute("value");
 
     // code to check if dice works
-    if (parseInt(value) > 0) {
+    if (parseInt(value) === 8) {
       this.scene.start("Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
