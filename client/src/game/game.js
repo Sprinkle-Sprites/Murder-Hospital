@@ -1,4 +1,6 @@
 import Phaser from "phaser";
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+
 import MainScene from "@/game/scenes/MainScene";
 import Preloader from "@/game/scenes/Preloader";
 import Radiology from "@/game/scenes/Radiology";
@@ -16,6 +18,18 @@ function launch(containerId) {
     width: 1000,
     height: 650,
     parent: containerId,
+    dom: {
+      createContainer: true
+    },
+    plugins: {
+      scene: [
+        {
+          key: 'rexUI',
+          plugin: RexUIPlugin,
+          mapping: 'rexUI'
+        }
+      ]
+    },
     physics: {
       default: "arcade",
       arcade: {
