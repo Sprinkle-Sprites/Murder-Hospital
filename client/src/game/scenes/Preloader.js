@@ -102,7 +102,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("Laboratory", laboratory);
     this.load.tilemapTiledJSON("patient", patients_room);
     this.load.tilemapTiledJSON("pharmacy", pharmacy);
-
   } //end of preload
 
   readyScene() {
@@ -111,7 +110,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("ClueBank")
+      this.scene.start("ClueBank");
       this.scene.start("Pharmacy");
     }
   }

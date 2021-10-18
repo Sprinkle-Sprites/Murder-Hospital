@@ -1,5 +1,5 @@
 import Phaser, { Scene } from "phaser";
-import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+// import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import eventsCenter from "@/game/eventsCenter";
 
 import Player from "@/game/Player";
@@ -277,21 +277,43 @@ class Pharmacy extends Scene {
   }
 
   onLockBoxCollision() {
-    const text = this.add
-      .text(400, 300, "Enter combination...", {
-        fixedWidth: 150,
-        fixedHeight: 36,
+    const text1 = this.add
+      .text(
+        400,
+        300,
+        "This box requires a four digit combination. Enter below...",
+        {
+          fixedWidth: 700,
+          fixedHeight: 50,
+          backgroundColor: "black",
+          align: "center",
+          wordWrap: { width: 300, useAdvancedWrap: true },
+        }
+      )
+      .setOrigin(0.5, 0.5);
+
+    const text2 = this.add
+      .text(400, 370, "", {
+        fixedWidth: 300,
+        fixedHeight: 40,
         backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
       })
       .setOrigin(0.5, 0.5);
-    text.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text);
+
+    text2.setInteractive().on("pointerdown", () => {
+      let editor = this.rexUI.edit(text2);
+      console.log("editor", editor);
     });
+
     const enter = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ENTER
     );
     enter.on("down", () => {
-      this.combination = parseInt(text._text);
+      text1.destroy();
+      text2.destroy();
+      this.combination = parseInt(text2._text);
       if (this.combination === 1022) {
         const popup = this.add.image(400, 300, "twoDollar");
         popup.setScale(0.25, 0.25);
@@ -302,9 +324,9 @@ class Pharmacy extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "twoDollar");
+        nextSceneFunc(this, "MainScene");
       }
     });
-    nextSceneFunc(this, "MainScene");
   }
 
   onCabinet2Collision() {
