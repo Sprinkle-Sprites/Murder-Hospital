@@ -1,0 +1,52 @@
+.container {
+  position: absolute;
+  right: 25%;
+  top: 15%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(1turn);
+}
+
+#game-container {
+  width: 800px;
+  height: 800px;
+}
+
+#game-container canvas {
+  width: 800px;
+  height: 700px;
+}
+
+#containerId {
+  margin: 50px;
+}
+
+button {
+  background-color: #e92e3d;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  padding: 15px 0;
+  width: 150px;
+  letter-spacing: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.shake {
+  animation: shake 1s infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-8deg);
+  }
+  100% {
+    transform: rotate(8deg);
+  }
+}
