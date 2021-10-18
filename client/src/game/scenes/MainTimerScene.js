@@ -3,13 +3,17 @@ import MainTimer from "@/game/scenes/MainTimer";
 
 //NOTE: MainTimer functionality has not been removed from homepage, and is commented out in Radiology
 
-class MainSceneTimer extends Scene {
+class MainSceneTimer extends Phaser.Scene {
   constructor() {
-    super({key: "MainTimerScene"})
+    super({ key: "MainTimerScene" });
   }
 
-  create(){
-    const timerLabel = this.add.text(600, 610, "60", { fontSize: 20, backgroundColor:"black", padding: 5});
+  create() {
+    const timerLabel = this.add.text(620, 35, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
   }
@@ -23,10 +27,9 @@ class MainSceneTimer extends Scene {
       .setOrigin(0.5);
   }
 
-  update(){
+  update() {
     this.mainTimer.update();
   }
 }
 
 export default MainSceneTimer;
-
