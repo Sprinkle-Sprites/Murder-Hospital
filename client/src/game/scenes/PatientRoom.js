@@ -1,21 +1,25 @@
 import Phaser, { Scene } from "phaser";
+import eventsCenter from "@/game/eventsCenter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  createMessageForImage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
+import paperScrap from "@/game/assets/popups/paperScrap.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
 class PatientRoom extends Scene {
   constructor() {
-    super({key: "PatientRoom"});
+    super({ key: "PatientRoom" });
+    this.check = false;
   }
 
   preload() {
@@ -40,6 +44,7 @@ class PatientRoom extends Scene {
     //Popups
     this.load.image("flowers", flowers);
     this.load.image("blanket", blanket);
+    this.load.image("paperScrap", paperScrap);
   }
 
   create() {
@@ -50,6 +55,7 @@ class PatientRoom extends Scene {
     this.createDoll();
     this.createDrawer();
     this.createColliders();
+    eventsCenter.on("confirmation-check", this.returnConfirmation, this);
   }
 
   createMap() {
@@ -104,11 +110,15 @@ class PatientRoom extends Scene {
     //LAYERS
     const floorLayer = map.createLayer("patientsFloor", InteriorB).setDepth(-1);
     const wallLayer = map.createLayer("patientsWall", InteriorA).setDepth(-1);
-    const backgroundLayer = map.createLayer("patientsBackground", InteriorAlt).setDepth(-1);
+    const backgroundLayer = map
+      .createLayer("patientsBackground", InteriorAlt)
+      .setDepth(-1);
     const detailsCLayer = map
       .createLayer("patientsDetailsC", InteriorC)
       .setDepth(-1);
-    const detailsLabLayer = map.createLayer("patientsDetailsLab", Lab3).setDepth(-1);
+    const detailsLabLayer = map
+      .createLayer("patientsDetailsLab", Lab3)
+      .setDepth(-1);
     const creepyDollLayer = map
       .createLayer("patientsCreepyDoll", CreepyDoll)
       .setDepth(-1);
@@ -120,7 +130,7 @@ class PatientRoom extends Scene {
       backgroundLayer,
       detailsCLayer,
       detailsLabLayer,
-      creepyDollLayer
+      creepyDollLayer,
     ];
 
     for (let i = 0; i < layers.length; i++) {
@@ -131,7 +141,7 @@ class PatientRoom extends Scene {
     wallLayer.setCollisionByProperty({ collides: true });
     detailsCLayer.setCollisionByProperty({ collides: true });
     detailsLabLayer.setCollisionByProperty({ collides: true });
-    backgroundLayer.setCollisionByProperty({collides: true});
+    backgroundLayer.setCollisionByProperty({ collides: true });
 
     //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
     this.physics.add.collider(this.player, wallLayer);
@@ -140,7 +150,11 @@ class PatientRoom extends Scene {
     this.physics.add.collider(this.player, backgroundLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
@@ -158,7 +172,8 @@ class PatientRoom extends Scene {
     const { width, height } = this.scale;
     this.add
       .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30, backgroundColor: "black"
+        fontSize: 30,
+        backgroundColor: "black",
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
@@ -187,52 +202,58 @@ class PatientRoom extends Scene {
     this.roomTimer.update();
   }
 
-  createFlower () {
+  createFlower() {
     this.flowers1 = this.physics.add
-    .sprite(40, 360, "flowers1")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(31, 33, true);
+      .sprite(40, 360, "flowers1")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(31, 33, true);
 
-  this.flowers2 = this.physics.add
-    .sprite(620, 440, "flowers2")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(31, 43, true);
+    this.flowers2 = this.physics.add
+      .sprite(620, 440, "flowers2")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(31, 43, true);
   }
 
-  createBed () {
+  createBed() {
     this.bed1 = this.physics.add
-    .sprite(58, 335, "bed1")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(58, 31, true);
+      .sprite(58, 335, "bed1")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(58, 31, true);
 
-  this.bed2 = this.physics.add
-    .sprite(715, 516, "bed2")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(58, 31, true);
+    this.bed2 = this.physics.add
+      .sprite(715, 516, "bed2")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(58, 31, true);
   }
 
-  createDoll () {
+  createDoll() {
     this.doll = this.physics.add
-    .sprite(585, 290, "creepy")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(25, 25, true);
+      .sprite(585, 290, "creepy")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 25, true);
   }
 
   createDrawer() {
     this.drawer1 = this.physics.add
-    .sprite(40, 150, "drawer1")
-    .setOrigin(0, 0)
-    .setDepth(-2);
+      .sprite(40, 150, "drawer1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
 
     this.drawer2 = this.physics.add
-    .sprite(670, 285, "drawer2")
-    .setOrigin(0, 0)
-    .setDepth(-2);
+      .sprite(670, 285, "drawer2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
 
     this.drawer3 = this.physics.add
-    .sprite(490, 53, "drawer3")
-    .setOrigin(0, 0)
-    .setDepth(-2).setSize(30,37, true);
+      .sprite(490, 53, "drawer3")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(30, 37, true);
   }
 
   createColliders() {
@@ -267,31 +288,30 @@ class PatientRoom extends Scene {
       null,
       this
     );
-
   }
 
   onFlowerCollision() {
-    const popUp = this.add.image(400, 300, "flowers").setScale(.5,.5);
+    const popUp = this.add.image(400, 300, "flowers").setScale(0.5, 0.5);
     this.player.disableBody();
+    eventsCenter.emit("update-bank", "flowers");
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
       loop: false,
     });
     nextSceneFunc(this, "MainScene");
-
   }
 
-  onBedCollision () {
-    const popUp = this.add.image(400, 300, "blanket").setScale(.5,.5);
+  onBedCollision() {
+    const popUp = this.add.image(400, 300, "blanket").setScale(0.5, 0.5);
     this.player.disableBody();
+    eventsCenter.emit("update-bank", "blanket");
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
       loop: false,
     });
     nextSceneFunc(this, "MainScene");
-
   }
 
   onDollCollision() {
@@ -304,13 +324,35 @@ class PatientRoom extends Scene {
   }
 
   onDrawerCollision() {
-    const drawerMessage =
-      "The drawer appears to be jammed. Maybe there's something to open it with.";
+    eventsCenter.emit("check-scapel", "scapel");
 
-    this.player.disableBody();
-    createMessage(this, drawerMessage);
-    nextSceneFunc(this, "MainScene");
+    if (this.check) {
+      this.player.disableBody();
+      const openMessage =
+        "You are able to open the box with the scapel you retrieved in the surgery...";
+      createMessageForImage(this, openMessage);
+      setTimeout(() => {
+        const popUp = this.add.image(400, 300, "paperScrap").setScale(0.5, 0.5);
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "paperScrap");
+        nextSceneFunc(this, "MainScene");
+      }, 3000);
+    } else {
+      const drawerMessage =
+        "The drawer appears to be jammed. Maybe there's something to open it with.";
+      this.player.disableBody();
+      createMessage(this, drawerMessage);
+      nextSceneFunc(this, "MainScene");
+    }
+  }
+
+  returnConfirmation(bool) {
+    this.check = bool;
   }
 }
 
-export default PatientRoom
+export default PatientRoom;

@@ -6,12 +6,14 @@ import MainTimerScene from "@/game/scenes/MainTimerScene";
 import Surgery from "@/game/scenes/Surgery";
 import Laboratory from "@/game/scenes/Laboratory";
 import PatientRoom from "@/game/scenes/PatientRoom";
+import ClueBank from "@/game/scenes/ClueBank";
 import Pharmacy from "@/game/scenes/Pharmacy";
 
 function launch(containerId) {
   return new Phaser.Game({
     type: Phaser.AUTO,
-    width: 800,
+    mode: Phaser.Scale.FIT,
+    width: 1000,
     height: 650,
     parent: containerId,
     physics: {
@@ -32,6 +34,7 @@ function launch(containerId) {
       Laboratory,
       PatientRoom,
       Pharmacy,
+      ClueBank
     ],
   });
 }
