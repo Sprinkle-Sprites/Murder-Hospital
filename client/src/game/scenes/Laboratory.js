@@ -4,10 +4,13 @@ import {
   resizeMapLayer,
   resizeCollider,
   nextSceneFunc,
+  createMessage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
+import test_tube from "@/game/assets/popups/test_tube.jpeg";
+import specimen_flask from "@/game/assets/popups/specimen_flask.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
@@ -29,21 +32,29 @@ class Laboratory extends Scene {
     this.load.image("skeleton", collider);
 
     //Test Tubes
-    this.load.image("testTubes", collider);
+    this.load.image("testTube", collider);
 
-    //Specimen container
-    this.load.image("specimenContainer", collider);
+    //Specimen Flask
+    this.load.image("specimen_flask", collider);
+
+    //Candy Bar
+    this.load.image("candyBar", collider);
 
     //Pop UP
     this.load.image("cal pop-up", calendar_date);
+    this.load.image("testTube pop-up", test_tube);
+    this.load.image("specimen pop-up", specimen_flask);
   }
 
   create() {
     this.createPlayer();
     this.createMap();
     this.createCalendar();
-    // this.createXrayBoards();
-    // this.createColliders();
+    this.createSkeleton();
+    this.createTestTube();
+    this.createSpecimenFlask();
+    this.createCandyBar();
+    this.createColliders();
   }
 
   createMap() {
@@ -136,14 +147,6 @@ class Laboratory extends Scene {
     });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // borderLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   handleRoomCountdownFinished() {
@@ -181,118 +184,89 @@ class Laboratory extends Scene {
     this.roomTimer.update();
   }
 
-  //pickup here
   createCalendar() {
-    this.calendar = this.physics.add
+    this.calendar1 = this.physics.add
       .sprite(450, 60, "calendar")
       .setOrigin(0, 0)
       .setDepth(-2);
   }
 
-  //   this.switch2 = this.physics.add
-  //     .sprite(650, 30, "lightSwitch 2")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2);
+  createSkeleton() {
+    this.skeleton = this.physics.add
+      .sprite(390, 60, "skeleton")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
 
-  //   this.switch3 = this.physics.add
-  //     .sprite(220, 305, "lightSwitch 3")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2);
+  createTestTube() {
+    this.testTube = this.physics.add
+      .sprite(445, 170, "testTube")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
 
-  //   this.switch4 = this.physics.add
-  //     .sprite(670, 305, "lightSwitch 4")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2);
+  createSpecimenFlask() {
+    this.specimenFlask = this.physics.add
+      .sprite(590, 435, "specimen_flask")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
 
-  //   //SCALES COLLIDERS ON LIGHTSWITCHES TO APPROPRIATE SIZE
-  //   const switches = [this.switch1, this.switch2, this.switch3, this.switch4];
-  //   for (let i = 0; i < switches.length; i++) {
-  //     resizeCollider(switches[i], 20, 20);
-  //   }
-  // }
-
-  // createXrayBoards() {
-  //   this.xray1 = this.physics.add
-  //     .sprite(695, 22, "Xray 1")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(50, 25, true);
-
-  //   this.xray2 = this.physics.add
-  //     .sprite(612, 300, "Xray 2")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(50, 25, true);
-
-  //   this.xray3 = this.physics.add
-  //     .sprite(173, 300, "Xray 3")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(50, 25, true);
-  // }
+  createCandyBar() {
+    this.candyBar = this.physics.add
+      .sprite(468, 435, "candyBar")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
 
   createColliders() {
     this.physics.add.overlap(
       this.player,
-      this.calendar,
-      this.onSwitchCollision,
+      this.calendar1,
+      this.onCalendarCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.skeleton,
+      this.onSkeletonCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.testTube,
+      this.onTestTubeCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.specimenFlask,
+      this.onSpecimenFlaskCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.candyBar,
+      this.onCandyBarCollision,
       null,
       this
     );
   }
 
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.switch2,
-  //     this.onSwitchCollision,
-  //     null,
-  //     this
-  //   );
-
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.switch3,
-  //     this.onSwitchCollision,
-  //     null,
-  //     this
-  //   );
-
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.switch4,
-  //     this.onSwitchCollision,
-  //     null,
-  //     this
-  //   );
-
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.xray1,
-  //     this.onXrayCollision,
-  //     null,
-  //     this
-  //   );
-
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.xray2,
-  //     this.onXrayCollision,
-  //     null,
-  //     this
-  //   );
-
-  //   this.physics.add.overlap(
-  //     this.player,
-  //     this.xray3,
-  //     this.onXrayCollision,
-  //     null,
-  //     this
-  //   );
-  // }
-
   onCalendarCollision() {
     const calPopUp = this.add.image(400, 300, "cal pop-up");
-
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
@@ -302,16 +276,43 @@ class Laboratory extends Scene {
     nextSceneFunc(this, "MainScene");
   }
 
-  // onXrayCollision() {
-  //   const popUp = this.add.image(400, 300, "pop-up-image");
-  //   this.player.disableBody();
-  //   this.time.addEvent({
-  //     delay: 4750,
-  //     callback: () => popUp.destroy(),
-  //     loop: false,
-  //   });
-  //   nextSceneFunc(this, "MainScene");
-  // }
+  onSkeletonCollision() {
+    const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
+    this.player.disableBody();
+    createMessage(this, skeletonMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onTestTubeCollision() {
+    const testTubePopUp = this.add.image(400, 300, "testTube pop-up");
+    testTubePopUp.setScale(0.25, 0.25);
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => testTubePopUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onSpecimenFlaskCollision() {
+    const specimenFalskPopUp = this.add.image(400, 300, "specimen pop-up");
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => specimenFalskPopUp.destroy(),
+      loop: false,
+    });
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onCandyBarCollision() {
+    const candyBarMessage =
+      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snakcs from evil doctors. You have to recover for a turn.";
+    this.player.disableBody();
+    createMessage(this, candyBarMessage);
+    nextSceneFunc(this, "MainScene");
+  }
 }
 
 export default Laboratory;
