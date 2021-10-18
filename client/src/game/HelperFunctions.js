@@ -30,6 +30,23 @@ export function createMessage(scene, message) {
     .setOrigin(0.5, 0.5);
 }
 
+export function createMessageForImage(scene, message) {
+  const width = scene.sys.canvas.width;
+  const height = scene.sys.canvas.height;
+  scene.add
+    .text(width * 0.5, height * 0.5, message, {
+      fontSize: 30,
+      backgroundColor: "black",
+      wordWrap: { width: 300, useAdvancedWrap: true },
+      strokeThickness: 5,
+      stroke: "#69070c",
+      align: "top",
+      fixedWidth: width,
+      fixedHeight: height / 2,
+    })
+    .setOrigin(0.5, 0.5);
+}
+
 export function nextSceneFunc(scene, nextScene) {
   setTimeout(() => {
     scene.cameras.main.fadeOut(250, 0, 0, 0);
