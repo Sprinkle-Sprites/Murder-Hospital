@@ -1,4 +1,7 @@
 import Phaser, { Scene } from "phaser";
+// import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import eventsCenter from "@/game/eventsCenter";
+
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -11,12 +14,14 @@ import collider from "@/game/assets/collider.png";
 import pillsPop from "@/game/assets/popups/pills.jpeg";
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
+import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
 class Pharmacy extends Scene {
   constructor() {
-    super({ key: "pharmacy" });
+    super({ key: "Pharmacy" });
+    this.combination = 0;
   }
 
   preload() {
@@ -37,11 +42,10 @@ class Pharmacy extends Scene {
     //TABLES
 
     //POPUPS
-    this.load.image("pills popup", pillsPop);
-    this.load.image("key popup", keyPop);
-    this.load.image("bandages popup", bandagesPop);
-    // this.load.image("soap", bar_of_soap);
-    // this.load.image("scapel", scapel)
+    this.load.image("pills", pillsPop);
+    this.load.image("key", keyPop);
+    this.load.image("bandages", bandagesPop);
+    this.load.image("twoDollar", twoDollarBill);
   }
 
   create() {
@@ -51,9 +55,6 @@ class Pharmacy extends Scene {
     this.createCabinet();
     this.createLockBox();
     this.createCabinet2();
-    // this.createCannister();
-    // this.createSink();
-    // this.createTable();
     this.createColliders();
   }
 
@@ -216,71 +217,6 @@ class Pharmacy extends Scene {
       .setDepth(-2)
       .setSize(55, 63, true);
   }
-  // createCannister() {
-  //   this.cannister1 = this.physics.add
-  //     .sprite(50, 72, "gasCannister1")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(22, 32, true);
-
-  //   this.cannister2 = this.physics.add
-  //     .sprite(740, 195, "gasCannister2")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(22, 30, true);
-
-  //   this.cannister3 = this.physics.add
-  //     .sprite(330, 395, "gasCannister3")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(22, 30, true);
-  // }
-
-  // createSink() {
-  //   this.sink1 = this.physics.add
-  //     .sprite(45, 160, "sink1")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(45, 83, true);
-
-  //   this.sink2 = this.physics.add
-  //     .sprite(260, 130, "sink2")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(30, 94, true);
-
-  //   this.sink3 = this.physics.add
-  //     .sprite(165, 535, "sink3")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(103, 40, true);
-
-  //   this.sink4 = this.physics.add
-  //     .sprite(740, 130, "sink4")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(41, 29, true);
-
-  //   this.sink5 = this.physics.add
-  //     .sprite(740, 460, "sink5")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(41, 29, true);
-  // }
-
-  // createTable() {
-  //   this.table1 = this.physics.add
-  //     .sprite(400, 188, "table1")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(30, 30, true);
-
-  //   this.table2 = this.physics.add
-  //     .sprite(620, 114, "table2")
-  //     .setOrigin(0, 0)
-  //     .setDepth(-2)
-  //     .setSize(30, 30, true);
-  // }
 
   createColliders() {
     this.physics.add.overlap(
@@ -317,7 +253,7 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
-    const pillsPopUp = this.add.image(400, 300, "pills popup");
+    const pillsPopUp = this.add.image(400, 300, "pills");
     pillsPopUp.setScale(0.75, 0.75);
     this.player.disableBody();
     this.time.addEvent({
@@ -329,7 +265,7 @@ class Pharmacy extends Scene {
   }
 
   onCabinetCollision() {
-    const keyPopUp = this.add.image(400, 300, "key popup");
+    const keyPopUp = this.add.image(400, 300, "key");
     keyPopUp.setScale(0.25, 0.25);
     this.player.disableBody();
     this.time.addEvent({
@@ -341,18 +277,60 @@ class Pharmacy extends Scene {
   }
 
   onLockBoxCollision() {
-    console.log("need entry for combonation lock");
-    this.player.disableBody();
-    this.time.addEvent({
-      delay: 4750,
-      callback: () => keyPop.destroy(),
-      loop: false,
+    const text1 = this.add
+      .text(
+        400,
+        300,
+        "This box requires a four digit combination. Enter below...",
+        {
+          fixedWidth: 700,
+          fixedHeight: 50,
+          backgroundColor: "black",
+          align: "center",
+          wordWrap: { width: 300, useAdvancedWrap: true },
+        }
+      )
+      .setOrigin(0.5, 0.5);
+
+    const text2 = this.add
+      .text(400, 370, "", {
+        fixedWidth: 300,
+        fixedHeight: 40,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
+
+    text2.setInteractive().on("pointerdown", () => {
+      let editor = this.rexUI.edit(text2);
+      console.log("editor", editor);
     });
-    nextSceneFunc(this, "MainScene");
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+    enter.on("down", () => {
+      text1.destroy();
+      text2.destroy();
+      this.combination = parseInt(text2._text);
+      if (this.combination === 1022) {
+        const popup = this.add.image(400, 300, "twoDollar");
+        popup.setScale(0.25, 0.25);
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4000,
+          callback: () => popup.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "twoDollar");
+        nextSceneFunc(this, "MainScene");
+      }
+    });
   }
 
   onCabinet2Collision() {
-    const bandagesPopUp = this.add.image(400, 300, "bandages popup");
+    const bandagesPopUp = this.add.image(400, 300, "bandages");
     // bandagesPopUp.setScale(0.25, 0.25);
     this.player.disableBody();
     this.time.addEvent({
@@ -362,35 +340,6 @@ class Pharmacy extends Scene {
     });
     nextSceneFunc(this, "MainScene");
   }
-
-  // onCannisterCollision() {
-  //   const cannisterMessage = "Huh, it's a gas cannister. It's heavy.";
-  //   this.player.disableBody();
-  //   createMessage(this, cannisterMessage);
-  //   nextSceneFunc(this, "MainScene");
-  // }
-
-  // onSinkCollision() {
-  //   const popUp = this.add.image(400, 300, "soap").setScale(0.5, 0.5);
-  //   this.player.disableBody();
-  //   this.time.addEvent({
-  //     delay: 4750,
-  //     callback: () => popUp.destroy(),
-  //     loop: false,
-  //   });
-  //   nextSceneFunc(this, "MainScene");
-  // }
-
-  // onTableCollision() {
-  //   const popUp = this.add.image(400, 300, "scapel").setScale(0.5, 0.5);
-  //   this.player.disableBody();
-  //   this.time.addEvent({
-  //     delay: 4750,
-  //     callback: () => popUp.destroy(),
-  //     loop: false,
-  //   });
-  //   nextSceneFunc(this, "MainScene");
-  // }
 
   update() {
     this.player.update();
