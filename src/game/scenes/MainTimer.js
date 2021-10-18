@@ -64,8 +64,7 @@ export default class MainTimer {
 
   minusFive() {
     this.minutes -= 5;
-    //this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
-    return this.minutes, this.label.text;
+    return this.minutes;
   }
 
   update() {
@@ -79,8 +78,12 @@ export default class MainTimer {
       this.minutes = this.zeroPad(Math.floor(this.seconds / 60), 2);
       this.partInSeconds = this.zeroPad((this.seconds % 60).toFixed(0), 2);
       this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
-      console.log("this", this);
-      // this.minusFive();
+      // console.log("this", this);
+
+      // this.minusFive()
+
+      //   if(this.minusFive)
+      //  { // this.minusFive();}
     }
   }
 }

@@ -19,7 +19,7 @@ function launch(containerId) {
         debug: true,
       },
     },
-    scene: [Preloader, Radiology, MainScene, MainTimerScene],
+    scene: [Preloader, Radiology, MainScene], //, MainTimerScene],
   });
 }
 

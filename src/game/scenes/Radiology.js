@@ -13,6 +13,7 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import MainTimer from "./MainTimer";
 import MainSceneTimer from "./MainTimerScene";
+import { launch } from "../game";
 
 class Radiology extends Scene {
   constructor() {
@@ -152,7 +153,8 @@ class Radiology extends Scene {
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
 
-    this.mainSceneTimer = new MainSceneTimer(this, timerLabel);
+    this.mainSceneTimer = new MainSceneTimer(this);
+    console.log(this.mainSceneTimer);
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -312,12 +314,14 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    this.mainTimer.minusFive();
-
-    this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minusFive()}:${
-      this.mainTimer.partInSeconds
-    }`;
-    console.log(this.mainTimer);
+    this.mainTimer.minutes = this.mainTimer.minutes - "5";
+    // this.mainTimer.elapsed += 300000;
+    // this.mainTimer.minusFive();
+    // this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minusFive()}:${
+    //   this.mainTimer.partInSeconds
+    // }`;
+    console.log("this", this.mainTimer);
+    console.log("mins", this.mainTimer.minutes);
     // nextSceneFunc(this, "MainScene");
   }
 
@@ -336,6 +340,7 @@ class Radiology extends Scene {
     this.player.update();
     this.roomTimer.update();
     this.mainTimer.update();
+    // this.mainSceneTimer.update();
   }
 }
 
