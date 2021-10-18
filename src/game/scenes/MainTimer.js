@@ -14,6 +14,7 @@ export default class MainTimer {
    *
    * @param {Phaser.Scene} scene
    * @param {Phaser.GameObjects.Text} label
+
    */
 
   constructor(scene, label, timerEvent) {
@@ -63,27 +64,25 @@ export default class MainTimer {
   }
 
   minusFive() {
-    this.minutes -= 5;
-    return this.minutes;
+    this.scene.time.update(Date.now, 300000);
+    this.label.text = `Game Time:\n ${Number(this.minutes) - 5}:${
+      this.partInSeconds
+    }`;
   }
 
   update() {
     if (!this.timerEvent || this.duration <= 0) {
       // return undefined
       return;
-    } else {
-      this.elapsed = this.timerEvent.getElapsed();
-      this.remaining = this.duration - this.elapsed;
-      this.seconds = this.remaining / 1000;
-      this.minutes = this.zeroPad(Math.floor(this.seconds / 60), 2);
-      this.partInSeconds = this.zeroPad((this.seconds % 60).toFixed(0), 2);
-      this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
-      // console.log("this", this);
-
-      // this.minusFive()
-
-      //   if(this.minusFive)
-      //  { // this.minusFive();}
     }
+
+    this.elapsed = this.timerEvent.getElapsed();
+    this.remaining = this.duration - this.elapsed;
+    this.seconds = this.remaining / 1000;
+    this.minutes = this.zeroPad(Math.floor(this.seconds / 60), 2);
+    this.partInSeconds = this.zeroPad((this.seconds % 60).toFixed(0), 2);
+    this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
+
+    // console.log("Main", this);
   }
 }

@@ -3,13 +3,13 @@ import MainTimer from "@/game/scenes/MainTimer";
 
 //NOTE: MainTimer functionality has not been removed from homepage, and is commented out in Radiology
 
-class MainSceneTimer {
+class MainSceneTimer extends Phaser.Scene {
   constructor() {
-    // super({ key: "MainTimerScene" });
+    super({ key: "MainTimerScene" });
   }
 
   create() {
-    const timerLabel = this.add.text(620, 35, "60", {
+    const timerLabel = this.add.text(620, 35, "", {
       fontSize: 20,
       backgroundColor: "black",
       padding: 10,

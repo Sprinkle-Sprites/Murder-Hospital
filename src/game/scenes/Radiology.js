@@ -145,7 +145,7 @@ class Radiology extends Scene {
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
-    const timerLabel = this.add.text(620, 35, "60", {
+    const timerLabel = this.add.text(620, 35, "", {
       fontSize: 20,
       backgroundColor: "black",
       padding: 10,
@@ -153,8 +153,8 @@ class Radiology extends Scene {
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
 
-    this.mainSceneTimer = new MainSceneTimer(this);
-    console.log(this.mainSceneTimer);
+    this.mainSceneTimer = new MainSceneTimer();
+
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -314,14 +314,11 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    this.mainTimer.minutes = this.mainTimer.minutes - "5";
-    // this.mainTimer.elapsed += 300000;
-    // this.mainTimer.minusFive();
-    // this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minusFive()}:${
-    //   this.mainTimer.partInSeconds
-    // }`;
+    this.mainTimer.minusFive();
+
+    console.log("time", this.mainTimer.scene.time);
     console.log("this", this.mainTimer);
-    console.log("mins", this.mainTimer.minutes);
+
     // nextSceneFunc(this, "MainScene");
   }
 
@@ -340,7 +337,6 @@ class Radiology extends Scene {
     this.player.update();
     this.roomTimer.update();
     this.mainTimer.update();
-    // this.mainSceneTimer.update();
   }
 }
 
