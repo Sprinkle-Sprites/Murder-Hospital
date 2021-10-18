@@ -63,26 +63,24 @@ export default class MainTimer {
   }
 
   minusFive() {
-    // this.stop();
-    // mins -= 5;
-    // return mins;
     this.minutes -= 5;
-    return this.minutes;
+    //this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
+    return this.minutes, this.label.text;
   }
 
   update() {
     if (!this.timerEvent || this.duration <= 0) {
       // return undefined
       return;
+    } else {
+      this.elapsed = this.timerEvent.getElapsed();
+      this.remaining = this.duration - this.elapsed;
+      this.seconds = this.remaining / 1000;
+      this.minutes = this.zeroPad(Math.floor(this.seconds / 60), 2);
+      this.partInSeconds = this.zeroPad((this.seconds % 60).toFixed(0), 2);
+      this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
+      console.log("this", this);
+      // this.minusFive();
     }
-
-    this.elapsed = this.timerEvent.getElapsed();
-    this.remaining = this.duration - this.elapsed;
-    this.seconds = this.remaining / 1000;
-    this.minutes = this.zeroPad(Math.floor(this.seconds / 60), 2);
-    this.partInSeconds = this.zeroPad((this.seconds % 60).toFixed(0), 2);
-    this.label.text = `Game Time:\n ${this.minutes}:${this.partInSeconds}`;
-
-    this.minusFive();
   }
 }
