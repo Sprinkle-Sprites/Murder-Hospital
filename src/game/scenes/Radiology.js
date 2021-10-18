@@ -12,6 +12,7 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 import MainTimer from "./MainTimer";
+import MainSceneTimer from "./MainTimerScene";
 
 class Radiology extends Scene {
   constructor() {
@@ -150,6 +151,8 @@ class Radiology extends Scene {
     });
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
+
+    this.mainSceneTimer = new MainSceneTimer(this, timerLabel);
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -309,10 +312,10 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    this.mainTimer.minusFive;
-    console.log("iWork!", this.mainTimer.minusFive());
-    console.log("RadioMins", this.mainTimer.minutes);
-    // console.log("minus5", this.mainTimer.minusFive());
+    this.mainTimer.minusFive(this.mainTimer.minutes);
+    this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minutes}:${this.mainTimer.partInSeconds}`;
+    console.log(this.mainTimer);
+    console.log(this.mainSceneTimer);
     // nextSceneFunc(this, "MainScene");
   }
 
@@ -330,6 +333,7 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.mainTimer.update();
   }
 }
 

@@ -63,10 +63,8 @@ export default class MainTimer {
   }
 
   minusFive() {
-    // return (this.minutes -= 5);
-    console.log("minutes", this.minutes);
-    const lossTime = this.minutes - "5";
-    return lossTime;
+    this.minutes -= "5";
+    return this.minutes;
   }
 
   update() {
