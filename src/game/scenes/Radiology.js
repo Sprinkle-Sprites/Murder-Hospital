@@ -312,10 +312,11 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    this.mainTimer.minusFive(this.mainTimer.minutes);
-    this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minutes}:${this.mainTimer.partInSeconds}`;
+    this.mainTimer.minusFive();
     console.log(this.mainTimer);
-    console.log(this.mainSceneTimer);
+
+    this.mainTimer.label.text = `Game Time:\n ${this.mainTimer.minutes}:${this.mainTimer.partInSeconds}`;
+
     // nextSceneFunc(this, "MainScene");
   }
 

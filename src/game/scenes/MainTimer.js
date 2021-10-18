@@ -63,7 +63,10 @@ export default class MainTimer {
   }
 
   minusFive() {
-    this.minutes -= "5";
+    // this.stop();
+    // mins -= 5;
+    // return mins;
+    this.minutes -= 5;
     return this.minutes;
   }
 
