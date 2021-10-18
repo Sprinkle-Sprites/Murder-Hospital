@@ -30,7 +30,13 @@ class ClueBank extends Scene {
   }
 
   addImage(key){
-    this.add.image(850, 35, key).setScale(.1,.1);
+    //function that determines X and Y
+    this.add.image(850, 100, key).setScale(.1,.1);
+  }
+
+  determineCoordinates(){
+
+
   }
 }
 
