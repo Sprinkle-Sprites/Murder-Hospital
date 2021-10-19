@@ -18,7 +18,6 @@ import patients_room from "@/game/assets/tiles/patients_room.json";
 import pharmacy from "@/game/assets/tiles/Pharmacy.json";
 import exit_room from "@/game/assets/tiles/exit_room.json"
 
-
 export default class Preloader extends Phaser.Scene {
   constructor() {
     super("Preloader");
@@ -110,7 +109,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("patient", patients_room);
     this.load.tilemapTiledJSON("pharmacy", pharmacy);
     this.load.tilemapTiledJSON("exit", exit_room);
-
   } //end of preload
 
   readyScene() {
@@ -121,7 +119,6 @@ export default class Preloader extends Phaser.Scene {
       this.scene.start("MainTimerScene");
       this.scene.start("Exit");
       this.scene.start("ClueBank");
-
     }
   }
 }
