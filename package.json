@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
     "start-client": "nodemon main.js",
-    "start": "vue-cli-service build --modern && vue-cli-service serve && nodemon server/server.js"
+    "heroku-postbuild": "npm run build",
+    "start": "npm run serve && npm run start-serve"
   },
   "dependencies": {
     "core-js": "^3.17.3",
