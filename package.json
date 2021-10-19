@@ -8,7 +8,7 @@
     "build": "vue-cli-service build --modern",
     "start-client": "nodemon main.js",
     "postinstall": "npm run build",
-    "start": "npm run serve"
+    "start": "node server.js"
   },
   "dependencies": {
     "core-js": "^3.17.3",
