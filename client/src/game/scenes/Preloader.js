@@ -6,6 +6,12 @@ import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
 import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+
+import Elevator from "@/game/assets/tiles/Elevator-Doors-Alt.png";
+import board from "@/game/assets/tiles/board.json";
+import radiology from "@/game/assets/tiles/radiology.json";
+import surgery from "@/game/assets/tiles/surgery.json";
+import morgue from "@/game/assets/tiles/morgue.json";
 import creepyDoll from "@/game/assets/tiles/creepy_toys.png";
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
@@ -13,6 +19,7 @@ import surgery from "@/game/assets/tiles/surgery.json";
 import laboratory from "@/game/assets/tiles/Laboratory.json";
 import patients_room from "@/game/assets/tiles/patients_room.json";
 import pharmacy from "@/game/assets/tiles/Pharmacy.json";
+
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -91,6 +98,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("Interior-B", InteriorB);
     this.load.image("Interior-C", InteriorC);
     this.load.image("Interior-Alt", InteriorAlt);
+    this.load.image("Elevator", Elevator);
     this.load.image("floor", Lab2);
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
@@ -99,9 +107,11 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
     this.load.tilemapTiledJSON("surgery", surgery);
+    this.load.tilemapTiledJSON("morgue", morgue);
     this.load.tilemapTiledJSON("Laboratory", laboratory);
     this.load.tilemapTiledJSON("patient", patients_room);
     this.load.tilemapTiledJSON("pharmacy", pharmacy);
+
   } //end of preload
 
   readyScene() {
@@ -110,8 +120,9 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
+      this.scene.start("MainScene");
       this.scene.start("ClueBank");
-      this.scene.start("Pharmacy");
+
     }
   }
 }

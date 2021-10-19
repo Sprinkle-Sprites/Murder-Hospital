@@ -141,6 +141,7 @@ class Radiology extends Scene {
       fontSize: 20,
       backgroundColor: "black",
       padding: 5,
+
     });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));

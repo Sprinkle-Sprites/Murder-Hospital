@@ -7,6 +7,7 @@ import {
   createMessage,
 } from "@/game/HelperFunctions";
 
+import eventsCenter from "@/game/eventsCenter";
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
 import test_tube from "@/game/assets/popups/test_tube.jpeg";
@@ -41,9 +42,9 @@ class Laboratory extends Scene {
     this.load.image("candyBar", collider);
 
     //Pop UP
-    this.load.image("cal pop-up", calendar_date);
-    this.load.image("testTube pop-up", test_tube);
-    this.load.image("specimen pop-up", specimen_flask);
+    this.load.image("calendar_date", calendar_date);
+    this.load.image("test_tube", test_tube);
+    this.load.image("specimenFlask", specimen_flask);
   }
 
   create() {
@@ -266,13 +267,14 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
-    const calPopUp = this.add.image(400, 300, "cal pop-up");
+    const calPopUp = this.add.image(400, 300, "calendar_date");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => calPopUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "calendar_date");
     nextSceneFunc(this, "MainScene");
   }
 
@@ -284,7 +286,7 @@ class Laboratory extends Scene {
   }
 
   onTestTubeCollision() {
-    const testTubePopUp = this.add.image(400, 300, "testTube pop-up");
+    const testTubePopUp = this.add.image(400, 300, "test_tube");
     testTubePopUp.setScale(0.25, 0.25);
     this.player.disableBody();
     this.time.addEvent({
@@ -292,17 +294,19 @@ class Laboratory extends Scene {
       callback: () => testTubePopUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "test_tube");
     nextSceneFunc(this, "MainScene");
   }
 
   onSpecimenFlaskCollision() {
-    const specimenFalskPopUp = this.add.image(400, 300, "specimen pop-up");
+    const specimenFalskPopUp = this.add.image(400, 300, "specimenFlask");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => specimenFalskPopUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "specimenFlask");
     nextSceneFunc(this, "MainScene");
   }
 

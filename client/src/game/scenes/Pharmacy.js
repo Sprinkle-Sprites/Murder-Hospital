@@ -261,6 +261,7 @@ class Pharmacy extends Scene {
       callback: () => pillsPopUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "pills");
     nextSceneFunc(this, "MainScene");
   }
 
@@ -273,6 +274,7 @@ class Pharmacy extends Scene {
       callback: () => keyPop.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "key");
     nextSceneFunc(this, "MainScene");
   }
 
@@ -303,17 +305,16 @@ class Pharmacy extends Scene {
       .setOrigin(0.5, 0.5);
 
     text2.setInteractive().on("pointerdown", () => {
-      let editor = this.rexUI.edit(text2);
-      console.log("editor", editor);
+      this.rexUI.edit(text2);
     });
 
     const enter = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ENTER
     );
     enter.on("down", () => {
+      this.combination = parseInt(text2._text);
       text1.destroy();
       text2.destroy();
-      this.combination = parseInt(text2._text);
       if (this.combination === 1022) {
         const popup = this.add.image(400, 300, "twoDollar");
         popup.setScale(0.25, 0.25);
@@ -326,18 +327,26 @@ class Pharmacy extends Scene {
         eventsCenter.emit("update-bank", "twoDollar");
         nextSceneFunc(this, "MainScene");
       }
+      if (!this.combination === 1022) {
+        const wrongCodeMessage =
+          "You try to open the lock box, but it won't budge. Better keep looking for that code";
+        this.player.disableBody();
+        createMessage(this, wrongCodeMessage);
+        nextSceneFunc(this, "MainScene");
+      }
     });
   }
 
   onCabinet2Collision() {
     const bandagesPopUp = this.add.image(400, 300, "bandages");
-    // bandagesPopUp.setScale(0.25, 0.25);
+    bandagesPopUp.setScale(0.5, 0.5);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => bandagesPopUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "bandages");
     nextSceneFunc(this, "MainScene");
   }
 
