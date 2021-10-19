@@ -11,5 +11,5 @@ app.get(/.*/, function(req, res) {
 })
 
 const port = process.env.PORT || 8080
-app.listen(port)
+app.listen(process.env.PORT, '0.0.0.0');
 console.log(`app is listening on port: ${port}`)
