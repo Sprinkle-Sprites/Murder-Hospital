@@ -141,20 +141,12 @@ class Radiology extends Scene {
       fontSize: 20,
       backgroundColor: "black",
       padding: 5,
-
     });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
-    const timerLabel = this.add.text(620, 35, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.mainTimer = new MainTimer(this, timerLabel);
-    this.mainTimer.start(this.handleCountdownFinished.bind(this));
-
-    this.mainSceneTimer = new MainSceneTimer();
+    //Grab MainTimer
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
 
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
@@ -316,11 +308,7 @@ class Radiology extends Scene {
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
     this.mainTimer.minusFive();
-
-    console.log("time", this.mainTimer.scene.time);
-    console.log("this", this.mainTimer);
-
-    // nextSceneFunc(this, "MainScene");
+    nextSceneFunc(this, "MainScene");
   }
 
   onXrayCollision() {
@@ -337,7 +325,6 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
-    this.mainTimer.update();
   }
 }
 
