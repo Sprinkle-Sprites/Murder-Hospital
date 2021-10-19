@@ -21,17 +21,7 @@ class MainScene extends Scene {
   }
 
   create() {
-    //Socket connection needs to go in here
     this.cameras.main.fadeIn(250, 0, 0, 0);
-
-    // if (!localStorage.getItem("users")) {
-    //   let players = 1;
-    //   localStorage.setItem("users", JSON.stringify(players));
-    // } else {
-    //   let players = JSON.parse(localStorage.getItem("users"));
-    //   players++;
-    //   localStorage.setItem("users", JSON.stringify(players));
-    // }
 
     this.createPlayer();
 
@@ -235,14 +225,6 @@ class MainScene extends Scene {
 
     //set colliders
     this.physics.add.collider(this.player, wallsLayer);
-
-    // collider debuger
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // wallsLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-    // });
   } //end of createMap
 
   createPlayer() {
@@ -266,15 +248,21 @@ class MainScene extends Scene {
     let value = document.getElementById("diceValue").getAttribute("value");
 
     // code to check if dice works
-    if (parseInt(value) > 0 && parseInt(value) <= 4) {
+    if (parseInt(value) === 1) {
       nextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
-    } else if (parseInt(value) > 4 && parseInt(value) <= 8) {
+    } else if (parseInt(value) === 2) {
       nextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
-      // } else if (parseInt(value) > 5 && parseInt(value) <= 8) {
-      //   nextSceneFunc(this, "PatientRoom");
-      //   document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 3) {
+      nextSceneFunc(this, "Radiology");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 4) {
+      nextSceneFunc(this, "Laboratory");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 5) {
+      nextSceneFunc(this, "Pharmacy");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "More rooms need to be made";
     }
