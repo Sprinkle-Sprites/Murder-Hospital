@@ -64,11 +64,10 @@ export default class MainTimer {
   }
 
   minusFive() {
-    let date = Date.now();
-    this.scene.time.update(date, 300000);
-    this.label.text = `Game Time:\n ${Number(this.minutes) - 5}:${
-      this.partInSeconds
-    }`;
+    this.scene.time.update(Date.now(), 300000);
+    this.label.setText(
+      `Game Time:\n ${Number(this.minutes) - 5}:${this.partInSeconds}`
+    );
   }
 
   update() {
