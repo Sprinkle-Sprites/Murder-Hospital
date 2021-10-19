@@ -2,11 +2,13 @@
   "name": "vue-phaser3",
   "version": "3.0.0",
   "description": "Template for working with Phaser in a Vue project",
-
+  "main": "App.vue", 
   "author": "Markus Appel <markospoparkos@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
-     "build": "vue-cli-service build --modern"
+    "build": "vue-cli-service build --modern",
+    "start": "nodemon"
+
   },
   "dependencies": {
     "core-js": "^3.17.3",
