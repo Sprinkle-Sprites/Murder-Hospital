@@ -266,12 +266,12 @@ class MainScene extends Scene {
     let value = document.getElementById("diceValue").getAttribute("value");
 
     // code to check if dice works
-    if (parseInt(value) > 0 && parseInt(value) <= 4) {
-      nextSceneFunc(this, "PatientRoom");
+    if (parseInt(value) > 0) {
+      nextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
-    } else if (parseInt(value) > 4 && parseInt(value) <= 8) {
-      nextSceneFunc(this, "Surgery");
-      document.querySelector("#diceValue").setAttribute("value", "0");
+      // } else if (parseInt(value) > 4 && parseInt(value) <= 8) {
+      //   nextSceneFunc(this, "Surgery");
+      //   document.querySelector("#diceValue").setAttribute("value", "0");
       // } else if (parseInt(value) > 5 && parseInt(value) <= 8) {
       //   nextSceneFunc(this, "PatientRoom");
       //   document.querySelector("#diceValue").setAttribute("value", "0");
