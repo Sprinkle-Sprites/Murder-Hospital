@@ -9,6 +9,10 @@
   transform: rotate(1turn);
 }
 
+.exit-wrapper {
+  padding: 10px
+}
+
 #game-container {
   width: 800px;
   height: 800px;

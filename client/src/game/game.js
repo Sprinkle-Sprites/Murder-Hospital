@@ -6,11 +6,12 @@ import Preloader from "@/game/scenes/Preloader";
 import Radiology from "@/game/scenes/Radiology";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import Surgery from "@/game/scenes/Surgery";
-import Morgue from "./scenes/Morgue";
+import Morgue from "@/game/scenes/Morgue";
 import Laboratory from "@/game/scenes/Laboratory";
 import PatientRoom from "@/game/scenes/PatientRoom";
 import ClueBank from "@/game/scenes/ClueBank";
 import Pharmacy from "@/game/scenes/Pharmacy";
+import Exit from "@/game/scenes/Exit";
 
 
 function launch(containerId) {
@@ -52,8 +53,9 @@ function launch(containerId) {
       Laboratory,
       PatientRoom,
       Pharmacy,
-      ClueBank, 
-      Morgue
+      ClueBank,
+      Morgue,
+      Exit
     ],
 
   });
