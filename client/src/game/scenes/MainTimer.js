@@ -14,12 +14,14 @@ export default class MainTimer {
    *
    * @param {Phaser.Scene} scene
    * @param {Phaser.GameObjects.Text} label
+
    */
 
-  constructor(scene, label) {
+  constructor(scene, label, timerEvent) {
     this.scene = scene;
     this.label = label;
   }
+
   /**
    *
    * @param {() => void} callback
@@ -61,6 +63,13 @@ export default class MainTimer {
     return stringNumber;
   }
 
+  minusFive() {
+    this.scene.time.update(Date.now, 300000);
+    this.label.text = `Game Time:\n ${Number(this.minutes) - 5}:${
+      this.partInSeconds
+    }`;
+  }
+
   update() {
     if (!this.timerEvent || this.duration <= 0) {
       // return undefined
@@ -71,6 +80,6 @@ export default class MainTimer {
     const seconds = remaining / 1000;
     const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
     const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-    this.label.text = `Game Time:\n ${minutes}:${partInSeconds}`;
+    this.label.text = `Game Time:${minutes}:${partInSeconds}`;
   }
 }

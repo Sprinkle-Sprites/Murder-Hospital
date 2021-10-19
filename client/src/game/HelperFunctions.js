@@ -1,10 +1,12 @@
+import Phaser from "phaser";
+
 export function resizeCollider(obj, width, height) {
   obj.body.setSize(obj.width - width, obj.height - height, true);
 }
 
 export function resizeMapLayer(scene, layer) {
-  layer.displayWidth = scene.sys.canvas.width;
-  layer.displayHeight = scene.sys.canvas.height;
+  layer.displayWidth = scene.sys.canvas.width - 200;
+  layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
 export function createMessage(scene, message) {
@@ -28,6 +30,23 @@ export function createMessage(scene, message) {
     .setOrigin(0.5, 0.5);
 }
 
+export function createMessageForImage(scene, message) {
+  const width = scene.sys.canvas.width;
+  const height = scene.sys.canvas.height;
+  scene.add
+    .text(width * 0.5, height * 0.5, message, {
+      fontSize: 30,
+      backgroundColor: "black",
+      wordWrap: { width: 300, useAdvancedWrap: true },
+      strokeThickness: 5,
+      stroke: "#69070c",
+      align: "top",
+      fixedWidth: width,
+      fixedHeight: height / 2,
+    })
+    .setOrigin(0.5, 0.5);
+}
+
 export function nextSceneFunc(scene, nextScene) {
   setTimeout(() => {
     scene.cameras.main.fadeOut(250, 0, 0, 0);
@@ -37,5 +56,5 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 5000);
+  }, 2000);
 }
