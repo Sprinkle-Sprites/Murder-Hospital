@@ -19,8 +19,8 @@ export default class Morgue extends Phaser.Scene {
   }
 
   create() {
-    this.createMap();
     this.createPlayer();
+    this.createMap();
   }
 
   createMap() {
@@ -72,23 +72,28 @@ export default class Morgue extends Phaser.Scene {
     );
 
     // LAYERS
-
-    const wallLayer = map.createLayer("morgueWalls", InteriorA).setDepth(-1);
     const floorLayer = map.createLayer("morgue-floor", InteriorB).setDepth(-1);
-    const elevatorLayer = map.createLayer("elevator", Elevator).setDepth(-1);
-    const morgueAltLayer = map
-      .createLayer("morgue-Alt", InteriorAlt)
+    const borderLayer = map
+      .createLayer("morgue-border", InteriorA)
       .setDepth(-1);
-    const morgueLabLayer = map.createLayer("morgue-lab", Lab3);
-    const morgueObjLayer = map.createLayer("morgue-objects", InteriorC);
+    const wallLayer = map.createLayer("morgue-walls", InteriorA).setDepth(-1);
+    const elevatorLayer = map.createLayer("elevator", Elevator).setDepth(-1);
+    const morgueLabLayer = map.createLayer("morgue-lab", Lab3).setDepth(-1);
+    const morgueAltLayer = map
+      .createLayer("morgue-alt", InteriorAlt)
+      .setDepth(-1);
+    const morgueObjLayer = map
+      .createLayer("morgue-objs", InteriorC)
+      .setDepth(-1);
 
     // SCALE TILED MAP TO FIX WORLD SIZE
     const layers = [
-      wallLayer,
       floorLayer,
+      borderLayer,
+      wallLayer,
       elevatorLayer,
-      morgueAltLayer,
       morgueLabLayer,
+      morgueAltLayer,
       morgueObjLayer,
     ];
 
@@ -97,11 +102,28 @@ export default class Morgue extends Phaser.Scene {
     }
 
     // LAYER COLLIDERS
+    borderLayer.setCollisionByProperty({ collides: true });
     wallLayer.setCollisionByProperty({ collides: true });
+    morgueLabLayer.setCollisionByProperty({ collides: true });
     elevatorLayer.setCollisionByProperty({ collides: true });
     morgueAltLayer.setCollisionByProperty({ collides: true });
-    morgueLabLayer.setCollisionByProperty({ collides: true });
     morgueObjLayer.setCollisionByProperty({ collides: true });
+
+    // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, borderLayer);
+    this.physics.add.collider(this.player, wallLayer);
+    this.physics.add.collider(this.player, morgueLabLayer);
+    this.physics.add.collider(this.player, elevatorLayer);
+    this.physics.add.collider(this.player, morgueAltLayer);
+    this.physics.add.collider(this.player, morgueObjLayer);
+
+    //COLLIDER DEBUG
+    // const debugGraphics = this.add.graphics().setAlpha(0.7);
+    // wallLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    // });
   } //end createMap
 
   createPlayer() {

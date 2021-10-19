@@ -44,7 +44,6 @@ class Radiology extends Scene {
     this.createColliders();
   }
 
-
   createMap() {
     const map = this.make.tilemap({ key: "radiology" });
     const InteriorA = map.addTilesetImage(
@@ -136,7 +135,11 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, bedsLayer);
 
     //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", { fontSize: 20, backgroundColor:"black", padding: 10});
+    const roomTimerLabel = this.add.text(100, 35, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
@@ -154,7 +157,8 @@ class Radiology extends Scene {
     const { width, height } = this.scale;
     this.add
       .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30, backgroundColor: "black"
+        fontSize: 30,
+        backgroundColor: "black",
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
@@ -181,7 +185,6 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
-
   }
 
   createSwitch() {
