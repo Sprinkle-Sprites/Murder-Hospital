@@ -2,14 +2,16 @@
   "name": "vue-phaser3",
   "version": "3.0.0",
   "description": "Template for working with Phaser in a Vue project",
+  "main": "main.js",
   "author": "Markus Appel <markospoparkos@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "start": "http-server dist --port=5000"
+    "start": "nodemon main.js"
   },
   "dependencies": {
     "core-js": "^3.17.3",
+    "nodemon": "^2.0.13",
     "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.61",
     "socket.io-client": "^4.3.0",
