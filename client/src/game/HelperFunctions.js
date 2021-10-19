@@ -56,5 +56,16 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 3000);
+  }, 6000);
+}
+export function diceNextSceneFunc(scene, nextScene) {
+  setTimeout(() => {
+    scene.cameras.main.fadeOut(250, 0, 0, 0);
+    scene.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+      () => {
+        scene.scene.start(nextScene);
+      }
+    );
+  }, 2000);
 }
