@@ -7,7 +7,7 @@ import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 
-//import Elevator from "@/game/assets/tiles/Elevator-Doors-Alt.png";
+import Elevator from "@/game/assets/tiles/Elevator-Doors-Alt.png";
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
@@ -89,12 +89,12 @@ export default class Preloader extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
 
-    // load any assests needed for game
+    // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
     this.load.image("Interior-B", InteriorB);
     this.load.image("Interior-C", InteriorC);
     this.load.image("Interior-Alt", InteriorAlt);
-    // this.load.image("Elevator", Elevator);
+    this.load.image("Elevator", Elevator);
     this.load.image("floor", Lab2);
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
