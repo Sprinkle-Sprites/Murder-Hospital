@@ -6,7 +6,8 @@
     "start-serve": "nodemon server/server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "start-client": "nodemon main.js"
+    "start-client": "nodemon main.js",
+    "start": "vue-cli-service serve && nodemon server/server.js"
   },
   "dependencies": {
     "core-js": "^3.17.3",
