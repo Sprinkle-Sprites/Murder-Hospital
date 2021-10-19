@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
-import { nextSceneFunc } from "../HelperFunctions";
+import { diceNextSceneFunc, createMessage } from "../HelperFunctions";
 
 class MainScene extends Scene {
   constructor() {
@@ -249,19 +249,29 @@ class MainScene extends Scene {
 
     // code to check if dice works
     if (parseInt(value) === 1) {
-      nextSceneFunc(this, "PatientRoom");
+      const patRoomMes = "To The Patient's Room";
+      createMessage(this, patRoomMes);
+      diceNextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 2) {
-      nextSceneFunc(this, "Surgery");
+      const surgRoomMes = "To The Surgery";
+      createMessage(this, surgRoomMes);
+      diceNextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 3) {
-      nextSceneFunc(this, "Radiology");
+      const radRoomMes = "To The X-ray";
+      createMessage(this, radRoomMes);
+      diceNextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 4) {
-      nextSceneFunc(this, "Laboratory");
+      const labRoomMes = "To The Laboratory";
+      createMessage(this, labRoomMes);
+      diceNextSceneFunc(this, "Laboratory");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 5) {
-      nextSceneFunc(this, "Pharmacy");
+      const pharmRoomMes = "To The Pharmacy";
+      createMessage(this, pharmRoomMes);
+      diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "More rooms need to be made";
