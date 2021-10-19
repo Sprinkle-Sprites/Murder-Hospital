@@ -9,7 +9,7 @@ class MainSceneTimer extends Phaser.Scene {
   }
 
   create() {
-    const timerLabel = this.add.text(620, 35, "", {
+    const timerLabel = this.add.text(620, 610, "", {
       fontSize: 20,
       backgroundColor: "black",
       padding: 10,
