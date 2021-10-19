@@ -4,7 +4,7 @@
   <export target="radiology.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="Interior-Hospital-1a" tilewidth="16" tileheight="16" tilecount="2160" columns="48">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Interior-Hospital-1a.png" width="768" height="720"/>
+  <image source="Interior-Hospital-A.png" width="768" height="720"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -3607,7 +3607,7 @@
   </tile>
  </tileset>
  <tileset firstgid="2161" name="Interior-Hospital-1b" tilewidth="16" tileheight="16" tilecount="1152" columns="24">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Interior-Hospital-1b.png" width="384" height="768"/>
+  <image source="Interior-Hospital-B.png" width="384" height="768"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="false"/>
@@ -7210,7 +7210,7 @@
   </tile>
  </tileset>
  <tileset firstgid="3313" name="Interior-Hospital-1c" tilewidth="16" tileheight="16" tilecount="2304" columns="48">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Interior-Hospital-1c.png" width="768" height="768"/>
+  <image source="Interior-Hospital-C.png" width="768" height="768"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -18733,7 +18733,7 @@
   </tile>
  </tileset>
  <tileset firstgid="5617" name="Interior-Hospital-Alt" tilewidth="16" tileheight="16" tilecount="2304" columns="48">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Interior-Hospital-Alt.png" width="768" height="768"/>
+  <image source="Interior-Hospital-Alt.png" width="768" height="768"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -29836,7 +29836,7 @@
   </tile>
  </tileset>
  <tileset firstgid="7921" name="Laboratory-1" tilewidth="16" tileheight="16" tilecount="2160" columns="48">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Laboratory-1.png" width="768" height="720"/>
+  <image source="Laboratory-1.png" width="768" height="720"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -31839,7 +31839,7 @@
   </tile>
  </tileset>
  <tileset firstgid="10081" name="Laboratory-2" tilewidth="16" tileheight="16" tilecount="1152" columns="24">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Laboratory-2.png" width="384" height="768"/>
+  <image source="Laboratory-2.png" width="384" height="768"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="false"/>
@@ -35202,7 +35202,7 @@
   </tile>
  </tileset>
  <tileset firstgid="11233" name="Laboratory-3" tilewidth="16" tileheight="16" tilecount="2304" columns="48">
-  <image source="../../../../../Mighty-Monster-Mansion/src/assets/tiles/Laboratory-3.png" width="768" height="768"/>
+  <image source="Laboratory-3.png" width="768" height="768"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
