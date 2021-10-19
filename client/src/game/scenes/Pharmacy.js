@@ -314,7 +314,6 @@ class Pharmacy extends Scene {
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
-      text2.destroy();
       if (this.combination === 1022) {
         const popup = this.add.image(400, 300, "twoDollar");
         popup.setScale(0.25, 0.25);
@@ -326,14 +325,14 @@ class Pharmacy extends Scene {
         });
         eventsCenter.emit("update-bank", "twoDollar");
         nextSceneFunc(this, "MainScene");
-      }
-      if (!this.combination === 1022) {
+      } else if (this.combination !== 1022 && !isNaN(this.combination)) {
         const wrongCodeMessage =
-          "You try to open the lock box, but it won't budge. Better keep looking for that code";
+          "You try to open the lock box, but it won't budge. Better keep looking for the code";
         this.player.disableBody();
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");
       }
+      text2.destroy();
     });
   }
 
