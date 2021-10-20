@@ -288,6 +288,7 @@ class MainScene extends Scene {
     // pseudocode for rooms
     // if (parseInt(value) === 1) {
     //   nextSceneFunc(this, "ICU");
+    //   document.querySelector("#diceValue").setAttribute("value", "0");
     // } else if (parseInt(value) === 2) {
     //   nextSceneFunc(this, "Locker Room");
     //   document.querySelector("#diceValue").setAttribute("value", "0");

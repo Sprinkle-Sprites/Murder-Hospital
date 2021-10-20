@@ -90,7 +90,7 @@ export default class Preloader extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
 
-    // load any assests needed for game
+    // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
     this.load.image("Interior-B", InteriorB);
     this.load.image("Interior-C", InteriorC);
@@ -117,6 +117,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
+
       this.scene.start("MainScene");
       this.scene.start("ClueBank");
     }
