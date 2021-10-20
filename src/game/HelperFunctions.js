@@ -56,8 +56,32 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 6000);
+  }, 3000);
 }
+
+export function handleRoomCountdownFinished() {
+  this.player.active = false;
+  const { width, height } = this.scale;
+  this.add
+    .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+      fontSize: 30,
+      backgroundColor: "black",
+    })
+    .setOrigin(0.5);
+  nextSceneFunc(this, "MainScene");
+}
+
+//COLLIDER DEBUG COLOR
+export function displayTiledCollider(layer) {
+  const debugGraphics = this.add.graphics().setAlpha(0.7);
+
+  layer.renderDebug(debugGraphics, {
+    tileColor: null,
+    collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+  });
+}
+
 export function diceNextSceneFunc(scene, nextScene) {
   setTimeout(() => {
     scene.cameras.main.fadeOut(250, 0, 0, 0);
