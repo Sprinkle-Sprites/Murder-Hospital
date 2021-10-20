@@ -20,10 +20,10 @@ import collider from "@/game/assets/collider.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-class Pharmacy extends Scene {
+class LockerRoom extends Scene {
   constructor() {
     super({ key: "LockerRoom" });
-    this
+    this.combination = 0;
   }
 
   preload() {
@@ -363,4 +363,4 @@ class Pharmacy extends Scene {
   }
 }
 
-export default Pharmacy;
+export default LockerRoom;
