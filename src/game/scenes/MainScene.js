@@ -273,6 +273,11 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 6) {
+      const lockerRoomMes = "To The Locker Room";
+      createMessage(this, lockerRoomMes);
+      diceNextSceneFunc(this, "LockerRoom");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "More rooms need to be made";
     }

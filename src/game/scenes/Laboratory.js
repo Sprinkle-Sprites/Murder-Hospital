@@ -10,7 +10,7 @@ import {
 import eventsCenter from "@/game/eventsCenter";
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
-import test_tube from "@/game/assets/popups/test_tube.jpeg";
+import test_tube from "@/game/assets/popups/test_tube.png";
 import specimen_flask from "@/game/assets/popups/specimen_flask.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";

@@ -9,6 +9,7 @@ import {
 
 import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
+import eventsCenter from "@/game/eventsCenter";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 import MainTimer from "./MainTimer";
@@ -35,7 +36,7 @@ class Radiology extends Scene {
     this.load.image("Xray 3", collider);
 
     //POP UP
-    this.load.image("pop-up-image", combination_code);
+    this.load.image("comboCode", combination_code);
   }
 
   create() {
@@ -312,13 +313,14 @@ class Radiology extends Scene {
   }
 
   onXrayCollision() {
-    const popUp = this.add.image(400, 300, "pop-up-image");
+    const popUp = this.add.image(400, 300, "comboCode");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "comboCode");
     nextSceneFunc(this, "MainScene");
   }
 
