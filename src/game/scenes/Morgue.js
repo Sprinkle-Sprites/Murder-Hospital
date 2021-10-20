@@ -32,12 +32,13 @@ export default class Morgue extends Phaser.Scene {
   }
 
   create() {
-    this.createMainTimer();
+    this.createTimer();
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
     this.createDesk();
     this.createBoneSaw();
+    this.createColliders();
   }
 
   update() {
@@ -138,15 +139,6 @@ export default class Morgue extends Phaser.Scene {
     this.physics.add.collider(this.player, elevatorLayer);
     this.physics.add.collider(this.player, morgueAltLayer);
     this.physics.add.collider(this.player, morgueObjLayer);
-
-    // ROOM TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
   } //end createMap
 
   handleRoomCountdownFinished() {
@@ -179,7 +171,15 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
-  createMainTimer() {
+  createTimer() {
+    // ROOM TIMER
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
     // MAINTIMER
     this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
@@ -199,14 +199,14 @@ export default class Morgue extends Phaser.Scene {
 
     // UNLOCKED BODY DRAWER(2)
     this.bodyLocker3 = this.physics.add
-      .sprite(262, 300, "bodyLocker 3")
+      .sprite(260, 300, "bodyLocker 3")
       .setOrigin(0, 0)
       .setDepth(-2);
 
     //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
     const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
     for (let i = 0; i < bodyLockers.length; i++) {
-      resizeCollider(bodyLockers[i], 0, 15);
+      resizeCollider(bodyLockers[i], 5, 15);
     }
   }
 
@@ -227,7 +227,7 @@ export default class Morgue extends Phaser.Scene {
       .setDepth(-2);
 
     //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
-    resizeCollider(this.boneSaw, 7, 20);
+    resizeCollider(this.boneSaw, 10, 15);
   }
 
   onNoteBookCollision() {}
@@ -236,7 +236,7 @@ export default class Morgue extends Phaser.Scene {
 
   onUnlockedBodyDraw() {
     const lockedBodyMessage = `How dare you bother the dead?
-     Sit out for 5 minutes and call your grandparent`;
+     Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
     createMessage(this, lockedBodyMessage);
@@ -251,5 +251,13 @@ export default class Morgue extends Phaser.Scene {
     nextSceneFunc(this, "MainScene");
   }
 
-  createColliders() {}
+  createColliders() {
+    this.physics.add.overlap(
+      this.player,
+      this.bodyLocker3,
+      this.onUnlockedBodyDraw,
+      null,
+      this
+    );
+  }
 }
