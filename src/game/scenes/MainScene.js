@@ -2,11 +2,12 @@ import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
+import exitButton from "../ExitButton";
 import { io } from "socket.io-client";
 import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
-import { diceNextSceneFunc, createMessage } from "../HelperFunctions";
+import { diceNextSceneFunc, createMessage, nextSceneFunc } from "../HelperFunctions";
 
 // const exitButton = document.getElementById("try-to-leave")
 // exitButton.addEventListener("click", MainScene.goToEnd, true)
@@ -296,14 +297,21 @@ class MainScene extends Scene {
     }
   }
 
-  // goToEnd() {
-  //   diceNextSceneFunc(this, "Exit");
-  // }
+  goToExit() {
+    let value = document.getElementById("leave-button").getAttribute("value");
+
+    if(value === "leave"){
+      nextSceneFunc(this, "Exit")
+      document.querySelector("#leave-button").setAttribute("value", "stay")
+    } else {
+      return
+    }
+  }
 
   update() {
     this.player.update();
     this.rollRoom();
-    // this.goToEnd();
+    this.goToExit();
   }
 }
 
