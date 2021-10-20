@@ -276,51 +276,19 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
-
     } else if (parseInt(value) === 6) {
       const lockerRoomMes = "To The Locker Room";
       createMessage(this, lockerRoomMes);
       diceNextSceneFunc(this, "LockerRoom");
-    
-
-//     } else if (parseInt(value) === 7) {
-//       const morgueRoomMes = "To The Morgue";
-//       createMessage(this, morgueRoomMes);
-//       diceNextSceneFunc(this, "Morgue");
-
-      //document.querySelector("#diceValue").setAttribute("value", "0");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 7) {
+      const morgueRoomMes = "To The Morgue";
+      createMessage(this, morgueRoomMes);
+      diceNextSceneFunc(this, "Morgue");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "You need to investigate a room";
     }
-
-    // pseudocode for rooms
-    // if (parseInt(value) === 1) {
-    //   nextSceneFunc(this, "ICU");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 2) {
-    //   nextSceneFunc(this, "Locker Room");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 3) {
-    //   nextSceneFunc(this, "Patients Room");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 4) {
-    //   nextSceneFunc(this, "Surgery");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 5) {
-    //   nextSceneFunc(this, "Laboratory");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 6) {
-    //   nextSceneFunc(this, "Pharmacy");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 7) {
-    //   nextSceneFunc(this, "Morgue");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 8) {
-    //   nextSceneFunc(this, "Radiology");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else {
-    //   return "You need to investigate a room";
-    // }
   }
 
   // goToEnd() {
