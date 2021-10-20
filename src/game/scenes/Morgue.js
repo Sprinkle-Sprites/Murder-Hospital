@@ -35,6 +35,13 @@ export default class Morgue extends Phaser.Scene {
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
+    this.createDesk();
+    this.createBoneSaw();
+  }
+
+  update() {
+    this.player.update();
+    //this.roomTimer.update();
   }
 
   createMap() {
@@ -139,14 +146,6 @@ export default class Morgue extends Phaser.Scene {
     });
     //this.roomTimer = new RoomTimer(this, roomTimerLabel);
     //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // wallLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   } //end createMap
 
   handleRoomCountdownFinished() {
@@ -159,30 +158,6 @@ export default class Morgue extends Phaser.Scene {
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
-  }
-
-  createBodyLocker() {
-    //locked body drawer
-    this.bodyLocker1 = this.physics.add
-      .sprite(550, 23, "bodyLocker 1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    this.bodyLocker2 = this.physics.add
-      .sprite(672, 23, "bodyLocker 2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    this.bodyLocker3 = this.physics.add
-      .sprite(0, 0, "bodyLocker 3")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
-    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
-    for (let i = 0; i < bodyLockers.length; i++) {
-      resizeCollider(bodyLockers[i], 0, 15);
-    }
   }
 
   createPlayer() {
@@ -203,9 +178,51 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
-  createColliders() {}
-  update() {
-    this.player.update();
-    //this.roomTimer.update();
+  createBodyLocker() {
+    //LOCKED BODY DRAWER
+    this.bodyLocker1 = this.physics.add
+      .sprite(550, 23, "bodyLocker 1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER
+    this.bodyLocker2 = this.physics.add
+      .sprite(672, 23, "bodyLocker 2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER(2)
+    this.bodyLocker3 = this.physics.add
+      .sprite(262, 300, "bodyLocker 3")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
+    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
+    for (let i = 0; i < bodyLockers.length; i++) {
+      resizeCollider(bodyLockers[i], 0, 15);
+    }
   }
+
+  createDesk() {
+    this.desk = this.physics.add
+      .sprite(738, 540, "desk")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON NOTEBOOK ON DESK TO APPROPRIATE SIZE
+    resizeCollider(this.desk, 10, 20);
+  }
+
+  createBoneSaw() {
+    this.boneSaw = this.physics.add
+      .sprite(357, 475, "bone saw")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
+    resizeCollider(this.boneSaw, 7, 20);
+  }
+
+  createColliders() {}
 }
