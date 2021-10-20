@@ -234,7 +234,7 @@ export default class Morgue extends Phaser.Scene {
 
   onLockedLockerCollision() {}
 
-  onUnlockedBodyDraw() {
+  onUnlockedBodyDrawer() {
     const lockedBodyMessage = `How dare you bother the dead?
      Sit out for 5 minutes and go call MeeMaw`;
 
@@ -245,17 +245,27 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onBoneSaw() {
-    const boneSawMessage = `To be sawed or to not to be? That is the question`;
+    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
     this.player.disableBody();
     createMessage(this, boneSawMessage);
     nextSceneFunc(this, "MainScene");
   }
 
   createColliders() {
+    //UNLOCKED BODY DRAWER PUNISHMENT
     this.physics.add.overlap(
       this.player,
       this.bodyLocker3,
-      this.onUnlockedBodyDraw,
+      this.onUnlockedBodyDrawer,
+      null,
+      this
+    );
+
+    // BONE SAW MESSAGE FROM DOC
+    this.physics.add.overlap(
+      this.player,
+      this.boneSaw,
+      this.onBoneSaw,
       null,
       this
     );
