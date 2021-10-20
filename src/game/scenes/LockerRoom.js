@@ -23,7 +23,7 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 class LockerRoom extends Scene {
   constructor() {
     super({ key: "LockerRoom" });
-    this
+    this.combination = 0;
   }
 
   preload() {
