@@ -8,11 +8,11 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
-  createMessageForImage
+  createMessageForImage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import pillBottle from "@/game/assets/popups/pill-bottle.png"
+import pillBottle from "@/game/assets/popups/pill-bottle.png";
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
@@ -43,7 +43,7 @@ class Pharmacy extends Scene {
     //TABLES
 
     //POPUPS
-    this.load.image("pills", pillBottle);
+    this.load.image("pillBottle", pillBottle);
     this.load.image("key", keyPop);
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
@@ -255,9 +255,11 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
-    const pillMessage = "You take a mystery pill. What were you thinking? Lose 5 minutes"
-    const pillsPopUp = this.add.image(400, 300, "pillBottle");
+    const pillMessage =
+      "You take a mystery pill. What were you thinking? Lose 5 minutes";
     createMessageForImage(this, pillMessage);
+
+    const pillsPopUp = this.add.image(400, 300, "pillBottle");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
