@@ -13,7 +13,6 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import MainTimer from "./MainTimer";
 import MainSceneTimer from "./MainTimerScene";
-import { launch } from "../game";
 
 class Radiology extends Scene {
   constructor() {
@@ -141,7 +140,6 @@ class Radiology extends Scene {
       fontSize: 20,
       backgroundColor: "black",
       padding: 5,
-
     });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));

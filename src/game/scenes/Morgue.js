@@ -16,11 +16,25 @@ export default class Morgue extends Phaser.Scene {
   }
   preload() {
     Player.preload(this);
+
+    // BODY LOCKERS
+    this.load.image("bodyLocker 1", collider);
+    this.load.image("bodyLocker 2", collider);
+    this.load.image("bodyLocker 3", collider);
+
+    //DESK
+    this.load.image("desk", collider);
+
+    //BONE SAW
+    this.load.image("bone saw", collider);
+
+    //POP UPS
   }
 
   create() {
     this.createPlayer();
     this.createMap();
+    this.createBodyLocker();
   }
 
   createMap() {
@@ -123,16 +137,16 @@ export default class Morgue extends Phaser.Scene {
       backgroundColor: "black",
       padding: 5,
     });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
     //COLLIDER DEBUG
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    wallLayer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
+    // const debugGraphics = this.add.graphics().setAlpha(0.7);
+    // wallLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    // });
   } //end createMap
 
   handleRoomCountdownFinished() {
@@ -145,6 +159,25 @@ export default class Morgue extends Phaser.Scene {
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
+  }
+
+  createBodyLocker() {
+    //locked body drawer
+    this.bodyLocker1 = this.physics.add
+      .sprite(550, 23, "bodyLocker 1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    this.bodyLocker2 = this.physics.add
+      .sprite(672, 23, "bodyLocker 2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
+    const bodyLockers = [this.bodyLocker1, this.bodyLocker2];
+    for (let i = 0; i < bodyLockers.length; i++) {
+      resizeCollider(bodyLockers[i], 0, 15);
+    }
   }
 
   createPlayer() {
@@ -164,8 +197,10 @@ export default class Morgue extends Phaser.Scene {
       loop: false,
     });
   }
+
+  createColliders() {}
   update() {
     this.player.update();
-    this.roomTimer.update();
+    //this.roomTimer.update();
   }
 }
