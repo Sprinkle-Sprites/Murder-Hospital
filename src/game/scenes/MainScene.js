@@ -7,11 +7,13 @@ import { io } from "socket.io-client";
 import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
+
 import {
   diceNextSceneFunc,
   createMessage,
   nextSceneFunc,
 } from "../HelperFunctions";
+
 
 // const exitButton = document.getElementById("try-to-leave")
 // exitButton.addEventListener("click", MainScene.goToEnd, true)
@@ -291,6 +293,11 @@ class MainScene extends Scene {
       createMessage(this, morgueRoomMes);
       diceNextSceneFunc(this, "Morgue");
       document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 8) {
+      const ICURoomMes = "To The ICU";
+      createMessage(this, ICURoomMes);
+      diceNextSceneFunc(this, "ICU");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "You need to investigate a room";
     }
@@ -299,11 +306,11 @@ class MainScene extends Scene {
   goToExit() {
     let value = document.getElementById("leave-button").getAttribute("value");
 
-    if (value === "leave") {
-      nextSceneFunc(this, "Exit");
-      document.querySelector("#leave-button").setAttribute("value", "stay");
+    if(value === "leave"){
+      nextSceneFunc(this, "Exit")
+      document.querySelector("#leave-button").setAttribute("value", "stay")
     } else {
-      return;
+      return
     }
   }
 

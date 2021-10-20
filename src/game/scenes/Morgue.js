@@ -51,7 +51,7 @@ export default class Morgue extends Phaser.Scene {
 
   update() {
     this.player.update();
-    //this.roomTimer.update();
+    this.roomTimer.update();
   }
 
   createMap() {
@@ -188,6 +188,9 @@ export default class Morgue extends Phaser.Scene {
     });
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createBodyLocker() {
