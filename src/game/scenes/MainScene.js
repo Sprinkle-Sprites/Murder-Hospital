@@ -8,6 +8,9 @@ import { socket } from "../../components/Chat.vue";
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
 import { diceNextSceneFunc, createMessage } from "../HelperFunctions";
 
+// const exitButton = document.getElementById("try-to-leave")
+// exitButton.addEventListener("click", MainScene.goToEnd, true)
+
 class MainScene extends Scene {
   constructor() {
     super({ key: "MainScene" });
@@ -306,9 +309,14 @@ class MainScene extends Scene {
     // }
   }
 
+  // goToEnd() {
+  //   diceNextSceneFunc(this, "Exit");
+  // }
+
   update() {
     this.player.update();
     this.rollRoom();
+    // this.goToEnd();
   }
 }
 
