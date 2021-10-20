@@ -267,8 +267,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onUnlockedBodyDrawer() {
-    const lockedBodyMessage = `How dare you bother the dead?
-     Sit out for 5 minutes and go call MeeMaw`;
+    const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
     createMessage(this, lockedBodyMessage);
@@ -277,7 +276,8 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onBoneSaw() {
-    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
+    const boneSawMessage = `To be sawed or to not to be? That is the question.
+    XOXO Dr.Scott`;
     this.player.disableBody();
     createMessage(this, boneSawMessage);
     nextSceneFunc(this, "MainScene");
