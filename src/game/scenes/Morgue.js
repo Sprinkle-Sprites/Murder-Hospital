@@ -173,8 +173,13 @@ export default class Morgue extends Phaser.Scene {
       .setOrigin(0, 0)
       .setDepth(-2);
 
+    this.bodyLocker3 = this.physics.add
+      .sprite(0, 0, "bodyLocker 3")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
     //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
-    const bodyLockers = [this.bodyLocker1, this.bodyLocker2];
+    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
     for (let i = 0; i < bodyLockers.length; i++) {
       resizeCollider(bodyLockers[i], 0, 15);
     }
