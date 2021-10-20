@@ -282,6 +282,7 @@ class MainScene extends Scene {
       const lockerRoomMes = "To The Locker Room";
       createMessage(this, lockerRoomMes);
       diceNextSceneFunc(this, "LockerRoom");
+      document.querySelector("#diceValue").setAttribute("value", "0");
 
 
 //     } else if (parseInt(value) === 7) {
