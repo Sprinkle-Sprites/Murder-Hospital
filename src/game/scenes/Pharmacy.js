@@ -8,10 +8,11 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  createMessageForImage
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import pillsPop from "@/game/assets/popups/pills.jpeg";
+import pillBottle from "@/game/assets/popups/pill-bottle.png"
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
@@ -42,7 +43,7 @@ class Pharmacy extends Scene {
     //TABLES
 
     //POPUPS
-    this.load.image("pills", pillsPop);
+    this.load.image("pills", pillBottle);
     this.load.image("key", keyPop);
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
@@ -56,6 +57,7 @@ class Pharmacy extends Scene {
     this.createLockBox();
     this.createCabinet2();
     this.createColliders();
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -253,15 +255,17 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
-    const pillsPopUp = this.add.image(400, 300, "pills");
-    pillsPopUp.setScale(0.75, 0.75);
+    const pillMessage = "You take a mystery pill. What were you thinking? Lose 5 minutes"
+    const pillsPopUp = this.add.image(400, 300, "pillBottle");
+    createMessageForImage(this, pillMessage);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => pillsPopUp.destroy(),
       loop: false,
     });
-    eventsCenter.emit("update-bank", "pills");
+    eventsCenter.emit("update-bank", "pillBottle");
+    this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
 

@@ -61,7 +61,7 @@ class ClueBank extends Scene {
     } else if (this.count % 2 === 0) {
       this.x = 950;
     } else {
-      this.y = this.y + 60;
+      this.y = this.y + 65;
       this.x = 850;
     }
 

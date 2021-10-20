@@ -52,6 +52,7 @@ class ICU extends Scene {
     this.createPoster();
     this.createColliders();
     this.createTimer();
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   update() {
