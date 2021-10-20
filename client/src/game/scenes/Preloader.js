@@ -1,19 +1,26 @@
 import Phaser from "phaser";
+
+//TILES
 import InteriorA from "@/game/assets/tiles/Interior-Hospital-A.png";
 import InteriorB from "@/game/assets/tiles/Interior-Hospital-B.png";
 import InteriorC from "@/game/assets/tiles/Interior-Hospital-C.png";
 import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
 import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
-import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
-import creepyDoll from "@/game/assets/tiles/creepy_toys.png";
+
+//SCENES
 import board from "@/game/assets/tiles/board.json";
+import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
 import laboratory from "@/game/assets/tiles/Laboratory.json";
 import patients_room from "@/game/assets/tiles/patients_room.json";
 import pharmacy from "@/game/assets/tiles/Pharmacy.json";
 import ICU from "@/game/assets/tiles/ICU.json";
+
+//GAME ASSETS
+import combination_code from "@/game/assets/popups/locker_combo.png";
+import creepyDoll from "@/game/assets/tiles/creepy_toys.png";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -96,6 +103,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
     this.load.image("Creepy-Doll", creepyDoll);
+    this.load.image("pop-up-image", combination_code);
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
