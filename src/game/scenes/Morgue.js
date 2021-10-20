@@ -5,10 +5,14 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  createMessageForImage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import password from "@/game/assets/popups/password.png";
+import toeTag from "@/game/assets/popups/toeTag.png";
+import eventsCenter from "@/game/eventsCenter";
 
 export default class Morgue extends Phaser.Scene {
   constructor() {
@@ -29,6 +33,8 @@ export default class Morgue extends Phaser.Scene {
     this.load.image("bone saw", collider);
 
     //POP UPS
+    this.load.image("password", password);
+    this.load.image("toeTag", toeTag);
   }
 
   create() {
@@ -230,9 +236,35 @@ export default class Morgue extends Phaser.Scene {
     resizeCollider(this.boneSaw, 10, 15);
   }
 
-  onNoteBookCollision() {}
+  onNoteBookCollision() {
+    this.player.disableBody();
+    const openMessage =
+      "You find a picture of a creepy family. On the back...who's Sue??";
+    createMessageForImage(this, openMessage);
+    setTimeout(() => {
+      const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
+      this.time.addEvent({
+        delay: 4750,
+        callback: () => popUp.destroy(),
+        loop: false,
+      });
+      eventsCenter.emit("update-bank", "password");
+      nextSceneFunc(this, "MainScene");
+    }, 3000);
+  }
 
-  onLockedLockerCollision() {}
+  onLockedLockerCollision() {
+    const popUp = this.add.image(400, 300, "toeTag");
+    this.player.disableBody();
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+
+    eventsCenter.emit("update-bank", "toeTag");
+    nextSceneFunc(this, "MainScene");
+  }
 
   onUnlockedBodyDrawer() {
     const lockedBodyMessage = `How dare you bother the dead?
@@ -266,6 +298,24 @@ export default class Morgue extends Phaser.Scene {
       this.player,
       this.boneSaw,
       this.onBoneSaw,
+      null,
+      this
+    );
+
+    // locked drawer with toetag
+    this.physics.add.overlap(
+      this.player,
+      this.bodyLocker1,
+      this.onLockedLockerCollision,
+      null,
+      this
+    );
+
+    //notebook with picture with password
+    this.physics.add.overlap(
+      this.player,
+      this.desk,
+      this.onNoteBookCollision,
       null,
       this
     );

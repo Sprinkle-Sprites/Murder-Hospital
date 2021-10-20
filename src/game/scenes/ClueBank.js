@@ -8,6 +8,8 @@ import scapel from "@/game/assets/popups/scapel.png";
 import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
+//morgue
+import toeTag from "@/game/assets/popups/toeTag.png";
 
 class ClueBank extends Scene {
   constructor() {
@@ -27,6 +29,8 @@ class ClueBank extends Scene {
     this.load.image("flowers", flowers);
     this.load.image("blanket", blanket);
     this.load.image("paperScrap", paperScrap);
+    //morgue
+    this.load.image("toeTag", toeTag);
   }
 
   create() {
