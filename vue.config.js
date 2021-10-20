@@ -19,6 +19,6 @@ module.exports = {
     })
   },
   devServer: {
-    hot: false
-  }
+    hot: false,
+  },
 }
