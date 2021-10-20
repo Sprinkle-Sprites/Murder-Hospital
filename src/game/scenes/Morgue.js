@@ -26,8 +26,8 @@ export default class Morgue extends Phaser.Scene {
     this.load.image("bodyLocker 2", collider);
     this.load.image("bodyLocker 3", collider);
 
-    //DESK
-    this.load.image("desk", collider);
+    //notebook
+    this.load.image("notebook", collider);
 
     //BONE SAW
     this.load.image("bone saw", collider);
@@ -42,7 +42,7 @@ export default class Morgue extends Phaser.Scene {
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
-    this.createDesk();
+    this.createNotebook();
     this.createBoneSaw();
     this.createColliders();
   }
@@ -216,14 +216,14 @@ export default class Morgue extends Phaser.Scene {
     }
   }
 
-  createDesk() {
-    this.desk = this.physics.add
-      .sprite(738, 540, "desk")
+  createNotebook() {
+    this.notebook = this.physics.add
+      .sprite(738, 540, "notebook")
       .setOrigin(0, 0)
       .setDepth(-2);
 
-    //SCALE COLLIDER ON NOTEBOOK ON DESK TO APPROPRIATE SIZE
-    resizeCollider(this.desk, 10, 20);
+    //SCALE COLLIDER ON NOTEBOOK TO APPROPRIATE SIZE
+    resizeCollider(this.notebook, 5, 20);
   }
 
   createBoneSaw() {
@@ -314,7 +314,7 @@ export default class Morgue extends Phaser.Scene {
     //notebook with picture with password
     this.physics.add.overlap(
       this.player,
-      this.desk,
+      this.notebook,
       this.onNoteBookCollision,
       null,
       this
