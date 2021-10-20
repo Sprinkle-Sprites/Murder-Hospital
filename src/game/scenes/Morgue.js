@@ -32,6 +32,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   create() {
+    this.createMainTimer();
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
@@ -178,6 +179,11 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
+  createMainTimer() {
+    // MAINTIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
   createBodyLocker() {
     //LOCKED BODY DRAWER
     this.bodyLocker1 = this.physics.add
@@ -222,6 +228,27 @@ export default class Morgue extends Phaser.Scene {
 
     //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
     resizeCollider(this.boneSaw, 7, 20);
+  }
+
+  onNoteBookCollision() {}
+
+  onLockedLockerCollision() {}
+
+  onUnlockedBodyDraw() {
+    const lockedBodyMessage = `How dare you bother the dead?
+     Sit out for 5 minutes and call your grandparent`;
+
+    this.player.disableBody();
+    createMessage(this, lockedBodyMessage);
+    this.mainTimer.minusFive();
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onBoneSaw() {
+    const boneSawMessage = `To be sawed or to not to be? That is the question`;
+    this.player.disableBody();
+    createMessage(this, boneSawMessage);
+    nextSceneFunc(this, "MainScene");
   }
 
   createColliders() {}
