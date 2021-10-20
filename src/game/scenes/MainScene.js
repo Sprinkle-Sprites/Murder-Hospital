@@ -257,12 +257,12 @@ class MainScene extends Scene {
       diceNextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 2) {
-      const surgRoomMes = "To The Surgery";
+      const surgRoomMes = "To Surgery";
       createMessage(this, surgRoomMes);
       diceNextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 3) {
-      const radRoomMes = "To The X-ray";
+      const radRoomMes = "To The X-ray Room";
       createMessage(this, radRoomMes);
       diceNextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
@@ -276,8 +276,13 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 7) {
+      const pharmRoomMes = "To The Morgue";
+      createMessage(this, pharmRoomMes);
+      diceNextSceneFunc(this, "Morgue");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
-      return "More rooms need to be made";
+      return "You need to investigate a room";
     }
 
     // pseudocode for rooms
