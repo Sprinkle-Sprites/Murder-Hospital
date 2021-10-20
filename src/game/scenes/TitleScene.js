@@ -3,20 +3,22 @@ import config from "../game";
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
-    super("Title");
+    super("TitleScene");
   }
 
   create() {
-    /************** PLAY BUTTON  *********************/
+    this.load.image(100, 100, "hospital");
+    this.createPlayButton();
+  }
+
+  createPlayButton() {
     // CREATE PLAY SPRITE AND SET INTERACTION
-    this.playButton = this.add.sprite(100, 200, "redButton").setInteractive();
+    this.playButton = this.add.sprite(500, 300, "blueButton1").setInteractive();
 
-    //center ui buttons
-    this.centerButton(this.playButton, 1);
-
-    this.gameText = this.add.text(0, 0, "Play", {
+    this.gameText = this.add.text(0, 0, "Enter", {
       fontSize: "32px",
       fill: "#fff",
+      color: "#fffff",
     });
 
     //center text inside of button
@@ -25,56 +27,10 @@ export default class TitleScene extends Phaser.Scene {
     this.playButton.on(
       "pointerdown",
       function(pointer) {
-        this.scene.start("game");
+        this.scene.start("MainScene");
+        this.scene.start("ClueBank");
+        this.scene.start("MainTimerScene");
       }.bind(this)
-    );
-
-    /******** end of play button  ***************/
-
-    // /********** options button  ***************/
-
-    // //set interactive options button
-    // this.optionsButton = this.add
-    //   .sprite(400, 200, "blueButton1")
-    //   .setInteractive();
-
-    // //center ui option button
-    // this.centerButton(this.playButton, 1);
-
-    // this.optionsText = this.add.text(0, 0, "Options", {
-    //   fontSize: "32px",
-    //   fill: "#fff",
-    // });
-
-    // this.centerButtonText(this.optionsText, this.optionsButton);
-
-    // this.optionsButton.on(
-    //   "pointerdown",
-    //   function(pointer) {
-    //     this.scene.start("Options");
-    //   }.bind(this)
-    // );
-
-    // this.input.on("pointerover", function(event, gameObjects) {
-    //   gameObjects[0].setTexture("blueButton2");
-    // });
-
-    // this.input.on("pointerout", function(event, gameObjects) {
-    //   gameObjects[0].setTexture("blueButton1");
-    // });
-
-    /******** end of options button  ***************/
-  } //end of create
-
-  centerButton(gameObject, offset = 0) {
-    Phaser.Display.Align.In.Center(
-      gameObject,
-      this.add.zone(
-        config.width / 2,
-        config.height / 2 - offset * 100,
-        config.width,
-        config.height
-      )
     );
   }
 
