@@ -7,6 +7,7 @@ import {
   createMessage,
   nextSceneFunc,
   createMessageForImage,
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -55,7 +56,19 @@ class PatientRoom extends Scene {
     this.createDoll();
     this.createDrawer();
     this.createColliders();
+    this.createTimer();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
   }
 
   createMap() {
@@ -108,75 +121,27 @@ class PatientRoom extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("patientsFloor", InteriorB).setDepth(-1);
-    const wallLayer = map.createLayer("patientsWall", InteriorA).setDepth(-1);
-    const backgroundLayer = map
-      .createLayer("patientsBackground", InteriorAlt)
-      .setDepth(-1);
-    const detailsCLayer = map
-      .createLayer("patientsDetailsC", InteriorC)
-      .setDepth(-1);
-    const detailsLabLayer = map
-      .createLayer("patientsDetailsLab", Lab3)
-      .setDepth(-1);
-    const creepyDollLayer = map
-      .createLayer("patientsCreepyDoll", CreepyDoll)
-      .setDepth(-1);
+    this.floorLayer = map.createLayer("patientsFloor", InteriorB);
+    this.wallLayer = map.createLayer("patientsWall", InteriorA);
+    this.backgroundLayer = map.createLayer("patientsBackground", InteriorAlt);
+    this.detailsCLayer = map.createLayer("patientsDetailsC", InteriorC);
+    this.detailsLabLayer = map.createLayer("patientsDetailsLab", Lab3);
+    this.creepyDollLayer = map.createLayer("patientsCreepyDoll", CreepyDoll);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      backgroundLayer,
-      detailsCLayer,
-      detailsLabLayer,
-      creepyDollLayer,
+      this.floorLayer,
+      this.wallLayer,
+      this.backgroundLayer,
+      this.detailsCLayer,
+      this.detailsLabLayer,
+      this.creepyDollLayer,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    detailsCLayer.setCollisionByProperty({ collides: true });
-    detailsLabLayer.setCollisionByProperty({ collides: true });
-    backgroundLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, detailsCLayer);
-    this.physics.add.collider(this.player, detailsLabLayer);
-    this.physics.add.collider(this.player, backgroundLayer);
-
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // borderLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -257,6 +222,18 @@ class PatientRoom extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.detailsCLayer.setCollisionByProperty({ collides: true });
+    this.detailsLabLayer.setCollisionByProperty({ collides: true });
+    this.backgroundLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.detailsCLayer);
+    this.physics.add.collider(this.player, this.detailsLabLayer);
+    this.physics.add.collider(this.player, this.backgroundLayer);
+
     this.physics.add.overlap(
       this.player,
       this.flowers1,

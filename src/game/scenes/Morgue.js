@@ -3,8 +3,8 @@ import Player from "@/game/Player";
 import {
   resizeMapLayer,
   resizeCollider,
-  createMessage,
   nextSceneFunc,
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -35,6 +35,18 @@ export default class Morgue extends Phaser.Scene {
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
+    this.createTimer();
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
   }
 
   createMap() {
@@ -86,80 +98,30 @@ export default class Morgue extends Phaser.Scene {
     );
 
     // LAYERS
-    const floorLayer = map.createLayer("morgue-floor", InteriorB).setDepth(-1);
-    const borderLayer = map
-      .createLayer("morgue-border", InteriorA)
-      .setDepth(-1);
-    const wallLayer = map.createLayer("morgue-walls", InteriorA).setDepth(-1);
-    const elevatorLayer = map.createLayer("elevator", Elevator).setDepth(-1);
-    const morgueLabLayer = map.createLayer("morgue-lab", Lab3).setDepth(-1);
-    const morgueAltLayer = map
-      .createLayer("morgue-alt", InteriorAlt)
-      .setDepth(-1);
-    const morgueObjLayer = map
-      .createLayer("morgue-objs", InteriorC)
-      .setDepth(-1);
+    this.floorLayer = map.createLayer("morgue-floor", InteriorB);
+    this.borderLayer = map.createLayer("morgue-border", InteriorA);
+    this.wallLayer = map.createLayer("morgue-walls", InteriorA);
+    this.elevatorLayer = map.createLayer("elevator", Elevator);
+    this.morgueLabLayer = map.createLayer("morgue-lab", Lab3);
+    this.morgueAltLayer = map.createLayer("morgue-alt", InteriorAlt);
+    this.morgueObjLayer = map.createLayer("morgue-objs", InteriorC);
 
     // SCALE TILED MAP TO FIX WORLD SIZE
     const layers = [
-      floorLayer,
-      borderLayer,
-      wallLayer,
-      elevatorLayer,
-      morgueLabLayer,
-      morgueAltLayer,
-      morgueObjLayer,
+      this.floorLayer,
+      this.borderLayer,
+      this.wallLayer,
+      this.elevatorLayer,
+      this.morgueLabLayer,
+      this.morgueAltLayer,
+      this.morgueObjLayer,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
-
-    // LAYER COLLIDERS
-    borderLayer.setCollisionByProperty({ collides: true });
-    wallLayer.setCollisionByProperty({ collides: true });
-    morgueLabLayer.setCollisionByProperty({ collides: true });
-    elevatorLayer.setCollisionByProperty({ collides: true });
-    morgueAltLayer.setCollisionByProperty({ collides: true });
-    morgueObjLayer.setCollisionByProperty({ collides: true });
-
-    // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, borderLayer);
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, morgueLabLayer);
-    this.physics.add.collider(this.player, elevatorLayer);
-    this.physics.add.collider(this.player, morgueAltLayer);
-    this.physics.add.collider(this.player, morgueObjLayer);
-
-    // ROOM TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // wallLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   } //end createMap
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
-  }
 
   createBodyLocker() {
     //locked body drawer
@@ -198,9 +160,26 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
-  createColliders() {}
+  createColliders() {
+    // LAYER COLLIDERS
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.morgueLabLayer.setCollisionByProperty({ collides: true });
+    this.elevatorLayer.setCollisionByProperty({ collides: true });
+    this.morgueAltLayer.setCollisionByProperty({ collides: true });
+    this.morgueObjLayer.setCollisionByProperty({ collides: true });
+
+    // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.morgueLabLayer);
+    this.physics.add.collider(this.player, this.elevatorLayer);
+    this.physics.add.collider(this.player, this.morgueAltLayer);
+    this.physics.add.collider(this.player, this.morgueObjLayer);
+  }
+
   update() {
     this.player.update();
-    //this.roomTimer.update();
+    this.roomTimer.update();
   }
 }

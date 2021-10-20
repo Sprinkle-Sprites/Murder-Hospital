@@ -96,49 +96,37 @@ class Radiology extends Scene {
     const Lab3 = map.addTilesetImage("Laboratory-3", "Lab-3", 16, 16, 0, 0);
 
     //LAYERS
-    const floorLayer = map.createLayer("floor", InteriorB);
-    const borderLayer = map.createLayer("border", InteriorA);
-    const wallLayer = map.createLayer("wall", InteriorA);
-    const detailsLayer = map.createLayer("details", InteriorC);
-    const detailsAltLayer = map.createLayer("details alt", InteriorAlt);
-    const wallLayer2 = map.createLayer("wall 2", InteriorC);
-    const wallLayer2Alt = map.createLayer("wall 2 alt", InteriorAlt);
-    const wallLayer2Lab = map.createLayer("wall 2 lab", Lab3);
-    const bedsLayer = map.createLayer("beds", Lab3);
-    const bedsLayerAlt = map.createLayer("beds alt", InteriorAlt);
-    const detailsLayer2 = map.createLayer("details 2", InteriorAlt);
+    this.floorLayer = map.createLayer("floor", InteriorB);
+    this.borderLayer = map.createLayer("border", InteriorA);
+    this.wallLayer = map.createLayer("wall", InteriorA);
+    this.detailsLayer = map.createLayer("details", InteriorC);
+    this.detailsAltLayer = map.createLayer("details alt", InteriorAlt);
+    this.wallLayer2 = map.createLayer("wall 2", InteriorC);
+    this.wallLayer2Alt = map.createLayer("wall 2 alt", InteriorAlt);
+    this.wallLayer2Lab = map.createLayer("wall 2 lab", Lab3);
+    this.bedsLayer = map.createLayer("beds", Lab3);
+    this.bedsLayerAlt = map.createLayer("beds alt", InteriorAlt);
+    this.detailsLayer2 = map.createLayer("details 2", InteriorAlt);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      borderLayer,
-      wallLayer,
-      detailsLayer,
-      detailsAltLayer,
-      wallLayer2,
-      wallLayer2Alt,
-      wallLayer2Lab,
-      bedsLayer,
-      bedsLayerAlt,
-      detailsLayer2,
+      this.floorLayer,
+      this.borderLayer,
+      this.wallLayer,
+      this.detailsLayer,
+      this.detailsAltLayer,
+      this.wallLayer2,
+      this.wallLayer2Alt,
+      this.wallLayer2Lab,
+      this.bedsLayer,
+      this.bedsLayerAlt,
+      this.detailsLayer2,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
       layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    borderLayer.setCollisionByProperty({ collides: true });
-    wallLayer.setCollisionByProperty({ collides: true });
-    wallLayer2Lab.setCollisionByProperty({ collides: true });
-    bedsLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, borderLayer);
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, wallLayer2Lab);
-    this.physics.add.collider(this.player, bedsLayer);
   }
 
   createPlayer() {
@@ -222,6 +210,18 @@ class Radiology extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.wallLayer2Lab.setCollisionByProperty({ collides: true });
+    this.bedsLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.wallLayer2Lab);
+    this.physics.add.collider(this.player, this.bedsLayer);
+
     //PLAYER AND SWITCH COLLIDERS
     this.physics.add.overlap(
       this.player,

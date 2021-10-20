@@ -7,10 +7,10 @@ const io = require("socket.io")(http, {
   },
 });
 
-io.on("connection", function (socket) {
+io.on("connection", function(socket) {
   console.log("A user connected: " + socket.id);
 
-  socket.on("send", function (text) {
+  socket.on("send", function(text) {
     let newText = "<" + socket.id + "> " + text;
     io.emit("receive", newText);
   });
@@ -18,12 +18,12 @@ io.on("connection", function (socket) {
   socket.on("create player", () => {
     console.log("hello form the server");
   });
-  socket.on("disconnect", function () {
+  socket.on("disconnect", function() {
     console.log("A user disconnected: " + socket.id);
   });
 });
 
-http.listen(3000, function () {
+http.listen(3000, function() {
   console.log("Server started!");
 });
 

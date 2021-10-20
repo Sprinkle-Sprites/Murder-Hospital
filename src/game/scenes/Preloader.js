@@ -88,7 +88,7 @@ export default class Preloader extends Phaser.Scene {
     //remove the loading screen once we have reached 100%
     this.load.on(
       "complete",
-      function () {
+      function() {
         progressBar.destroy();
         progressBox.destroy();
         loadingText.destroy();

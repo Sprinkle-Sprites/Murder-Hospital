@@ -270,14 +270,6 @@ class ICU extends Scene {
       null,
       this
     );
-
-    // COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // this.nurseStationLayer3.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   onBloodCollision() {

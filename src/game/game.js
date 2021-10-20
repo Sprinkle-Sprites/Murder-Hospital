@@ -39,7 +39,7 @@ function launch(containerId) {
         gravity: {
           y: 0,
         },
-        debug: true,
+        debug: false,
       },
     },
 
