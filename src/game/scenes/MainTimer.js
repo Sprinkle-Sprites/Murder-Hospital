@@ -28,7 +28,7 @@ export default class MainTimer {
    * @param {number} duration
    */
 
-  start(callback, duration = 3600000) {
+  start(callback, duration = 3599000) {
     this.stop();
 
     this.finishedCallback = callback;
@@ -65,9 +65,9 @@ export default class MainTimer {
 
   minusFive() {
     this.scene.time.update(Date.now(), 300000);
-    this.label.setText(`Game Time:\n ${Number(this.minutes) - 5}:${
-      this.partInSeconds
-    }`);
+    this.label.setText(
+      `Game Time:\n ${Number(this.minutes) - 5}:${this.partInSeconds}`
+    );
   }
 
   update() {
@@ -80,6 +80,6 @@ export default class MainTimer {
     const seconds = remaining / 1000;
     const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
     const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-    this.label.text = `Game Time:${minutes}:${partInSeconds}`;
+    this.label.text = `Game Time: ${minutes}:${partInSeconds}`;
   }
 }
