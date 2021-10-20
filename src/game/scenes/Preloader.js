@@ -27,9 +27,9 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import blueButton from "@/game/assets/menu/blue_button01.png";
-import redButton from "@/game/assets/menu/redBox.png";
-import redBorder from "@/game/assets/menu/redBorder.png";
+import blueButton2 from "@/game/assets/menu/blue_button02.png";
 import hospital from "@/game/assets/menu/abandoned_Hospital.png";
+import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -103,10 +103,10 @@ export default class Preloader extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
     // load assets for title scene
-    this.load.image("blueButton1", blueButton);
-    this.load.image("redButton", redButton);
-    this.load.image("redBorder", redBorder);
+    this.load.image("blueButton", blueButton);
+    this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
+    this.load.image("hospital2", hospital2);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
