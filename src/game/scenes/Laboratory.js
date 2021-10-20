@@ -56,6 +56,7 @@ class Laboratory extends Scene {
     this.createSpecimenFlask();
     this.createCandyBar();
     this.createColliders();
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -312,8 +313,9 @@ class Laboratory extends Scene {
 
   onCandyBarCollision() {
     const candyBarMessage =
-      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snakcs from evil doctors. You have to recover for a turn.";
+      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
     this.player.disableBody();
+    this.mainTimer.minusFive();
     createMessage(this, candyBarMessage);
     nextSceneFunc(this, "MainScene");
   }
