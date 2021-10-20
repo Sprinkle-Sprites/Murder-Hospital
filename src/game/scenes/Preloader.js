@@ -7,6 +7,7 @@ import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import creepyDoll from "@/game/assets/tiles/creepy_toys.png";
+import bathroom from "@/game/assets/tiles/bathroom.png";
 
 import Elevator from "@/game/assets/tiles/Elevator-Doors-Alt.png";
 import board from "@/game/assets/tiles/board.json";
@@ -80,7 +81,7 @@ export default class Preloader extends Phaser.Scene {
     //remove the loading screen once we have reached 100%
     this.load.on(
       "complete",
-      function () {
+      function() {
         progressBar.destroy();
         progressBox.destroy();
         loadingText.destroy();
@@ -101,6 +102,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
     this.load.image("Creepy-Doll", creepyDoll);
+    this.load.image("Bathroom", bathroom);
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
@@ -110,7 +112,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("patient", patients_room);
     this.load.tilemapTiledJSON("pharmacy", pharmacy);
     this.load.tilemapTiledJSON("exit", exit_room);
-    this.load.tilemapTiledJSON("lockerRoom", locker_room);
+    this.load.tilemapTiledJSON("LockerRoom", locker_room);
   } //end of preload
 
   readyScene() {
@@ -119,7 +121,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("Radiology");
+      this.scene.start("LockerRoom");
       this.scene.start("ClueBank");
     }
   }
