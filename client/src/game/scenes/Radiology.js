@@ -5,15 +5,11 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import combination_code from "@/game/assets/popups/locker_combo.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
-import MainTimer from "./MainTimer";
-import MainSceneTimer from "./MainTimerScene";
-import { launch } from "../game";
 
 class Radiology extends Scene {
   constructor() {
@@ -34,8 +30,9 @@ class Radiology extends Scene {
     this.load.image("Xray 2", collider);
     this.load.image("Xray 3", collider);
 
-    //POP UP
-    this.load.image("pop-up-image", combination_code);
+    //XRAY MACHINES
+    this.load.image("Xray Machine 1");
+    this.load.image("Xray Machine 2");
   }
 
   create() {
@@ -43,7 +40,14 @@ class Radiology extends Scene {
     this.createMap();
     this.createSwitch();
     this.createXrayBoards();
+    this.createXrayMachines();
     this.createColliders();
+    this.createTimer();
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 
   createMap() {
@@ -136,25 +140,6 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, wallLayer2Lab);
     this.physics.add.collider(this.player, bedsLayer);
 
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    const timerLabel = this.add.text(620, 35, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.mainTimer = new MainTimer(this, timerLabel);
-    this.mainTimer.start(this.handleCountdownFinished.bind(this));
-
-    this.mainSceneTimer = new MainSceneTimer();
-
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
     // borderLayer.renderDebug(debugGraphics, {
@@ -162,26 +147,6 @@ class Radiology extends Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     // });
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
-  }
-  handleCountdownFinished() {
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "You've been captured", {
-        fontSize: 30,
-      })
-      .setOrigin(0.5);
   }
 
   createPlayer() {
@@ -202,55 +167,70 @@ class Radiology extends Scene {
     });
   }
 
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+  }
+
   createSwitch() {
     this.switch1 = this.physics.add
-      .sprite(190, 30, "lightSwitch 1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+      .sprite(205, 45, "lightSwitch 1")
+      .setDepth(-2)
+      .setSize(10, 10);
 
     this.switch2 = this.physics.add
-      .sprite(650, 30, "lightSwitch 2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+      .sprite(665, 45, "lightSwitch 2")
+      .setDepth(-2)
+      .setSize(10, 10);
 
     this.switch3 = this.physics.add
-      .sprite(220, 305, "lightSwitch 3")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+      .sprite(235, 323, "lightSwitch 3")
+      .setDepth(-2)
+      .setSize(10, 10);
 
     this.switch4 = this.physics.add
-      .sprite(670, 305, "lightSwitch 4")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALES COLLIDERS ON LIGHTSWITCHES TO APPROPRIATE SIZE
-    const switches = [this.switch1, this.switch2, this.switch3, this.switch4];
-    for (let i = 0; i < switches.length; i++) {
-      resizeCollider(switches[i], 20, 20);
-    }
+      .sprite(685, 323, "lightSwitch 4")
+      .setDepth(-2)
+      .setSize(10, 10);
   }
 
   createXrayBoards() {
     this.xray1 = this.physics.add
-      .sprite(695, 22, "Xray 1")
-      .setOrigin(0, 0)
+      .sprite(710, 37, "Xray 1")
       .setDepth(-2)
-      .setSize(50, 25, true);
+      .setSize(50, 25);
 
     this.xray2 = this.physics.add
-      .sprite(612, 300, "Xray 2")
-      .setOrigin(0, 0)
+      .sprite(627, 315, "Xray 2")
       .setDepth(-2)
-      .setSize(50, 25, true);
+      .setSize(50, 25);
 
     this.xray3 = this.physics.add
-      .sprite(173, 300, "Xray 3")
-      .setOrigin(0, 0)
+      .sprite(188, 315, "Xray 3")
       .setDepth(-2)
-      .setSize(50, 25, true);
+      .setSize(50, 25);
+  }
+
+  createXrayMachines() {
+    this.xrayMachine1 = this.physics.add
+      .sprite(325, 440, "Xray Machine 1")
+      .setDepth(-2)
+      .setSize(60, 25);
+
+    this.xrayMachine2 = this.physics.add
+      .sprite(475, 43, "Xray Machine 2")
+      .setDepth(-2)
+      .setSize(60, 25);
   }
 
   createColliders() {
+    //PLAYER AND SWITCH COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.switch1,
@@ -283,6 +263,7 @@ class Radiology extends Scene {
       this
     );
 
+    //PLAYER AND XRAY COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.xray1,
@@ -306,6 +287,23 @@ class Radiology extends Scene {
       null,
       this
     );
+
+    //PLAYER AND XRAY MACHINE COLLIDERS
+    this.physics.add.overlap(
+      this.player,
+      this.xrayMachine1,
+      this.onXrayMachineCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.xrayMachine2,
+      this.onXrayMachineCollision,
+      null,
+      this
+    );
   }
 
   onSwitchCollision() {
@@ -314,12 +312,8 @@ class Radiology extends Scene {
 
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
-    this.mainTimer.minusFive();
-
-    console.log("time", this.mainTimer.scene.time);
-    console.log("this", this.mainTimer);
-
-    // nextSceneFunc(this, "MainScene");
+    // this.mainTimer.minusFive();
+    nextSceneFunc(this, "MainScene");
   }
 
   onXrayCollision() {
@@ -330,13 +324,15 @@ class Radiology extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
     nextSceneFunc(this, "MainScene");
   }
 
-  update() {
-    this.player.update();
-    this.roomTimer.update();
-    this.mainTimer.update();
+  onXrayMachineCollision() {
+    const machineMessage = "Machine doesnt seem to work... Oh, well.";
+    this.player.disableBody();
+    createMessage(this, machineMessage);
+    nextSceneFunc(this, "MainScene");
   }
 }
 
