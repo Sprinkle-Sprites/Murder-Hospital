@@ -142,7 +142,6 @@ class Exit extends Scene {
   }
 
   onPanelCollision() {
-    console.log("you hit the panel!")
     const text1 = this.add
       .text(
         400,
@@ -179,9 +178,21 @@ class Exit extends Scene {
       this.combination = parseInt(text2._text);
       text1.destroy();
       if (this.combination === 428395) {
+        const width = this.sys.canvas.width;
+        const height = this.sys.canvas.height;
         this.player.disableBody();
-        //CURRENTLY GOES TO MAIN SCENE, NEEDS TO GO TO VICTORY SCENE
-        nextSceneFunc(this, "MainScene");
+        //CURRENTLY SENDS A MESSAGE, NEEDS TO GO TO VICTORY SCENE
+        this.add.text(width * 0.5, height * 0.5, "Holy crap, the door actually opened. You did it! Get the *#!% outta here!", {
+          fontSize: 30,
+          backgroundColor: "#4c517d",
+          wordWrap: { width: 300, useAdvancedWrap: true },
+          strokeThickness: 1,
+          stroke: "#fdcd83",
+          align: "center",
+          fixedWidth: width,
+          fixedHeight: height,
+        }).setOrigin(0.5, 0.5);
+
       }
       if (this.combination !== 428395 && !isNaN(this.combination)) {
         const wrongCodeMessage =

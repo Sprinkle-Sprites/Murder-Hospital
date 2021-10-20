@@ -20,9 +20,10 @@ import collider from "@/game/assets/collider.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-class Pharmacy extends Scene {
+class LockerRoom extends Scene {
   constructor() {
     super({ key: "LockerRoom" });
+    this.combination = 0;
   }
 
   preload() {
@@ -258,7 +259,45 @@ class Pharmacy extends Scene {
   }
 
   onLocker2Collision() {
-    const popUp = this.add.image(400, 300, "mirror");
+
+    const text1 = this.add
+    .text(
+      400,
+      300,
+      "This locker is locked. Enter the combination below...",
+      {
+        fixedWidth: 700,
+        fixedHeight: 50,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      }
+    )
+    .setOrigin(0.5, 0.5);
+
+    const text2 = this.add
+    .text(400, 370, "", {
+      fixedWidth: 300,
+      fixedHeight: 40,
+      backgroundColor: "black",
+      align: "center",
+      wordWrap: { width: 300, useAdvancedWrap: true },
+    })
+    .setOrigin(0.5, 0.5);
+
+  text2.setInteractive().on("pointerdown", () => {
+    this.rexUI.edit(text2);
+  });
+
+  const enter = this.input.keyboard.addKey(
+    Phaser.Input.Keyboard.KeyCodes.ENTER
+  );
+
+  enter.on("down", () => {
+    this.combination = parseInt(text2._text);
+    text1.destroy();
+    if (this.combination === 15931) {
+      const popUp = this.add.image(400, 300, "mirror");
     popUp.setScale(0.25, 0.25);
     this.player.disableBody();
     this.time.addEvent({
@@ -268,6 +307,16 @@ class Pharmacy extends Scene {
     });
     eventsCenter.emit("update-bank", "mirror");
     nextSceneFunc(this, "MainScene");
+    } else if (this.combination !== 15931 && !isNaN(this.combination)) {
+      const wrongCodeMessage =
+        "You try to open the locker, but it won't budge. Better keep looking for the combo";
+      this.player.disableBody();
+      createMessage(this, wrongCodeMessage);
+      nextSceneFunc(this, "MainScene");
+    }
+    text2.destroy();
+  });
+
   }
 
   onSinkCollision() {
@@ -306,4 +355,4 @@ class Pharmacy extends Scene {
   }
 }
 
-export default Pharmacy;
+export default LockerRoom;

@@ -5,15 +5,21 @@ import {
   resizeCollider,
   nextSceneFunc,
   handleRoomCountdownFinished,
+  createMessageForImage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import password from "@/game/assets/popups/password.png";
+import toeTag from "@/game/assets/popups/toeTag.png";
+import eventsCenter from "@/game/eventsCenter";
 
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
+    this.check = false;
   }
+
   preload() {
     Player.preload(this);
 
@@ -22,20 +28,27 @@ export default class Morgue extends Phaser.Scene {
     this.load.image("bodyLocker 2", collider);
     this.load.image("bodyLocker 3", collider);
 
-    //DESK
-    this.load.image("desk", collider);
+    //notebook
+    this.load.image("notebook", collider);
 
     //BONE SAW
     this.load.image("bone saw", collider);
 
     //POP UPS
+    this.load.image("password", password);
+    this.load.image("toeTag", toeTag);
   }
 
   create() {
+    this.createTimer();
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
+    this.createNotebook();
+    this.createBoneSaw();
+    this.createColliders();
     this.createTimer();
+    eventsCenter.on("confirmation-check", this.returnConfirmation, this);
   }
 
   createTimer() {
@@ -47,6 +60,11 @@ export default class Morgue extends Phaser.Scene {
 
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+  }
+
+  update() {
+    this.player.update();
+    this.roomTimer.update();
   }
 
   createMap() {
@@ -123,24 +141,22 @@ export default class Morgue extends Phaser.Scene {
     }
   } //end createMap
 
-  createBodyLocker() {
-    //locked body drawer
-    this.bodyLocker1 = this.physics.add
-      .sprite(550, 23, "bodyLocker 1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+  // // LAYER COLLIDERS
+  // borderLayer.setCollisionByProperty({ collides: true });
+  // wallLayer.setCollisionByProperty({ collides: true });
+  // morgueLabLayer.setCollisionByProperty({ collides: true });
+  // elevatorLayer.setCollisionByProperty({ collides: true });
+  // morgueAltLayer.setCollisionByProperty({ collides: true });
+  // morgueObjLayer.setCollisionByProperty({ collides: true });
 
-    this.bodyLocker2 = this.physics.add
-      .sprite(672, 23, "bodyLocker 2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
-    const bodyLockers = [this.bodyLocker1, this.bodyLocker2];
-    for (let i = 0; i < bodyLockers.length; i++) {
-      resizeCollider(bodyLockers[i], 0, 15);
-    }
-  }
+  // // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+  // this.physics.add.collider(this.player, borderLayer);
+  // this.physics.add.collider(this.player, wallLayer);
+  // this.physics.add.collider(this.player, morgueLabLayer);
+  // this.physics.add.collider(this.player, elevatorLayer);
+  // this.physics.add.collider(this.player, morgueAltLayer);
+  // this.physics.add.collider(this.player, morgueObjLayer);
+  // } //end createMap
 
   createPlayer() {
     this.player = this.physics.add.existing(
@@ -160,6 +176,127 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
+  createTimer() {
+    // ROOM TIMER
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createBodyLocker() {
+    //LOCKED BODY DRAWER
+    this.bodyLocker1 = this.physics.add
+      .sprite(550, 23, "bodyLocker 1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER
+    this.bodyLocker2 = this.physics.add
+      .sprite(672, 23, "bodyLocker 2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER(2)
+    this.bodyLocker3 = this.physics.add
+      .sprite(260, 300, "bodyLocker 3")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
+    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
+    for (let i = 0; i < bodyLockers.length; i++) {
+      resizeCollider(bodyLockers[i], 5, 15);
+    }
+  }
+
+  createNotebook() {
+    this.notebook = this.physics.add
+      .sprite(738, 540, "notebook")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON NOTEBOOK TO APPROPRIATE SIZE
+    resizeCollider(this.notebook, 5, 20);
+  }
+
+  createBoneSaw() {
+    this.boneSaw = this.physics.add
+      .sprite(357, 475, "bone saw")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
+    resizeCollider(this.boneSaw, 5, 10);
+  }
+
+  onNoteBookCollision() {
+    this.player.disableBody();
+    const openMessage =
+      "You find a picture of a creepy family. On the back...who's this??";
+    createMessageForImage(this, openMessage);
+    setTimeout(() => {
+      const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
+      this.time.addEvent({
+        delay: 4750,
+        callback: () => popUp.destroy(),
+        loop: false,
+      });
+      eventsCenter.emit("update-bank", "password");
+      nextSceneFunc(this, "MainScene");
+    }, 3000);
+  }
+
+  onLockedLockerCollision() {
+    eventsCenter.emit("check-key", "key");
+
+    if (this.check) {
+      this.player.disableBody();
+      const openMessage =
+        "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
+      createMessageForImage(this, openMessage);
+      setTimeout(() => {
+        const popUp = this.add.image(400, 300, "toeTag");
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "toeTag");
+        nextSceneFunc(this, "MainScene");
+      }, 3000);
+    } else {
+      const drawerMessage = "Huh? Why would a body drawer need to be locked?";
+      this.player.disableBody();
+      createMessage(this, drawerMessage);
+      nextSceneFunc(this, "MainScene");
+    }
+  }
+
+  onUnlockedBodyDrawer() {
+    const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
+
+    this.player.disableBody();
+    createMessage(this, lockedBodyMessage);
+    this.mainTimer.minusFive();
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onBoneSaw() {
+    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
+    this.player.disableBody();
+    createMessage(this, boneSawMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
   createColliders() {
     // LAYER COLLIDERS
     this.borderLayer.setCollisionByProperty({ collides: true });
@@ -176,10 +313,45 @@ export default class Morgue extends Phaser.Scene {
     this.physics.add.collider(this.player, this.elevatorLayer);
     this.physics.add.collider(this.player, this.morgueAltLayer);
     this.physics.add.collider(this.player, this.morgueObjLayer);
+
+    //UNLOCKED BODY DRAWER PUNISHMENT
+    this.physics.add.overlap(
+      this.player,
+      this.bodyLocker3,
+      this.onUnlockedBodyDrawer,
+      null,
+      this
+    );
+
+    // BONE SAW MESSAGE FROM DOC
+    this.physics.add.overlap(
+      this.player,
+      this.boneSaw,
+      this.onBoneSaw,
+      null,
+      this
+    );
+
+    // locked drawer with toetag
+    this.physics.add.overlap(
+      this.player,
+      this.bodyLocker1,
+      this.onLockedLockerCollision,
+      null,
+      this
+    );
+
+    //notebook with picture with password
+    this.physics.add.overlap(
+      this.player,
+      this.notebook,
+      this.onNoteBookCollision,
+      null,
+      this
+    );
   }
 
-  update() {
-    this.player.update();
-    this.roomTimer.update();
+  returnConfirmation(bool) {
+    this.check = bool;
   }
 }

@@ -58,6 +58,7 @@ class PatientRoom extends Scene {
     this.createColliders();
     this.createTimer();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createTimer() {
@@ -293,10 +294,10 @@ class PatientRoom extends Scene {
 
   onDollCollision() {
     const dollMessage =
-      "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose a minute.";
-
+      "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose 5 minutes.";
     this.player.disableBody();
     createMessage(this, dollMessage);
+    this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
 

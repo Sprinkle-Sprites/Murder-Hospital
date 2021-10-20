@@ -10,6 +10,9 @@ import {
 
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import eventsCenter from "@/game/eventsCenter";
+
+import poster from "@/game/assets/popups/hang-in-there-blood.png";
 
 class ICU extends Scene {
   constructor() {
@@ -32,6 +35,12 @@ class ICU extends Scene {
     //MONITOR COLLIDERS
     this.load.image("Monitor 1", collider);
     this.load.image("Monitor 2", collider);
+
+    //POSTER COLLIDER
+    this.load.image("poster-collider", collider);
+
+    //POSTER IMAGE
+    this.load.image("poster", poster);
   }
 
   create() {
@@ -40,8 +49,10 @@ class ICU extends Scene {
     this.createBlood();
     this.createIVs();
     this.createMonitors();
+    this.createPoster();
     this.createColliders();
     this.createTimer();
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   update() {
@@ -201,6 +212,13 @@ class ICU extends Scene {
       .setSize(25, 28);
   }
 
+  createPoster() {
+    this.posterC = this.physics.add
+      .sprite(535, 185, "poster-collider")
+      .setDepth(-2)
+      .setSize(20, 28, true);
+  }
+
   createColliders() {
     //TILED LAYER COLLIDERS
     this.borderLayer.setCollisionByProperty({ collides: true });
@@ -213,21 +231,21 @@ class ICU extends Scene {
     this.physics.add.collider(this.player, this.nurseStationLayer2);
 
     //PLAYER AND BLOOD COLLIDERS
-    this.physics.add.overlap(
-      this.player,
-      this.blood1,
-      this.onBloodCollision,
-      null,
-      this
-    );
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.blood1,
+    //   this.onBloodCollision,
+    //   null,
+    //   this
+    // );
 
-    this.physics.add.overlap(
-      this.player,
-      this.blood2,
-      this.onBloodCollision,
-      null,
-      this
-    );
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.blood2,
+    //   this.onBloodCollision,
+    //   null,
+    //   this
+    // );
 
     this.physics.add.overlap(
       this.player,
@@ -238,13 +256,13 @@ class ICU extends Scene {
     );
 
     //PLAYER AND IV BAG COLLIDERS
-    this.physics.add.overlap(
-      this.player,
-      this.IVBag1,
-      this.onIVCollision,
-      null,
-      this
-    );
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.IVBag1,
+    //   this.onIVCollision,
+    //   null,
+    //   this
+    // );
 
     this.physics.add.overlap(
       this.player,
@@ -263,10 +281,19 @@ class ICU extends Scene {
       this
     );
 
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.monitor2,
+    //   this.onMonitorCollision,
+    //   null,
+    //   this
+    // );
+
+    //POSTER COLLIDER
     this.physics.add.overlap(
       this.player,
-      this.monitor2,
-      this.onMonitorCollision,
+      this.posterC,
+      this.onPosterCollision,
       null,
       this
     );
@@ -274,15 +301,18 @@ class ICU extends Scene {
 
   onBloodCollision() {
     const bloodMessage =
-      "You slipped and fell in a pool of blood! YUCK! You Lose 10 minutes.";
+      "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
     this.player.disableBody();
     createMessage(this, bloodMessage);
+    this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
 
   onIVCollision() {
-    console.log("IV BAGGY!");
+    const IVMessage =
+      "Oh, hey, a bag of blood. If you lose a bunch later, maybe this will come in handy?";
     this.player.disableBody();
+    createMessage(this, IVMessage);
     nextSceneFunc(this, "MainScene");
   }
 
@@ -290,6 +320,19 @@ class ICU extends Scene {
     const monitorMessage = "How is this monitor supposed to help me?";
     this.player.disableBody();
     createMessage(this, monitorMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onPosterCollision() {
+    const popUp = this.add.image(400, 300, "poster").setScale(0.5, 0.5);
+    this.player.disableBody();
+    eventsCenter.emit("update-bank", "poster");
+    this.time.addEvent({
+      delay: 4750,
+      callback: () => popUp.destroy(),
+      loop: false,
+    });
+
     nextSceneFunc(this, "MainScene");
   }
 }

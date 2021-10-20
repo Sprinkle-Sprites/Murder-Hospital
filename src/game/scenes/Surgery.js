@@ -283,7 +283,7 @@ class Surgery extends Scene {
 
   onGurneyCollision() {
     const popUp = this.add.image(400, 300, "glove");
-    popUp.setScale(0.25, 0.25);
+    popUp.setScale(0.5, 0.5);
     this.player.disableBody();
     eventsCenter.emit("update-bank", "glove");
     this.time.addEvent({

@@ -37,6 +37,7 @@ class ClueBank extends Scene {
     });
     eventsCenter.on("update-bank", this.addImage, this);
     eventsCenter.on("check-scapel", this.checker, this);
+    eventsCenter.on("check-key", this.checker, this);
   }
 
   addImage(key) {
@@ -60,7 +61,7 @@ class ClueBank extends Scene {
     } else if (this.count % 2 === 0) {
       this.x = 950;
     } else {
-      this.y = this.y + 60;
+      this.y = this.y + 65;
       this.x = 850;
     }
 
