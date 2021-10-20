@@ -1,10 +1,9 @@
 function exitButton() {
-  console.log("hello there")
+  document.querySelector("#leave-button").setAttribute("value", "leave")
 }
 
 document
   .getElementById("try-to-leave")
   .addEventListener("click", exitButton, true);
 
-  //this is a comment that I updated
-
+  export default exitButton
