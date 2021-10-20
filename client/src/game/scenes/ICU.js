@@ -1,6 +1,5 @@
 import { Scene } from "phaser";
 import Player from "@/game/Player";
-import RoomTimer from "@/game/scenes/RoomTimer";
 import {
   resizeMapLayer,
   resizeCollider,
@@ -8,7 +7,9 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
+
 import collider from "@/game/assets/collider.png";
+import RoomTimer from "@/game/scenes/RoomTimer";
 
 class ICU extends Scene {
   constructor() {
@@ -17,11 +18,28 @@ class ICU extends Scene {
 
   preload() {
     Player.preload(this);
+
+    //BLOOD COLLIDERS
+    this.load.image("Blood pool 1", collider);
+    this.load.image("Blood pool 2", collider);
+    this.load.image("Blood pool 3", collider);
+    this.load.image("Blood pool 4", collider);
+
+    //IV BAG COLLIDERS
+    this.load.image("IV bag 1", collider);
+    this.load.image("IV bag 2", collider);
+
+    //MONITOR COLLIDERS
+    this.load.image("Monitor 1", collider);
+    this.load.image("Monitor 2", collider);
   }
 
   create() {
     this.createPlayer();
     this.createMap();
+    this.createBlood();
+    this.createIVs();
+    this.createMonitors();
     this.createColliders();
     this.createTimer();
   }
@@ -142,8 +160,49 @@ class ICU extends Scene {
     }
   }
 
+  createBlood() {
+    this.blood1 = this.physics.add
+      .sprite(530, 290, "Blood pool 1")
+      .setDepth(-2)
+      .setSize(20, 15);
+
+    this.blood2 = this.physics.add
+      .sprite(85, 490, "Blood pool 2")
+      .setDepth(-2)
+      .setSize(15, 10);
+
+    this.blood3 = this.physics.add
+      .sprite(420, 475, "Blood pool 3")
+      .setDepth(-2)
+      .setSize(15, 10);
+  }
+
+  createIVs() {
+    this.IVBag1 = this.physics.add
+      .sprite(617, 55, "IV bag 1")
+      .setDepth(-2)
+      .setSize(15, 10);
+
+    this.IVBag2 = this.physics.add
+      .sprite(193, 543, "IV bag 2")
+      .setDepth(-2)
+      .setSize(15, 10);
+  }
+
+  createMonitors() {
+    this.monitor1 = this.physics.add
+      .sprite(125, 63, "Monitor 1")
+      .setDepth(-2)
+      .setSize(25, 28);
+
+    this.monitor2 = this.physics.add
+      .sprite(685, 63, "Monitor 2")
+      .setDepth(-2)
+      .setSize(25, 28);
+  }
+
   createColliders() {
-    //LAYER COLLIDERS
+    //TILED LAYER COLLIDERS
     this.borderLayer.setCollisionByProperty({ collides: true });
     this.wallLayer.setCollisionByProperty({ collides: true });
     this.nurseStationLayer2.setCollisionByProperty({ collides: true });
@@ -153,16 +212,93 @@ class ICU extends Scene {
     this.physics.add.collider(this.player, this.wallLayer);
     this.physics.add.collider(this.player, this.nurseStationLayer2);
 
-    //PLAYER AND LAYER COLLIDERS WITH CALLBACK
-    //
+    //PLAYER AND BLOOD COLLIDERS
+    this.physics.add.overlap(
+      this.player,
+      this.blood1,
+      this.onBloodCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.blood2,
+      this.onBloodCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.blood3,
+      this.onBloodCollision,
+      null,
+      this
+    );
+
+    //PLAYER AND IV BAG COLLIDERS
+    this.physics.add.overlap(
+      this.player,
+      this.IVBag1,
+      this.onIVCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.IVBag2,
+      this.onIVCollision,
+      null,
+      this
+    );
+
+    //PLAYER AND MONITOR COLLIDERS
+    this.physics.add.overlap(
+      this.player,
+      this.monitor1,
+      this.onMonitorCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.monitor2,
+      this.onMonitorCollision,
+      null,
+      this
+    );
 
     // COLLIDER DEBUG COLOR
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    this.nurseStationLayer3.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
+    // const debugGraphics = this.add.graphics().setAlpha(0.7);
+    // this.nurseStationLayer3.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    // });
+  }
+
+  onBloodCollision() {
+    const bloodMessage =
+      "You slipped and fell in a pool of blood! YUCK! You Lose 10 minutes.";
+    this.player.disableBody();
+    createMessage(this, bloodMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onIVCollision() {
+    console.log("IV BAGGY!");
+    this.player.disableBody();
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onMonitorCollision() {
+    const monitorMessage = "How is this monitor supposed to help me?";
+    this.player.disableBody();
+    createMessage(this, monitorMessage);
+    nextSceneFunc(this, "MainScene");
   }
 }
 
