@@ -88,7 +88,7 @@ export default class Preloader extends Phaser.Scene {
     //remove the loading screen once we have reached 100%
     this.load.on(
       "complete",
-      function () {
+      function() {
         progressBar.destroy();
         progressBox.destroy();
         loadingText.destroy();
@@ -130,8 +130,8 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
+      this.scene.start("Morgue");
       this.scene.start("ClueBank");
-      this.scene.start("MainScene");
     }
   }
 }

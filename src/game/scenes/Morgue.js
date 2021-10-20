@@ -32,9 +32,18 @@ export default class Morgue extends Phaser.Scene {
   }
 
   create() {
+    this.createTimer();
     this.createPlayer();
     this.createMap();
     this.createBodyLocker();
+    this.createDesk();
+    this.createBoneSaw();
+    this.createColliders();
+  }
+
+  update() {
+    this.player.update();
+    //this.roomTimer.update();
   }
 
   createMap() {
@@ -130,23 +139,6 @@ export default class Morgue extends Phaser.Scene {
     this.physics.add.collider(this.player, elevatorLayer);
     this.physics.add.collider(this.player, morgueAltLayer);
     this.physics.add.collider(this.player, morgueObjLayer);
-
-    // ROOM TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // wallLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   } //end createMap
 
   handleRoomCountdownFinished() {
@@ -159,25 +151,6 @@ export default class Morgue extends Phaser.Scene {
       })
       .setOrigin(0.5);
     nextSceneFunc(this, "MainScene");
-  }
-
-  createBodyLocker() {
-    //locked body drawer
-    this.bodyLocker1 = this.physics.add
-      .sprite(550, 23, "bodyLocker 1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    this.bodyLocker2 = this.physics.add
-      .sprite(672, 23, "bodyLocker 2")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
-    const bodyLockers = [this.bodyLocker1, this.bodyLocker2];
-    for (let i = 0; i < bodyLockers.length; i++) {
-      resizeCollider(bodyLockers[i], 0, 15);
-    }
   }
 
   createPlayer() {
@@ -198,9 +171,103 @@ export default class Morgue extends Phaser.Scene {
     });
   }
 
-  createColliders() {}
-  update() {
-    this.player.update();
-    //this.roomTimer.update();
+  createTimer() {
+    // ROOM TIMER
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+    // MAINTIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createBodyLocker() {
+    //LOCKED BODY DRAWER
+    this.bodyLocker1 = this.physics.add
+      .sprite(550, 23, "bodyLocker 1")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER
+    this.bodyLocker2 = this.physics.add
+      .sprite(672, 23, "bodyLocker 2")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    // UNLOCKED BODY DRAWER(2)
+    this.bodyLocker3 = this.physics.add
+      .sprite(260, 300, "bodyLocker 3")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
+    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
+    for (let i = 0; i < bodyLockers.length; i++) {
+      resizeCollider(bodyLockers[i], 5, 15);
+    }
+  }
+
+  createDesk() {
+    this.desk = this.physics.add
+      .sprite(738, 540, "desk")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON NOTEBOOK ON DESK TO APPROPRIATE SIZE
+    resizeCollider(this.desk, 10, 20);
+  }
+
+  createBoneSaw() {
+    this.boneSaw = this.physics.add
+      .sprite(357, 475, "bone saw")
+      .setOrigin(0, 0)
+      .setDepth(-2);
+
+    //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
+    resizeCollider(this.boneSaw, 10, 15);
+  }
+
+  onNoteBookCollision() {}
+
+  onLockedLockerCollision() {}
+
+  onUnlockedBodyDrawer() {
+    const lockedBodyMessage = `How dare you bother the dead?
+     Sit out for 5 minutes and go call MeeMaw`;
+
+    this.player.disableBody();
+    createMessage(this, lockedBodyMessage);
+    this.mainTimer.minusFive();
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onBoneSaw() {
+    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
+    this.player.disableBody();
+    createMessage(this, boneSawMessage);
+    nextSceneFunc(this, "MainScene");
+  }
+
+  createColliders() {
+    //UNLOCKED BODY DRAWER PUNISHMENT
+    this.physics.add.overlap(
+      this.player,
+      this.bodyLocker3,
+      this.onUnlockedBodyDrawer,
+      null,
+      this
+    );
+
+    // BONE SAW MESSAGE FROM DOC
+    this.physics.add.overlap(
+      this.player,
+      this.boneSaw,
+      this.onBoneSaw,
+      null,
+      this
+    );
   }
 }
