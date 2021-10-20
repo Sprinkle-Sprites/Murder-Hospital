@@ -1,0 +1,40 @@
+{
+  "name": "murderhospital",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start-serve": "nodemon server/server.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --modern",
+    "start-client": "nodemon main.js",
+    "postinstall": "npm run build",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "core-js": "^3.17.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.13",
+    "phaser": "^3.55.2",
+    "phaser3-rex-plugins": "^1.1.61",
+    "socket-io": "^1.0.0",
+    "socket.io": "^4.3.1",
+    "socket.io-client": "^4.3.0",
+    "vue": "^3.2.12"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.2.12",
+    "http-server": "^13.0.2",
+    "sass": "^1.41.1",
+    "sass-loader": "^8.0.2"
+  },
+  "keywords": [
+    "vue",
+    "phaser",
+    "webpack",
+    "boilerplate",
+    "template"
+  ]
+}
