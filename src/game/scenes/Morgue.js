@@ -17,6 +17,7 @@ import eventsCenter from "@/game/eventsCenter";
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
+    this.check = false;
   }
   preload() {
     Player.preload(this);
@@ -45,6 +46,7 @@ export default class Morgue extends Phaser.Scene {
     this.createNotebook();
     this.createBoneSaw();
     this.createColliders();
+    eventsCenter.on("confirmation-check", this.returnConfirmation, this);
   }
 
   update() {
@@ -182,12 +184,10 @@ export default class Morgue extends Phaser.Scene {
     const roomTimerLabel = this.add.text(10, 610, "", {
       fontSize: 20,
       backgroundColor: "black",
-      padding: 5,
+      padding: 10,
     });
-    //this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    //this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-    // MAINTIMER
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
   }
 
   createBodyLocker() {
@@ -233,13 +233,13 @@ export default class Morgue extends Phaser.Scene {
       .setDepth(-2);
 
     //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
-    resizeCollider(this.boneSaw, 10, 15);
+    resizeCollider(this.boneSaw, 5, 10);
   }
 
   onNoteBookCollision() {
     this.player.disableBody();
     const openMessage =
-      "You find a picture of a creepy family. On the back...who's Sue??";
+      "You find a picture of a creepy family. On the back...who's this??";
     createMessageForImage(this, openMessage);
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
@@ -254,16 +254,30 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onLockedLockerCollision() {
-    const popUp = this.add.image(400, 300, "toeTag");
-    this.player.disableBody();
-    this.time.addEvent({
-      delay: 4750,
-      callback: () => popUp.destroy(),
-      loop: false,
-    });
+    eventsCenter.emit("check-key", "key");
 
-    eventsCenter.emit("update-bank", "toeTag");
-    nextSceneFunc(this, "MainScene");
+    if (this.check) {
+      this.player.disableBody();
+      const openMessage =
+        "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
+      createMessageForImage(this, openMessage);
+      setTimeout(() => {
+        const popUp = this.add.image(400, 300, "toeTag");
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "toeTag");
+        nextSceneFunc(this, "MainScene");
+      }, 3000);
+    } else {
+      const drawerMessage = "Huh? Why would a body drawer need to be locked?";
+      this.player.disableBody();
+      createMessage(this, drawerMessage);
+      nextSceneFunc(this, "MainScene");
+    }
   }
 
   onUnlockedBodyDrawer() {
@@ -318,5 +332,9 @@ export default class Morgue extends Phaser.Scene {
       null,
       this
     );
+  }
+
+  returnConfirmation(bool) {
+    this.check = bool;
   }
 }
