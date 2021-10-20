@@ -276,11 +276,19 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
-    } else if (parseInt(value) === 7) {
-      const pharmRoomMes = "To The Morgue";
-      createMessage(this, pharmRoomMes);
-      diceNextSceneFunc(this, "Morgue");
-      document.querySelector("#diceValue").setAttribute("value", "0");
+
+    } else if (parseInt(value) === 6) {
+      const lockerRoomMes = "To The Locker Room";
+      createMessage(this, lockerRoomMes);
+      diceNextSceneFunc(this, "LockerRoom");
+    
+
+//     } else if (parseInt(value) === 7) {
+//       const morgueRoomMes = "To The Morgue";
+//       createMessage(this, morgueRoomMes);
+//       diceNextSceneFunc(this, "Morgue");
+
+      //document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "You need to investigate a room";
     }
