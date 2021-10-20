@@ -168,6 +168,9 @@ class Radiology extends Scene {
 
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+    console.log(this.mainTimer);
   }
 
   createSwitch() {
