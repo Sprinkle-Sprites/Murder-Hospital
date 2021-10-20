@@ -26,6 +26,8 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import redButton from "@/game/assets/menuButtons/redBox.png";
+import redBorder from "@/game/assets/menuButtons/redBorder.png";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -88,7 +90,7 @@ export default class Preloader extends Phaser.Scene {
     //remove the loading screen once we have reached 100%
     this.load.on(
       "complete",
-      function () {
+      function() {
         progressBar.destroy();
         progressBox.destroy();
         loadingText.destroy();
@@ -98,6 +100,9 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
+    // load assets for title scene
+    this.load.image("redButton", redButton);
+    this.load.image("redBorder", redBorder);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
@@ -128,10 +133,10 @@ export default class Preloader extends Phaser.Scene {
     this.readyCount++;
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
-      // have it lead to first scene
+      // have it lead to title scene
+      this.scene.start("Title");
       this.scene.start("MainTimerScene");
       this.scene.start("ClueBank");
-      this.scene.start("MainScene");
     }
   }
 }
