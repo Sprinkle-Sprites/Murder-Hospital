@@ -286,6 +286,11 @@ class MainScene extends Scene {
       createMessage(this, morgueRoomMes);
       diceNextSceneFunc(this, "Morgue");
       document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 8) {
+      const ICURoomMes = "To The ICU";
+      createMessage(this, ICURoomMes);
+      diceNextSceneFunc(this, "ICU");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
       return "You need to investigate a room";
     }
