@@ -141,6 +141,7 @@ export default class Preloader extends Phaser.Scene {
       this.scene.start("TitleScene");
       // this.scene.start("MainTimerScene");
       // this.scene.start("ClueBank");
+
     }
   }
 }

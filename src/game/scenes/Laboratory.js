@@ -12,12 +12,14 @@ import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
 import test_tube from "@/game/assets/popups/test_tube.png";
 import specimen_flask from "@/game/assets/popups/specimen_flask.png";
+import computerScreen from "@/game/assets/popups/computerScreen.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
 class Laboratory extends Scene {
   constructor() {
     super({ key: "Laboratory" });
+    this.password = null;
   }
 
   preload() {
@@ -26,8 +28,8 @@ class Laboratory extends Scene {
     //Calendar
     this.load.image("calendar", collider);
 
-    //computer
-    this.load.image("computer", collider);
+    //Desk
+    this.load.image("desk", collider);
 
     //skeleton
     this.load.image("skeleton", collider);
@@ -45,6 +47,7 @@ class Laboratory extends Scene {
     this.load.image("calendar_date", calendar_date);
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
+    this.load.image("computerScreen", computerScreen);
   }
 
   create() {
@@ -55,7 +58,9 @@ class Laboratory extends Scene {
     this.createTestTube();
     this.createSpecimenFlask();
     this.createCandyBar();
+    this.createDesk();
     this.createColliders();
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -224,6 +229,14 @@ class Laboratory extends Scene {
       .setSize(25, 35, true);
   }
 
+  createDesk() {
+    this.desk = this.physics.add
+      .sprite(710, 110, "desk")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
+
   createColliders() {
     this.physics.add.overlap(
       this.player,
@@ -261,6 +274,14 @@ class Laboratory extends Scene {
       this.player,
       this.candyBar,
       this.onCandyBarCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.desk,
+      this.onDeskCollision,
       null,
       this
     );
@@ -312,10 +333,65 @@ class Laboratory extends Scene {
 
   onCandyBarCollision() {
     const candyBarMessage =
-      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snakcs from evil doctors. You have to recover for a turn.";
+      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
     this.player.disableBody();
+    this.mainTimer.minusFive();
     createMessage(this, candyBarMessage);
     nextSceneFunc(this, "MainScene");
+  }
+
+  onDeskCollision() {
+    const text1 = this.add
+      .text(400, 300, "PASSWORD:", {
+        fixedWidth: 700,
+        fixedHeight: 50,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
+
+    const text2 = this.add
+      .text(400, 370, "", {
+        fixedWidth: 300,
+        fixedHeight: 40,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
+
+    text2.setInteractive().on("pointerdown", () => {
+      this.rexUI.edit(text2);
+    });
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+    enter.on("down", () => {
+      this.password = text2._text;
+
+      text1.destroy();
+      if (this.password === "SUE") {
+        const popup = this.add.image(400, 300, "computerScreen");
+        popup.setScale(0.25, 0.25);
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4000,
+          callback: () => popup.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "computerScreen");
+        nextSceneFunc(this, "MainScene");
+      } else if (this.password !== "SUE" && this.password !== "") {
+        console.log("password", text2._text);
+        const wrongCodeMessage = "INCORRECT";
+        this.player.disableBody();
+        createMessage(this, wrongCodeMessage);
+        nextSceneFunc(this, "MainScene");
+      }
+      text2.destroy();
+    });
   }
 }
 
