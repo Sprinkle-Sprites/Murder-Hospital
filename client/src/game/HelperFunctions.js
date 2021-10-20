@@ -70,3 +70,14 @@ export function handleRoomCountdownFinished() {
     .setOrigin(0.5);
   nextSceneFunc(this, "MainScene");
 }
+
+//COLLIDER DEBUG COLOR
+export function displayTiledCollider(layer) {
+  const debugGraphics = this.add.graphics().setAlpha(0.7);
+
+  layer.renderDebug(debugGraphics, {
+    tileColor: null,
+    collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+  });
+}
