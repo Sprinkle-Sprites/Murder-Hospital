@@ -91,23 +91,17 @@ class Radiology extends Scene {
     const Lab3 = map.addTilesetImage("Laboratory-3", "Lab-3", 16, 16, 0, 0);
 
     //LAYERS
-    const floorLayer = map.createLayer("floor", InteriorB).setDepth(-1);
-    const borderLayer = map.createLayer("border", InteriorA).setDepth(-1);
-    const wallLayer = map.createLayer("wall", InteriorA).setDepth(-1);
-    const detailsLayer = map.createLayer("details", InteriorC).setDepth(-1);
-    const detailsAltLayer = map
-      .createLayer("details alt", InteriorAlt)
-      .setDepth(-1);
-    const wallLayer2 = map.createLayer("wall 2", InteriorC).setDepth(-1);
-    const wallLayer2Alt = map
-      .createLayer("wall 2 alt", InteriorAlt)
-      .setDepth(-1);
-    const wallLayer2Lab = map.createLayer("wall 2 lab", Lab3).setDepth(-1);
-    const bedsLayer = map.createLayer("beds", Lab3).setDepth(-1);
-    const bedsLayerAlt = map.createLayer("beds alt", InteriorAlt).setDepth(-1);
-    const detailsLayer2 = map
-      .createLayer("details 2", InteriorAlt)
-      .setDepth(-1);
+    const floorLayer = map.createLayer("floor", InteriorB);
+    const borderLayer = map.createLayer("border", InteriorA);
+    const wallLayer = map.createLayer("wall", InteriorA);
+    const detailsLayer = map.createLayer("details", InteriorC);
+    const detailsAltLayer = map.createLayer("details alt", InteriorAlt);
+    const wallLayer2 = map.createLayer("wall 2", InteriorC);
+    const wallLayer2Alt = map.createLayer("wall 2 alt", InteriorAlt);
+    const wallLayer2Lab = map.createLayer("wall 2 lab", Lab3);
+    const bedsLayer = map.createLayer("beds", Lab3);
+    const bedsLayerAlt = map.createLayer("beds alt", InteriorAlt);
+    const detailsLayer2 = map.createLayer("details 2", InteriorAlt);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
@@ -126,6 +120,7 @@ class Radiology extends Scene {
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
 
     //LAYER COLLIDERS
@@ -139,14 +134,6 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, wallLayer);
     this.physics.add.collider(this.player, wallLayer2Lab);
     this.physics.add.collider(this.player, bedsLayer);
-
-    //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // borderLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   createPlayer() {
