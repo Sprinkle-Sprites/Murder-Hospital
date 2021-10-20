@@ -8,6 +8,9 @@ import { socket } from "../../components/Chat.vue";
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
 import { diceNextSceneFunc, createMessage } from "../HelperFunctions";
 
+// const exitButton = document.getElementById("try-to-leave")
+// exitButton.addEventListener("click", MainScene.goToEnd, true)
+
 class MainScene extends Scene {
   constructor() {
     super({ key: "MainScene" });
@@ -254,12 +257,12 @@ class MainScene extends Scene {
       diceNextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 2) {
-      const surgRoomMes = "To The Surgery";
+      const surgRoomMes = "To Surgery";
       createMessage(this, surgRoomMes);
       diceNextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 3) {
-      const radRoomMes = "To The X-ray";
+      const radRoomMes = "To The X-ray Room";
       createMessage(this, radRoomMes);
       diceNextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
@@ -273,8 +276,21 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
+
+    } else if (parseInt(value) === 6) {
+      const lockerRoomMes = "To The Locker Room";
+      createMessage(this, lockerRoomMes);
+      diceNextSceneFunc(this, "LockerRoom");
+    
+
+//     } else if (parseInt(value) === 7) {
+//       const morgueRoomMes = "To The Morgue";
+//       createMessage(this, morgueRoomMes);
+//       diceNextSceneFunc(this, "Morgue");
+
+      //document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
-      return "More rooms need to be made";
+      return "You need to investigate a room";
     }
 
     // pseudocode for rooms
@@ -307,9 +323,14 @@ class MainScene extends Scene {
     // }
   }
 
+  // goToEnd() {
+  //   diceNextSceneFunc(this, "Exit");
+  // }
+
   update() {
     this.player.update();
     this.rollRoom();
+    // this.goToEnd();
   }
 }
 

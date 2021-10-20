@@ -271,7 +271,7 @@ class Pharmacy extends Scene {
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
-      callback: () => keyPop.destroy(),
+      callback: () => keyPopUp.destroy(),
       loop: false,
     });
     eventsCenter.emit("update-bank", "key");

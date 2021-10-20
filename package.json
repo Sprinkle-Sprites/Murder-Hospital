@@ -6,7 +6,9 @@
     "start-serve": "nodemon server/server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "start-client": "nodemon main.js"
+    "start-client": "nodemon main.js",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "core-js": "^3.17.3",
@@ -15,7 +17,8 @@
     "nodemon": "^2.0.13",
     "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.61",
-    "socket.io": "^4.3.0",
+    "socket-io": "^1.0.0",
+    "socket.io": "^4.3.1",
     "socket.io-client": "^4.3.0",
     "vue": "^3.2.12"
   },

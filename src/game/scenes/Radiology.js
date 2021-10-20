@@ -9,6 +9,7 @@ import {
 
 import collider from "@/game/assets/collider.png";
 import combination_code from "@/game/assets/popups/locker_combo.png";
+import eventsCenter from "@/game/eventsCenter";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 import MainTimer from "./MainTimer";
@@ -34,7 +35,7 @@ class Radiology extends Scene {
     this.load.image("Xray 3", collider);
 
     //POP UP
-    this.load.image("pop-up-image", combination_code);
+    this.load.image("comboCode", combination_code);
   }
 
   create() {
@@ -144,15 +145,8 @@ class Radiology extends Scene {
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
-    const timerLabel = this.add.text(620, 35, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.mainTimer = new MainTimer(this, timerLabel);
-    this.mainTimer.start(this.handleCountdownFinished.bind(this));
-
-    this.mainSceneTimer = new MainSceneTimer();
+    //Grab MainTimer
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
 
     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
@@ -314,28 +308,24 @@ class Radiology extends Scene {
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
     this.mainTimer.minusFive();
-
-    console.log("time", this.mainTimer.scene.time);
-    console.log("this", this.mainTimer);
-
-    // nextSceneFunc(this, "MainScene");
+    nextSceneFunc(this, "MainScene");
   }
 
   onXrayCollision() {
-    const popUp = this.add.image(400, 300, "pop-up-image");
+    const popUp = this.add.image(400, 300, "comboCode");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
       loop: false,
     });
+    eventsCenter.emit("update-bank", "comboCode");
     nextSceneFunc(this, "MainScene");
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
-    this.mainTimer.update();
   }
 }
 
