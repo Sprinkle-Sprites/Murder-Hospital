@@ -1,3 +1,4 @@
+
 // //load image files
 
 let images = [
@@ -45,3 +46,4 @@ document
   .addEventListener("click", rollDie, true);
 
 export default rollDie;
+
