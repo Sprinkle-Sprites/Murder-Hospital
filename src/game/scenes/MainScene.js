@@ -7,7 +7,13 @@ import { io } from "socket.io-client";
 import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
-import { diceNextSceneFunc, createMessage, nextSceneFunc } from "../HelperFunctions";
+
+import {
+  diceNextSceneFunc,
+  createMessage,
+  nextSceneFunc,
+} from "../HelperFunctions";
+
 
 // const exitButton = document.getElementById("try-to-leave")
 // exitButton.addEventListener("click", MainScene.goToEnd, true)
