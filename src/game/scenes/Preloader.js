@@ -16,7 +16,7 @@ import morgue from "@/game/assets/tiles/morgue.json";
 import laboratory from "@/game/assets/tiles/Laboratory.json";
 import patients_room from "@/game/assets/tiles/patients_room.json";
 import pharmacy from "@/game/assets/tiles/Pharmacy.json";
-import exit_room from "@/game/assets/tiles/exit_room.json"
+import exit_room from "@/game/assets/tiles/exit_room.json";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -117,7 +117,7 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("Laboratory");
+      this.scene.start("MainScene");
       this.scene.start("ClueBank");
     }
   }
