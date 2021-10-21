@@ -6,15 +6,15 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage
+  createMessageForImage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import eventsCenter from "@/game/eventsCenter";
 
-import poster from "@/game/assets/popups/hang-in-there-blood.png"
-import ivBag from "@/game/assets/popups/iv-bag.png"
+import poster from "@/game/assets/popups/hang-in-there-blood.png";
+import ivBag from "@/game/assets/popups/iv-bag.png";
 
 class ICU extends Scene {
   constructor() {
@@ -42,8 +42,8 @@ class ICU extends Scene {
     this.load.image("poster-collider", collider);
 
     //POSTER IMAGE
-    this.load.image("poster", poster)
-    this.load.image("IVbag", ivBag)
+    this.load.image("poster", poster);
+    this.load.image("IVbag", ivBag);
   }
 
   create() {
@@ -64,9 +64,9 @@ class ICU extends Scene {
   }
 
   createTitle() {
-    this.add.text(385, 614, "ICU", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(385, 605, "I C U", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
@@ -229,8 +229,9 @@ class ICU extends Scene {
 
   createPoster() {
     this.posterC = this.physics.add
-    .sprite(725, 440, "poster-collider")
-    .setDepth(-2).setSize(20,28, true)
+      .sprite(725, 440, "poster-collider")
+      .setDepth(-2)
+      .setSize(20, 28, true);
   }
 
   createColliders() {
@@ -329,13 +330,13 @@ class ICU extends Scene {
     createMessageForImage(this, IVMessage);
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "IVbag").setScale(0.5, 0.5);
-        this.time.addEvent({
+      this.time.addEvent({
         delay: 4750,
         callback: () => popUp.destroy(),
         loop: false,
-    })
-  })
-    eventsCenter.emit("update-bank", "IVbag")
+      });
+    });
+    eventsCenter.emit("update-bank", "IVbag");
     nextSceneFunc(this, "MainScene");
   }
 

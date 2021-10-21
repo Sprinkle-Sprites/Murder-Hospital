@@ -60,9 +60,9 @@ class LockerRoom extends Scene {
   }
 
   createTitle() {
-    this.add.text(350, 614, "LOCKER ROOM", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(350, 605, "LOCKER ROOM", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
