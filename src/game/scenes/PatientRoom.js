@@ -49,6 +49,7 @@ class PatientRoom extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createFlower();
@@ -58,7 +59,13 @@ class PatientRoom extends Scene {
     this.createColliders();
     this.createTimer();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createTitle() {
+    this.add.text(340, 610, "The Patient's Room", {
+      fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+      fontSize: 20,
+    });
   }
 
   createTimer() {
@@ -68,8 +75,12 @@ class PatientRoom extends Scene {
       padding: 10,
     });
 
+    // ROOM TIMER
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
