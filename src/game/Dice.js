@@ -1,4 +1,3 @@
-
 // //load image files
 
 let images = [
@@ -12,9 +11,14 @@ let images = [
   "dieRed7.png",
   "dieRed8.png",
 ];
+
+let roomNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+
+let rooms = roomNumbers.length;
 // select all elements that have img
 let dice = document.querySelectorAll("img");
 
+let dieIdx;
 let dieValue;
 
 function rollDie() {
@@ -24,7 +28,9 @@ function rollDie() {
   });
 
   // dieValue must be a number from 1 - 8
-  dieValue = Math.floor(Math.random() * 8) + 1;
+  dieIdx = Math.floor(Math.random() * rooms) + 1;
+
+  dieValue = roomNumbers[dieIdx];
 
   setTimeout(() => {
     dice.forEach((die) => {
@@ -46,4 +52,3 @@ document
   .addEventListener("click", rollDie, true);
 
 export default rollDie;
-
