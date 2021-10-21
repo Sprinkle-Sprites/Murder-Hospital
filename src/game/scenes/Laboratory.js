@@ -5,6 +5,7 @@ import {
   resizeCollider,
   nextSceneFunc,
   createMessage,
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -60,7 +61,19 @@ class Laboratory extends Scene {
     this.createCandyBar();
     this.createDesk();
     this.createColliders();
+    this.createTimer();
     this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
   }
 
   createMap() {
@@ -109,62 +122,28 @@ class Laboratory extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("floors", InteriorB).setDepth(-2);
-    const wallLayer = map.createLayer("Walls", InteriorA).setDepth(-2);
-    const blood = map.createLayer("Blood", InteriorAlt).setDepth(-2);
+    this.floorLayer = map.createLayer("floors", InteriorB);
+    this.wallLayer = map.createLayer("Walls", InteriorA);
+    this.blood = map.createLayer("Blood", InteriorAlt);
 
-    const computer = map.createLayer("Computer", Lab_Office).setDepth(-1);
-    const labOffice = map.createLayer("Lab Office", Lab_Office).setDepth(-2);
-    const labStuff = map.createLayer("Lab Stuff", Lab3).setDepth(-2);
+    this.computer = map.createLayer("Computer", Lab_Office);
+    this.labOffice = map.createLayer("Lab Office", Lab_Office);
+    this.labStuff = map.createLayer("Lab Stuff", Lab3);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      blood,
-      computer,
-      labOffice,
-      labStuff,
+      this.floorLayer,
+      this.wallLayer,
+      this.blood,
+      this.computer,
+      this.labOffice,
+      this.labStuff,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    blood.setCollisionByProperty({ collides: true });
-    computer.setCollisionByProperty({ collides: true });
-    labOffice.setCollisionByProperty({ collides: true });
-    labStuff.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, blood);
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, computer);
-    this.physics.add.collider(this.player, labOffice);
-    this.physics.add.collider(this.player, labStuff);
-
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -238,6 +217,20 @@ class Laboratory extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.blood.setCollisionByProperty({ collides: true });
+    this.computer.setCollisionByProperty({ collides: true });
+    this.labOffice.setCollisionByProperty({ collides: true });
+    this.labStuff.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.blood);
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.computer);
+    this.physics.add.collider(this.player, this.labOffice);
+    this.physics.add.collider(this.player, this.labStuff);
+
     this.physics.add.overlap(
       this.player,
       this.calendar1,
@@ -295,6 +288,7 @@ class Laboratory extends Scene {
       callback: () => calPopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "calendar_date");
     nextSceneFunc(this, "MainScene");
   }
@@ -315,6 +309,7 @@ class Laboratory extends Scene {
       callback: () => testTubePopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "test_tube");
     nextSceneFunc(this, "MainScene");
   }
@@ -327,6 +322,7 @@ class Laboratory extends Scene {
       callback: () => specimenFalskPopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "specimenFlask");
     nextSceneFunc(this, "MainScene");
   }
@@ -368,10 +364,11 @@ class Laboratory extends Scene {
     const enter = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.ENTER
     );
+
     enter.on("down", () => {
       this.password = text2._text;
-
       text1.destroy();
+
       if (this.password === "SUE") {
         const popup = this.add.image(400, 300, "computerScreen");
         popup.setScale(0.25, 0.25);
@@ -381,15 +378,16 @@ class Laboratory extends Scene {
           callback: () => popup.destroy(),
           loop: false,
         });
+
         eventsCenter.emit("update-bank", "computerScreen");
         nextSceneFunc(this, "MainScene");
       } else if (this.password !== "SUE" && this.password !== "") {
-        console.log("password", text2._text);
         const wrongCodeMessage = "INCORRECT";
         this.player.disableBody();
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");
       }
+
       text2.destroy();
     });
   }

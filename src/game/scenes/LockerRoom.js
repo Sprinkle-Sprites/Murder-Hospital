@@ -7,8 +7,8 @@ import {
   resizeMapLayer,
   resizeCollider,
   createMessageForImage,
-  createMessage,
   nextSceneFunc,
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
@@ -55,6 +55,18 @@ class LockerRoom extends Scene {
     this.createSink();
     this.createShower();
     this.createColliders();
+    this.createTimer();
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
   }
 
   createMap() {
@@ -108,29 +120,30 @@ class LockerRoom extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("Floor", InteriorB).setDepth(-1);
-    const borderLayer = map.createLayer("Border", InteriorA).setDepth(-1);
-    const wallLayer = map.createLayer("Walls", InteriorA).setDepth(-1);
-    const stallsLayer = map.createLayer("Stalls", InteriorA).setDepth(-1);
-    const bathroomLayer = map.createLayer("Bathroom", bathroom).setDepth(-1);
-    const lockersLayer = map.createLayer("Lockers", lockerRoom).setDepth(-1);
-    const extraLayer = map.createLayer("Extras", InteriorAlt).setDepth(-1);
-    const extra2Layer = map.createLayer("Extras 2", InteriorC).setDepth(-1);
+    this.floorLayer = map.createLayer("Floor", InteriorB);
+    this.borderLayer = map.createLayer("Border", InteriorA);
+    this.wallLayer = map.createLayer("Walls", InteriorA);
+    this.stallsLayer = map.createLayer("Stalls", InteriorA);
+    this.bathroomLayer = map.createLayer("Bathroom", bathroom);
+    this.lockersLayer = map.createLayer("Lockers", lockerRoom);
+    this.extraLayer = map.createLayer("Extras", InteriorAlt);
+    this.extra2Layer = map.createLayer("Extras 2", InteriorC);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      borderLayer,
-      stallsLayer,
-      bathroomLayer,
-      lockersLayer,
-      extraLayer,
-      extra2Layer,
+      this.floorLayer,
+      this.wallLayer,
+      this.borderLayer,
+      this.stallsLayer,
+      this.bathroomLayer,
+      this.lockersLayer,
+      this.extraLayer,
+      this.extra2Layer,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
 
     //LAYER COLLIDERS
@@ -228,6 +241,20 @@ class LockerRoom extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.stallsLayer.setCollisionByProperty({ collides: true });
+    this.bathroomLayer.setCollisionByProperty({ collides: true });
+    this.extra2Layer.setCollisionByProperty({ collides: true });
+    this.lockersLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.stallsLayer);
+    this.physics.add.collider(this.player, this.bathroomLayer);
+    this.physics.add.collider(this.player, this.extra2Layer);
+    this.physics.add.collider(this.player, this.lockersLayer);
+
     this.physics.add.overlap(
       this.player,
       this.locker1,
