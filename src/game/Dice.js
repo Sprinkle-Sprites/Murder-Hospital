@@ -1,3 +1,5 @@
+import eventEmitter from "./eventEmitter";
+
 // //load image files
 
 let images = [
@@ -12,14 +14,23 @@ let images = [
   "dieRed8.png",
 ];
 
-let roomNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+//need to keep this array untouched for when the die rolls and all rooms need to be available
+let rooms = [1, 2, 3, 4, 5, 6, 7, 8];
+let roomsLeng = rooms.length;
 
-let rooms = roomNumbers.length;
+let incompRooms = [1, 2, 3, 4, 5, 6, 7, 8];
+let inCompRoomsLeng = incompRooms.length;
+eventEmitter.on("completed", (idx) => {
+  incompRooms.splice(idx, 1);
+  inCompRoomsLeng = incompRooms.length;
+});
+
 // select all elements that have img
 let dice = document.querySelectorAll("img");
 
 let dieIdx;
 let dieValue;
+let count = 0;
 
 function rollDie() {
   // add a shake property to so that dice "shakes"
@@ -27,12 +38,23 @@ function rollDie() {
     die.classList.add("shake");
   });
 
-  // dieValue must be a number from 1 - 8
-  dieIdx = Math.floor(Math.random() * rooms);
+  count++;
 
-  dieValue = roomNumbers[dieIdx];
-  console.log(dieIdx);
-  console.log(dieValue);
+  if (count % 4 === 0) {
+    dieIdx = Math.floor(Math.random() * roomsLeng);
+
+    dieValue = rooms[dieIdx];
+    console.log("count", count);
+    console.log("die value", dieValue);
+  } else {
+    dieIdx = Math.floor(Math.random() * inCompRoomsLeng);
+
+    dieValue = incompRooms[dieIdx];
+    console.log("incomplete length", inCompRoomsLeng);
+    console.log("die value", dieValue);
+  }
+  // dieValue must be a number from 1 - 8
+
   setTimeout(() => {
     dice.forEach((die) => {
       die.classList.remove("shake");

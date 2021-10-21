@@ -9,6 +9,7 @@ import {
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
 import test_tube from "@/game/assets/popups/test_tube.png";
@@ -21,6 +22,7 @@ class Laboratory extends Scene {
   constructor() {
     super({ key: "Laboratory" });
     this.password = null;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -49,6 +51,8 @@ class Laboratory extends Scene {
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
     this.load.image("computerScreen", computerScreen);
+
+    console.log("collected clues", this.collectedClues);
   }
 
   create() {
@@ -179,6 +183,12 @@ class Laboratory extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 6)
+      //send a message to dice to lower prob of the morgue (index 6) being rolled
+      eventEmitter.emit("completed", 3);
   }
 
   createCalendar() {

@@ -19,18 +19,11 @@ class ClueBank extends Scene {
   }
 
   preload() {
-    //surgery
-    this.load.image("glove", rubber_glove);
-    this.load.image("soap", bar_of_soap);
-    this.load.image("scapel", scapel);
-    //patient's room
-    this.load.image("flowers", flowers);
-    this.load.image("blanket", blanket);
-    this.load.image("paperScrap", paperScrap);
+    //this preloader is not needed at the moment but keeping for the time, just in case
   }
 
   create() {
-    const BankLabel = this.add.text(850, 10, "Clue Bank", {
+    this.add.text(850, 10, "Clue Bank", {
       fontSize: 20,
       backgroundColor: "black",
       padding: 5,

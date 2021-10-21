@@ -6,6 +6,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessageForImage,
+  createMessage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -13,11 +14,13 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 import password from "@/game/assets/popups/password.png";
 import toeTag from "@/game/assets/popups/toeTag.png";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
     this.check = false;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -77,6 +80,12 @@ export default class Morgue extends Phaser.Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the morgue (index 6) being rolled
+      eventEmitter.emit("completed", 6);
   }
 
   createMap() {
@@ -152,23 +161,6 @@ export default class Morgue extends Phaser.Scene {
       layers[i].setDepth(-1);
     }
   } //end createMap
-
-  // // LAYER COLLIDERS
-  // borderLayer.setCollisionByProperty({ collides: true });
-  // wallLayer.setCollisionByProperty({ collides: true });
-  // morgueLabLayer.setCollisionByProperty({ collides: true });
-  // elevatorLayer.setCollisionByProperty({ collides: true });
-  // morgueAltLayer.setCollisionByProperty({ collides: true });
-  // morgueObjLayer.setCollisionByProperty({ collides: true });
-
-  // // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-  // this.physics.add.collider(this.player, borderLayer);
-  // this.physics.add.collider(this.player, wallLayer);
-  // this.physics.add.collider(this.player, morgueLabLayer);
-  // this.physics.add.collider(this.player, elevatorLayer);
-  // this.physics.add.collider(this.player, morgueAltLayer);
-  // this.physics.add.collider(this.player, morgueObjLayer);
-  // } //end createMap
 
   createPlayer() {
     this.player = this.physics.add.existing(
@@ -247,6 +239,12 @@ export default class Morgue extends Phaser.Scene {
         loop: false,
       });
       eventsCenter.emit("update-bank", "password");
+
+      if (!this.collectedClues.includes("password")) {
+        this.collectedClues.push("password");
+        this.completed();
+      }
+
       nextSceneFunc(this, "MainScene");
     }, 3000);
   }
@@ -268,6 +266,10 @@ export default class Morgue extends Phaser.Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "toeTag");
+        if (!this.collectedClues.includes("toeTag")) {
+          this.collectedClues.push("toeTag");
+          this.completed();
+        }
         nextSceneFunc(this, "MainScene");
       }, 3000);
     } else {
@@ -284,6 +286,11 @@ export default class Morgue extends Phaser.Scene {
     this.player.disableBody();
     createMessage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("ghostDrawer")) {
+      this.collectedClues.push("ghostDrawer");
+      this.completed();
+    }
     nextSceneFunc(this, "MainScene");
   }
 
@@ -291,6 +298,12 @@ export default class Morgue extends Phaser.Scene {
     const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
     this.player.disableBody();
     createMessage(this, boneSawMessage);
+
+    if (!this.collectedClues.includes("bone saw")) {
+      this.collectedClues.push("bone saw");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
