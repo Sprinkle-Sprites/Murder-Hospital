@@ -47,6 +47,7 @@ class ICU extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createBlood();
@@ -55,12 +56,19 @@ class ICU extends Scene {
     this.createPoster();
     this.createColliders();
     this.createTimer();
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  createTitle() {
+    this.add.text(385, 614, "ICU", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createPlayer() {
@@ -88,8 +96,12 @@ class ICU extends Scene {
       padding: 5,
     });
 
+    // ROOM TIMER
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {

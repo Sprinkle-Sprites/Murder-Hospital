@@ -40,6 +40,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   create() {
+    this.createTitle();
     this.createTimer();
     this.createPlayer();
     this.createMap();
@@ -47,19 +48,30 @@ export default class Morgue extends Phaser.Scene {
     this.createNotebook();
     this.createBoneSaw();
     this.createColliders();
-    this.createTimer();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
+  }
+
+  createTitle() {
+    this.add.text(360, 618, "MORGUE", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createTimer() {
     const roomTimerLabel = this.add.text(10, 610, "", {
       fontSize: 20,
       backgroundColor: "black",
-      padding: 5,
+      padding: 10,
     });
 
+    // ROOM TIMER
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   update() {
@@ -174,21 +186,6 @@ export default class Morgue extends Phaser.Scene {
       callbackScope: this,
       loop: false,
     });
-  }
-
-  createTimer() {
-    // ROOM TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
-
-    // MAIN TIMER
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createBodyLocker() {
