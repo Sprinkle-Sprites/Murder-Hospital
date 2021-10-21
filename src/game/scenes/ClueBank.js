@@ -23,7 +23,7 @@ class ClueBank extends Scene {
   }
 
   create() {
-    this.add.text(850, 10, "Clue Bank", {
+    const BankLabel = this.add.text(900, 10, "Clue Bank", {
       fontSize: 20,
       backgroundColor: "black",
       padding: 5,
@@ -51,9 +51,11 @@ class ClueBank extends Scene {
         x: this.x,
         y: this.y,
       };
-    } else if (this.count % 2 === 0) {
+    } else if (this.count % 3 === 0) {
+      this.x = 1050;
+    } else if (this.count % 3 === 2) {
       this.x = 950;
-    } else {
+    } else if (this.count % 3 === 1) {
       this.y = this.y + 65;
       this.x = 850;
     }

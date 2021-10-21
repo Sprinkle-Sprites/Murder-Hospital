@@ -54,10 +54,3 @@ button {
     transform: rotate(8deg);
   }
 }
-
-@font-face {
-  font-family: "GypsyCurse";
-  src: url("font/GypsyCurse.ttf");
-  font-style: normal;
-  font-weight: 100;
-}

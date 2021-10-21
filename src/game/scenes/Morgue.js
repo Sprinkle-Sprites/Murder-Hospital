@@ -55,9 +55,9 @@ export default class Morgue extends Phaser.Scene {
   }
 
   createTitle() {
-    this.add.text(360, 618, "MORGUE", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(360, 605, "MORGUE", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
@@ -258,7 +258,7 @@ export default class Morgue extends Phaser.Scene {
         "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
       createMessageForImage(this, openMessage);
       setTimeout(() => {
-        const popUp = this.add.image(400, 300, "toeTag");
+        const popUp = this.add.image(400, 300, "toeTag").setScale(0.7, 0.7);
         this.player.disableBody();
         this.time.addEvent({
           delay: 4750,
@@ -275,7 +275,7 @@ export default class Morgue extends Phaser.Scene {
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
       this.player.disableBody();
-      createMessage(this, drawerMessage);
+      createMessageForImage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -284,7 +284,7 @@ export default class Morgue extends Phaser.Scene {
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
-    createMessage(this, lockedBodyMessage);
+    createMessageForImage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("ghostDrawer")) {

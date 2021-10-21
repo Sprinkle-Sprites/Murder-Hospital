@@ -6,6 +6,7 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
+  displayTiledCollider,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -70,9 +71,9 @@ class Laboratory extends Scene {
   }
 
   createTitle() {
-    this.add.text(355, 618.5, "LABORATORY", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(360, 605, "LABORATORY", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
@@ -138,13 +139,13 @@ class Laboratory extends Scene {
     );
 
     //LAYERS
-    this.floorLayer = map.createLayer("floors", InteriorB);
-    this.wallLayer = map.createLayer("Walls", InteriorA);
-    this.blood = map.createLayer("Blood", InteriorAlt);
+    this.floorLayer = map.createLayer("floors", InteriorB).setDepth(-1);
+    this.wallLayer = map.createLayer("Walls", InteriorA).setDepth(-1);
+    this.blood = map.createLayer("Blood", InteriorAlt).setDepth(-1);
 
-    this.computer = map.createLayer("Computer", Lab_Office);
-    this.labOffice = map.createLayer("Lab Office", Lab_Office);
-    this.labStuff = map.createLayer("Lab Stuff", Lab3);
+    this.computer = map.createLayer("Computer", Lab_Office).setDepth(0);
+    this.labOffice = map.createLayer("Lab Office", Lab_Office).setDepth(-1);
+    this.labStuff = map.createLayer("Lab Stuff", Lab3).setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
@@ -158,7 +159,6 @@ class Laboratory extends Scene {
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
-      layers[i].setDepth(-1);
     }
   }
 
@@ -303,7 +303,7 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
-    const calPopUp = this.add.image(400, 300, "calendar_date");
+    const calPopUp = this.add.image(400, 300, "calendar_date").setScale(0.7, 0.7);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
@@ -388,7 +388,7 @@ class Laboratory extends Scene {
     );
 
     enter.on("down", () => {
-      this.password = text2._text;
+      this.password = text2._text.toUpperCase();
       text1.destroy();
 
       if (this.password === "SUE") {

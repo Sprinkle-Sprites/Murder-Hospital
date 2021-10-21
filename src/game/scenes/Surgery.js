@@ -64,9 +64,9 @@ class Surgery extends Scene {
   }
 
   createTitle() {
-    this.add.text(380, 614, "SURGERY", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(380, 605, "SURGERY", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
