@@ -12,7 +12,7 @@ import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import eventsCenter from "@/game/eventsCenter";
 
-import poster from "@/game/assets/popups/hang-in-there-blood.png"
+import poster from "@/game/assets/popups/hang-in-there-blood.png";
 
 class ICU extends Scene {
   constructor() {
@@ -37,10 +37,10 @@ class ICU extends Scene {
     this.load.image("Monitor 2", collider);
 
     //POSTER COLLIDER
-    this.load.image("poster-collider", collider)
+    this.load.image("poster-collider", collider);
 
     //POSTER IMAGE
-    this.load.image("poster", poster)
+    this.load.image("poster", poster);
   }
 
   create() {
@@ -214,8 +214,9 @@ class ICU extends Scene {
 
   createPoster() {
     this.posterC = this.physics.add
-    .sprite(535, 185, "poster-collider")
-    .setDepth(-2).setSize(20,28, true)
+      .sprite(535, 185, "poster-collider")
+      .setDepth(-2)
+      .setSize(20, 28, true);
   }
 
   createColliders() {
@@ -295,15 +296,7 @@ class ICU extends Scene {
       this.onPosterCollision,
       null,
       this
-    )
-
-    // COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // this.nurseStationLayer3.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
+    );
   }
 
   onBloodCollision() {
@@ -331,14 +324,15 @@ class ICU extends Scene {
   }
 
   onPosterCollision() {
-    const popUp = this.add.image(400, 300, "poster").setScale(.5,.5);
+    const popUp = this.add.image(400, 300, "poster").setScale(0.5, 0.5);
     this.player.disableBody();
-    eventsCenter.emit('update-bank', "poster")
+    eventsCenter.emit("update-bank", "poster");
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
       loop: false,
     });
+
     nextSceneFunc(this, "MainScene");
   }
 }

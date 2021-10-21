@@ -26,6 +26,10 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import blueButton from "@/game/assets/menu/blue_button01.png";
+import blueButton2 from "@/game/assets/menu/blue_button02.png";
+import hospital from "@/game/assets/menu/abandoned_Hospital.png";
+import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -98,6 +102,11 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
+    // load assets for title scene
+    this.load.image("blueButton", blueButton);
+    this.load.image("blueButton2", blueButton2);
+    this.load.image("hospital", hospital);
+    this.load.image("hospital2", hospital2);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
@@ -130,8 +139,9 @@ export default class Preloader extends Phaser.Scene {
     if (this.readyCount === 2) {
       // have it lead to first scene
       this.scene.start("MainTimerScene");
-      this.scene.start("MainScene");
       this.scene.start("ClueBank");
+      // have it lead to title scene
+      this.scene.start("TitleScene");
     }
   }
 }

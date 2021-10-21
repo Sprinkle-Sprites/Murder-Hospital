@@ -28,10 +28,11 @@ function rollDie() {
   });
 
   // dieValue must be a number from 1 - 8
-  dieIdx = Math.floor(Math.random() * rooms) + 1;
+  dieIdx = Math.floor(Math.random() * rooms);
 
   dieValue = roomNumbers[dieIdx];
-
+  console.log(dieIdx);
+  console.log(dieValue);
   setTimeout(() => {
     dice.forEach((die) => {
       die.classList.remove("shake");
