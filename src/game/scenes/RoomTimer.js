@@ -37,7 +37,7 @@ export default class RoomTimer {
       delay: duration,
       callback: () => {
         //text to display when timer ends
-        this.label.text = "Your Time: \n 00:00";
+        this.label.text = "Your Time: 00:00";
         this.stop();
 
         if (callback) {
