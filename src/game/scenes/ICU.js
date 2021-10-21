@@ -214,7 +214,7 @@ class ICU extends Scene {
 
   createPoster() {
     this.posterC = this.physics.add
-    .sprite(535, 185, "poster-collider")
+    .sprite(725, 440, "poster-collider")
     .setDepth(-2).setSize(20,28, true)
   }
 
