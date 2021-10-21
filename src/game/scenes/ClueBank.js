@@ -71,6 +71,8 @@ class ClueBank extends Scene {
       x: this.x,
       y: this.y,
     };
+
+    console.log("this is the bank", this.bank)
   }
 
   checker(key) {
