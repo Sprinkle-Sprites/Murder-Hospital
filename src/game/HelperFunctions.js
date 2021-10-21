@@ -56,7 +56,7 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 3000);
+  }, 4500);
 }
 
 export function handleRoomCountdownFinished() {
