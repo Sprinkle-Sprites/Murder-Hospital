@@ -6,6 +6,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
+  createMessageForImage
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -13,7 +14,7 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 import eventsCenter from "@/game/eventsCenter";
 
 import poster from "@/game/assets/popups/hang-in-there-blood.png"
-
+import ivBag from "@/game/assets/popups/iv-bag.png"
 class ICU extends Scene {
   constructor() {
     super({ key: "ICU" });
@@ -41,6 +42,7 @@ class ICU extends Scene {
 
     //POSTER IMAGE
     this.load.image("poster", poster)
+    this.load.image("IVbag", ivBag)
   }
 
   create() {
@@ -307,19 +309,28 @@ class ICU extends Scene {
   }
 
   onBloodCollision() {
+    this.player.disableBody();
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
-    this.player.disableBody();
     createMessage(this, bloodMessage);
     this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
 
   onIVCollision() {
+    this.player.disableBody();
     const IVMessage =
       "Oh, hey, a bag of blood. If you lose a bunch later, maybe this will come in handy?";
-    this.player.disableBody();
-    createMessage(this, IVMessage);
+    createMessageForImage(this, IVMessage);
+    setTimeout(() => {
+      const popUp = this.add.image(400, 300, "IVbag").setScale(0.5, 0.5);
+        this.time.addEvent({
+        delay: 4750,
+        callback: () => popUp.destroy(),
+        loop: false,
+    })
+  })
+    eventsCenter.emit("update-bank", "IVbag")
     nextSceneFunc(this, "MainScene");
   }
 
