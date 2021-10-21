@@ -53,7 +53,7 @@ class Radiology extends Scene {
 
   update() {
     this.player.update();
-    // this.roomTimer.update();
+    this.roomTimer.update();
   }
 
   createTitle() {
@@ -163,8 +163,8 @@ class Radiology extends Scene {
       padding: 5,
     });
 
-    // this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    // this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
 
     this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
