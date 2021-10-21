@@ -6,6 +6,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessageForImage,
+  createMessage
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";

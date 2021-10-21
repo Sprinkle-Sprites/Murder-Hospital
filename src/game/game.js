@@ -20,7 +20,7 @@ function launch(containerId) {
   return new Phaser.Game({
     type: Phaser.AUTO,
     mode: Phaser.Scale.FIT,
-    width: 1000,
+    width: 1100,
     height: 650,
     parent: containerId,
     dom: {
@@ -41,7 +41,7 @@ function launch(containerId) {
         gravity: {
           y: 0,
         },
-        debug: false,
+        debug: true,
       },
     },
 
