@@ -145,6 +145,49 @@ class LockerRoom extends Scene {
       resizeMapLayer(this, layers[i]);
       layers[i].setDepth(-1);
     }
+
+    //LAYER COLLIDERS
+    borderLayer.setCollisionByProperty({ collides: true });
+    stallsLayer.setCollisionByProperty({ collides: true });
+    bathroomLayer.setCollisionByProperty({ collides: true });
+    extra2Layer.setCollisionByProperty({ collides: true });
+    lockersLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, borderLayer);
+    this.physics.add.collider(this.player, stallsLayer);
+    this.physics.add.collider(this.player, bathroomLayer);
+    this.physics.add.collider(this.player, extra2Layer);
+    this.physics.add.collider(this.player, lockersLayer);
+
+    //COUNTDOWN TIMER
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+
+    //     //COLLIDER DEBUG COLOR
+    // const debugGraphics = this.add.graphics().setAlpha(0.7);
+    // extra2Layer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    // });
+  }
+
+  handleRoomCountdownFinished() {
+    this.player.active = false;
+    const { width, height } = this.scale;
+    this.add
+      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+        fontSize: 30,
+        backgroundColor: "black",
+      })
+      .setOrigin(0.5);
+    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
