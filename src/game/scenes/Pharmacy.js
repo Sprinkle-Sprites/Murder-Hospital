@@ -63,7 +63,7 @@ class Pharmacy extends Scene {
   }
 
   createTitle() {
-    this.add.text(355, 610, "PHARMACY", {
+    this.add.text(355, 614, "PHARMACY", {
       fontFamily: "Inconsolata",
       fontSize: 20,
       color: "red",

@@ -66,7 +66,7 @@ class Laboratory extends Scene {
   }
 
   createTitle() {
-    this.add.text(355, 610, "LABORATORY", {
+    this.add.text(355, 618.5, "LABORATORY", {
       fontFamily: "Inconsolata",
       fontSize: 20,
       color: "red",
