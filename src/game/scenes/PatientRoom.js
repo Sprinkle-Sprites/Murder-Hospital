@@ -63,7 +63,7 @@ class PatientRoom extends Scene {
 
   createTitle() {
     this.add.text(317, 618, "THE PATIENT'S ROOM", {
-      fontFamily: "Inconsolata",
+      fontFamily: "GypsyCurse",
       fontSize: 20,
       color: "red",
     });
