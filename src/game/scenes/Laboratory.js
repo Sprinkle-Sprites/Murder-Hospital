@@ -52,6 +52,7 @@ class Laboratory extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createCalendar();
@@ -62,7 +63,14 @@ class Laboratory extends Scene {
     this.createDesk();
     this.createColliders();
     this.createTimer();
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createTitle() {
+    this.add.text(355, 610, "LABORATORY", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createTimer() {
@@ -72,8 +80,12 @@ class Laboratory extends Scene {
       padding: 10,
     });
 
+    //ROOM TIMER
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
