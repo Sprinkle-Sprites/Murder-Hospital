@@ -52,6 +52,7 @@ class Surgery extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createGurney();
@@ -60,6 +61,14 @@ class Surgery extends Scene {
     this.createTable();
     this.createColliders();
     this.createTimer();
+  }
+
+  createTitle() {
+    this.add.text(380, 610, "Surgery ", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createTimer() {
