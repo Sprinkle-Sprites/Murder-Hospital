@@ -8,7 +8,8 @@ import {
   resizeCollider,
   createMessageForImage,
   nextSceneFunc,
-  handleRoomCountdownFinished,
+  createMessage,
+  handleRoomCountdownFinished
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";

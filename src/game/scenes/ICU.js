@@ -341,7 +341,7 @@ class ICU extends Scene {
   }
 
   onMonitorCollision() {
-    const monitorMessage = "How is this monitor supposed to help me?";
+    const monitorMessage = "How is this monitor supposed to help you?";
     this.player.disableBody();
     createMessage(this, monitorMessage);
     nextSceneFunc(this, "MainScene");
