@@ -61,7 +61,7 @@ class ICU extends Scene {
   }
 
   createTitle() {
-    this.add.text(355, 610, "LOCKER ROOM", {
+    this.add.text(385, 614, "ICU", {
       fontFamily: "Inconsolata",
       fontSize: 20,
       color: "red",
