@@ -147,27 +147,27 @@ class LockerRoom extends Scene {
     }
 
     //LAYER COLLIDERS
-    borderLayer.setCollisionByProperty({ collides: true });
-    stallsLayer.setCollisionByProperty({ collides: true });
-    bathroomLayer.setCollisionByProperty({ collides: true });
-    extra2Layer.setCollisionByProperty({ collides: true });
-    lockersLayer.setCollisionByProperty({ collides: true });
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.stallsLayer.setCollisionByProperty({ collides: true });
+    this.bathroomLayer.setCollisionByProperty({ collides: true });
+    this.extra2Layer.setCollisionByProperty({ collides: true });
+    this.lockersLayer.setCollisionByProperty({ collides: true });
 
     //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, borderLayer);
-    this.physics.add.collider(this.player, stallsLayer);
-    this.physics.add.collider(this.player, bathroomLayer);
-    this.physics.add.collider(this.player, extra2Layer);
-    this.physics.add.collider(this.player, lockersLayer);
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.stallsLayer);
+    this.physics.add.collider(this.player, this.bathroomLayer);
+    this.physics.add.collider(this.player, this.extra2Layer);
+    this.physics.add.collider(this.player, this.lockersLayer);
 
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
+    // //COUNTDOWN TIMER
+    // const roomTimerLabel = this.add.text(10, 610, "", {
+    //   fontSize: 20,
+    //   backgroundColor: "black",
+    //   padding: 5,
+    // });
+    // this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    // this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
     //     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
@@ -241,20 +241,6 @@ class LockerRoom extends Scene {
   }
 
   createColliders() {
-    //LAYER COLLIDERS
-    this.borderLayer.setCollisionByProperty({ collides: true });
-    this.stallsLayer.setCollisionByProperty({ collides: true });
-    this.bathroomLayer.setCollisionByProperty({ collides: true });
-    this.extra2Layer.setCollisionByProperty({ collides: true });
-    this.lockersLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, this.borderLayer);
-    this.physics.add.collider(this.player, this.stallsLayer);
-    this.physics.add.collider(this.player, this.bathroomLayer);
-    this.physics.add.collider(this.player, this.extra2Layer);
-    this.physics.add.collider(this.player, this.lockersLayer);
-
     this.physics.add.overlap(
       this.player,
       this.locker1,
@@ -302,7 +288,6 @@ class LockerRoom extends Scene {
   }
 
   onLocker2Collision() {
-
     const text1 = this.add
     .text(
       400,
