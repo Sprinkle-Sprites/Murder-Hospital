@@ -6,7 +6,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessageForImage,
-  createMessage
+  createMessage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -274,7 +274,7 @@ export default class Morgue extends Phaser.Scene {
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
       this.player.disableBody();
-      createMessageForImage(this, drawerMessage);
+      createMessage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -283,7 +283,7 @@ export default class Morgue extends Phaser.Scene {
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
-    createMessageForImage(this, lockedBodyMessage);
+    createMessage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
@@ -291,7 +291,7 @@ export default class Morgue extends Phaser.Scene {
   onBoneSaw() {
     const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
     this.player.disableBody();
-    createMessageForImage(this, boneSawMessage);
+    createMessage(this, boneSawMessage);
     nextSceneFunc(this, "MainScene");
   }
 
