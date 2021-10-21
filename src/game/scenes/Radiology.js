@@ -57,9 +57,9 @@ class Radiology extends Scene {
   }
 
   createTitle() {
-    this.add.text(360, 614, "X-RAY ROOM ", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(360, 605, "X-RAY ROOM", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
