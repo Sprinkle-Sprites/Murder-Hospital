@@ -378,7 +378,7 @@ class Laboratory extends Scene {
     );
 
     enter.on("down", () => {
-      this.password = text2._text;
+      this.password = text2._text.toUpperCase();
       text1.destroy();
 
       if (this.password === "SUE") {
