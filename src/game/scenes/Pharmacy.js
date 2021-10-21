@@ -51,6 +51,7 @@ class Pharmacy extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createPills();
@@ -59,7 +60,14 @@ class Pharmacy extends Scene {
     this.createCabinet2();
     this.createColliders();
     this.createTimer();
-    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
+  }
+
+  createTitle() {
+    this.add.text(355, 610, "PHARMACY", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createTimer() {
@@ -69,8 +77,12 @@ class Pharmacy extends Scene {
       padding: 5,
     });
 
+    // ROOM TIMER
     this.roomTimer = new RoomTimer(this, roomTimerLabel);
     this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {

@@ -64,7 +64,7 @@ class Surgery extends Scene {
   }
 
   createTitle() {
-    this.add.text(380, 610, "Surgery ", {
+    this.add.text(380, 610, "SURGERY", {
       fontFamily: "Inconsolata",
       fontSize: 20,
       color: "red",
