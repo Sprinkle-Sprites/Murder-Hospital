@@ -60,9 +60,9 @@ class LockerRoom extends Scene {
   }
 
   createTitle() {
-    this.add.text(350, 614, "LOCKER ROOM", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(345, 605, "LOCKER ROOM", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
@@ -168,15 +168,6 @@ class LockerRoom extends Scene {
     this.physics.add.collider(this.player, this.bathroomLayer);
     this.physics.add.collider(this.player, this.extra2Layer);
     this.physics.add.collider(this.player, this.lockersLayer);
-
-    // //COUNTDOWN TIMER
-    // const roomTimerLabel = this.add.text(10, 610, "", {
-    //   fontSize: 20,
-    //   backgroundColor: "black",
-    //   padding: 5,
-    // });
-    // this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    // this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
 
     //     //COLLIDER DEBUG COLOR
     // const debugGraphics = this.add.graphics().setAlpha(0.7);
@@ -298,57 +289,57 @@ class LockerRoom extends Scene {
 
   onLocker2Collision() {
     const text1 = this.add
-    .text(400, 300, "This locker is locked. Enter the combination below...", {
+      .text(400, 300, "This locker is locked. Enter the combination below...", {
         fixedWidth: 700,
         fixedHeight: 50,
         backgroundColor: "black",
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-    .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5);
 
     const text2 = this.add
-    .text(400, 370, "", {
-      fixedWidth: 300,
-      fixedHeight: 40,
-      backgroundColor: "black",
-      align: "center",
-      wordWrap: { width: 300, useAdvancedWrap: true },
-    })
-    .setOrigin(0.5, 0.5);
+      .text(400, 370, "", {
+        fixedWidth: 300,
+        fixedHeight: 40,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
 
-  text2.setInteractive().on("pointerdown", () => {
-    this.rexUI.edit(text2);
-  });
-
-  const enter = this.input.keyboard.addKey(
-    Phaser.Input.Keyboard.KeyCodes.ENTER
-  );
-
-  enter.on("down", () => {
-    this.combination = parseInt(text2._text);
-    text1.destroy();
-    if (this.combination === 15931) {
-      const popUp = this.add.image(400, 300, "mirror");
-    popUp.setScale(0.25, 0.25);
-    this.player.disableBody();
-    this.time.addEvent({
-      delay: 4750,
-      callback: () => popUp.destroy(),
-      loop: false,
+    text2.setInteractive().on("pointerdown", () => {
+      this.rexUI.edit(text2);
     });
-    eventsCenter.emit("update-bank", "mirror");
-    nextSceneFunc(this, "MainScene");
-    } else if (this.combination !== 15931 && !isNaN(this.combination)) {
-      const wrongCodeMessage =
-        "You try to open the locker, but it won't budge. Better keep looking for the combo";
-      this.player.disableBody();
-      createMessage(this, wrongCodeMessage);
-      nextSceneFunc(this, "MainScene");
-    }
-    text2.destroy();
-  });
-}
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
+    enter.on("down", () => {
+      this.combination = parseInt(text2._text);
+      text1.destroy();
+      if (this.combination === 15931) {
+        const popUp = this.add.image(400, 300, "mirror");
+        popUp.setScale(0.25, 0.25);
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "mirror");
+        nextSceneFunc(this, "MainScene");
+      } else if (this.combination !== 15931 && !isNaN(this.combination)) {
+        const wrongCodeMessage =
+          "You try to open the locker, but it won't budge. Better keep looking for the combo";
+        this.player.disableBody();
+        createMessage(this, wrongCodeMessage);
+        nextSceneFunc(this, "MainScene");
+      }
+      text2.destroy();
+    });
+  }
 
   onSinkCollision() {
     const popUp = this.add.image(400, 300, "toothbrush");

@@ -53,9 +53,9 @@ export default class Morgue extends Phaser.Scene {
   }
 
   createTitle() {
-    this.add.text(360, 618, "MORGUE", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(360, 605, "MORGUE", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
@@ -274,7 +274,7 @@ export default class Morgue extends Phaser.Scene {
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
       this.player.disableBody();
-      createMessage(this, drawerMessage);
+      createMessageForImage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -283,7 +283,7 @@ export default class Morgue extends Phaser.Scene {
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
-    createMessage(this, lockedBodyMessage);
+    createMessageForImage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
     nextSceneFunc(this, "MainScene");
   }
@@ -291,7 +291,7 @@ export default class Morgue extends Phaser.Scene {
   onBoneSaw() {
     const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
     this.player.disableBody();
-    createMessage(this, boneSawMessage);
+    createMessageForImage(this, boneSawMessage);
     nextSceneFunc(this, "MainScene");
   }
 

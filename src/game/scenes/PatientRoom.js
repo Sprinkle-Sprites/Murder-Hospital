@@ -62,9 +62,9 @@ class PatientRoom extends Scene {
   }
 
   createTitle() {
-    this.add.text(317, 618, "THE PATIENT'S ROOM", {
-      fontFamily: "Inconsolata",
-      fontSize: 20,
+    this.add.text(320, 605, "THE PATIENT'S ROOM", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
       color: "red",
     });
   }
