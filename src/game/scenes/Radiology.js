@@ -41,6 +41,7 @@ class Radiology extends Scene {
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createSwitch();
@@ -53,6 +54,14 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  createTitle() {
+    this.add.text(360, 614, "X-RAY ROOM ", {
+      fontFamily: "Inconsolata",
+      fontSize: 20,
+      color: "red",
+    });
   }
 
   createMap() {

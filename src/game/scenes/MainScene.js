@@ -14,7 +14,6 @@ import {
   nextSceneFunc,
 } from "../HelperFunctions";
 
-
 // const exitButton = document.getElementById("try-to-leave")
 // exitButton.addEventListener("click", MainScene.goToEnd, true)
 
@@ -257,7 +256,6 @@ class MainScene extends Scene {
   rollRoom() {
     let value = document.getElementById("diceValue").getAttribute("value");
 
-    // code to check if dice works
     if (parseInt(value) === 1) {
       const patRoomMes = "To The Patient's Room";
       createMessage(this, patRoomMes);
@@ -306,11 +304,11 @@ class MainScene extends Scene {
   goToExit() {
     let value = document.getElementById("leave-button").getAttribute("value");
 
-    if(value === "leave"){
-      nextSceneFunc(this, "Exit")
-      document.querySelector("#leave-button").setAttribute("value", "stay")
+    if (value === "leave") {
+      nextSceneFunc(this, "Exit");
+      document.querySelector("#leave-button").setAttribute("value", "stay");
     } else {
-      return
+      return;
     }
   }
 
