@@ -26,7 +26,6 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
-<<<<<<< HEAD
 import blueButton from "@/game/assets/buttons/blue_button01.png";
 import blueButton2 from "@/game/assets/buttons/blue_button02.png";
 import githubLogo from "@/game/assets/buttons/github.png";
@@ -35,13 +34,7 @@ import linkedinLogo from "@/game/assets/buttons/linkedin.png";
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
 import creditBackground from "@/game/assets/background/burgandy-background.jpg";
-=======
-import blueButton from "@/game/assets/menu/blue_button01.png";
-import blueButton2 from "@/game/assets/menu/blue_button02.png";
-import hospital from "@/game/assets/menu/abandoned_Hospital.png";
-import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
-import victory from "@/game/assets/menu/parking-lot-victory.jpg"
->>>>>>> main
+import victory from "@/game/assets/background/parking-lot-victory.jpg";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
