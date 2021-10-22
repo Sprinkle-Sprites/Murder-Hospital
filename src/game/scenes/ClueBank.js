@@ -8,6 +8,7 @@ import scapel from "@/game/assets/popups/scapel.png";
 import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
+import e from "cors";
 
 class ClueBank extends Scene {
   constructor() {
@@ -86,14 +87,13 @@ class ClueBank extends Scene {
   }
 
   embiggen() {
-    const x = this.input.mousePointer.x;
-    const y= this.input.mousePointer.y;
+    const xAxis = this.input.mousePointer.x;
+    const yAxis = this.input.mousePointer.y;
     let a = Object.values(this.bank).find((item) => {
-      return item
-      // return item.x === 850 && item.y === 70
-      //return the item where the X and Y of the click is within 30 pixels of the item's spo
+      let closestXs = this.closestX(xAxis);
+      let closest = this.closestY(closestXs, yAxis);
+      return item === closest
     })
-     //if there is, then show the value as a pop up
     let key = this.isValueInArary(a)
     const popUp = this.add.image(400, 300, key).setScale(0.5, 0.5);
     this.time.addEvent({
@@ -103,12 +103,45 @@ class ClueBank extends Scene {
     });
   }
 
-  closestX(x = this.input.mousePointer.x){
-
+  closestX(xAxis){
+    let arrOfValues = Object.values(this.bank)
+    let columnADiff = Math.abs(850-xAxis)
+    let columnBDiff = Math.abs(950-xAxis)
+    let columnCDiff = Math.abs(1050-xAxis)
+    if (columnADiff < columnBDiff && columnADiff < columnCDiff) {
+      let aCol = arrOfValues.filter((val) => {
+        console.log("this is the val", val)
+        console.log("this should be true", val.x === 850)
+        return val.x === 850
+    })
+      console.log("this is the aCol", aCol)
+      return aCol
+    } else if (columnBDiff < columnADiff && columnBDiff < columnCDiff) {
+      let bCol = arrOfValues.filter((val) => {
+        return val.x === 950
+      })
+      console.log("this is the bCol", bCol)
+      return bCol
+    } else {
+      let cCol = arrOfValues.filter((val) => {
+        return val.x === 1050
+      })
+      console.log("this is the cCol", cCol)
+      return cCol
+    }
   }
 
-  closestY(arr, y){
-
+  closestY(arr, yAxis){
+    let difference = 100;
+    let closest;
+    for(let i=0; i < arr.length; i++){
+      let item = arr[i]
+      if(Math.abs(item.y - yAxis) < difference){
+        difference = Math.abs(item.y - yAxis)
+        closest = item
+      }
+    }
+    return closest
   }
 
   isValueInArary(a){
