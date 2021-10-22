@@ -7,6 +7,7 @@ import {
   handleRoomCountdownFinished,
   createMessageForImage,
   createMessage,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -42,8 +43,7 @@ export default class Morgue extends Phaser.Scene {
     this.load.image("toeTag", toeTag);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {

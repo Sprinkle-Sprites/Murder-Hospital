@@ -6,6 +6,7 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -53,8 +54,7 @@ class Laboratory extends Scene {
     this.load.image("computerScreen", computerScreen);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {

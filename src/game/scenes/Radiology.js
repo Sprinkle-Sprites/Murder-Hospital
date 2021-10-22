@@ -6,6 +6,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -42,8 +43,7 @@ class Radiology extends Scene {
     this.load.image("comboCode", combination_code);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {

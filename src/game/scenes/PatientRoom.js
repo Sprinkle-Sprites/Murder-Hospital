@@ -9,6 +9,7 @@ import {
   nextSceneFunc,
   createMessageForImage,
   handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -50,8 +51,7 @@ class PatientRoom extends Scene {
     this.load.image("paperScrap", paperScrap);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {
