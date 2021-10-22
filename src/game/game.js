@@ -17,6 +17,7 @@ import Pharmacy from "@/game/scenes/Pharmacy";
 import Exit from "@/game/scenes/Exit";
 import LockerRoom from "@/game/scenes/LockerRoom";
 import ICU from "@/game/scenes/ICU";
+import VictoryScene from "@/game/scenes/Victory";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -64,6 +65,7 @@ function launch(containerId) {
       Exit,
       LockerRoom,
       ICU,
+      VictoryScene
     ],
   });
 }

@@ -11,6 +11,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessageForImage,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -52,8 +53,7 @@ class Pharmacy extends Scene {
     this.load.image("twoDollar", twoDollarBill);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {

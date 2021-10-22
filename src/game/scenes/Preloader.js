@@ -26,6 +26,7 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+<<<<<<< HEAD
 import blueButton from "@/game/assets/buttons/blue_button01.png";
 import blueButton2 from "@/game/assets/buttons/blue_button02.png";
 import githubLogo from "@/game/assets/buttons/github.png";
@@ -34,6 +35,13 @@ import linkedinLogo from "@/game/assets/buttons/linkedin.png";
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
 import creditBackground from "@/game/assets/background/burgandy-background.jpg";
+=======
+import blueButton from "@/game/assets/menu/blue_button01.png";
+import blueButton2 from "@/game/assets/menu/blue_button02.png";
+import hospital from "@/game/assets/menu/abandoned_Hospital.png";
+import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
+import victory from "@/game/assets/menu/parking-lot-victory.jpg"
+>>>>>>> main
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -62,10 +70,10 @@ export default class Preloader extends Phaser.Scene {
       //set loading text in the middle of the screen
       x: width / 2,
       y: height / 2 - 50,
-      text: "A Crime is Occurring ...",
+      text: "Loading Blood...there's a lot of it...",
       style: {
         //look for font to change
-        font: "30px Inconsolata",
+        font: "30px",
         color: "#ffffff",
       },
     });
@@ -106,13 +114,14 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
-    // load assets for title & credit scenes
+    // load assets for non-gameplay scenes
     this.load.image("blueButton", blueButton);
     this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
     this.load.image("credits-Background", creditBackground);
     this.load.image("githubLogo", githubLogo);
     this.load.image("linkedinLogo", linkedinLogo);
+    this.load.image("victory", victory);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
