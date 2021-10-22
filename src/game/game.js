@@ -64,11 +64,8 @@ function launch(containerId) {
       Exit,
       LockerRoom,
       ICU,
-<<<<<<< HEAD
       EndScene,
-=======
-      VictoryScene
->>>>>>> main
+      VictoryScene,
     ],
   });
 }

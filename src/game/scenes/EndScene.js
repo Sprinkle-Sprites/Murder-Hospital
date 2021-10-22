@@ -1,15 +1,19 @@
 import Phaser from "phaser";
-import { createMessage, nextSceneFunc } from "@/game/HelperFunctions";
+import { createMessage, changeDieClass } from "@/game/HelperFunctions";
 
 class EndScene extends Phaser.Scene {
   constructor() {
     super({ key: "EndScene" });
   }
 
-  create() {
-    this.captureMessage();
+  preload() {
+    changeDieClass();
     this.scene.setVisible(false, "MainScene");
     this.scene.setVisible(false, "ClueBank");
+  }
+
+  create() {
+    this.captureMessage();
     this.input.on("pointerdown", () => this.scene.start("TitleScene"));
   }
 
