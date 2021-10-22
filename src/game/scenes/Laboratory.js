@@ -360,7 +360,6 @@ class Laboratory extends Scene {
       callback: () => specimenFalskPopUp.destroy(),
       loop: false,
     });
-
     eventsCenter.emit("update-bank", "specimenFlask");
 
     if (!this.collectedClues.includes("specimenFlask")) {
