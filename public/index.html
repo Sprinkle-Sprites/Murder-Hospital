@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Murder Hospital</title>
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
-    <link rel="stylesheet" href= "style.css">
+    <link rel="stylesheet" href="style.css" />
     <style>
       @font-face {
         font-family: "GypsyCurse";
@@ -15,22 +15,23 @@
         font-weight: 100;
       }
     </style>
-     <div style="font-family:GypsyCurse; position:absolute; left:-1000px;">.</div>
+    <div style="font-family:GypsyCurse; position:absolute; left:-1000px;">
+      .
+    </div>
   </head>
   <body>
     <noscript></noscript>
     <div id="app"></div>
-    <div class= "container">
-      <div class= "dice-wrapper" id= 'diceValue' value = '0'>
-        <img src ='/dice/dieRed1.png'  width = '100' height ='100' id= 'die-1' >
+    <div class="hide" id="die">
+      <div class="dice-wrapper" id="diceValue" value="0">
+        <img src="/dice/dieRed1.png" width="100" height="100" id="die-1" />
       </div>
-      <button type ="button" id ='investigate-btn'> Investigate a Room</button>
-      <div class= "exit-wrapper" id="leave-button" value="stay">
+      <button type="button" id="investigate-btn">Investigate a Room</button>
+      <div class="exit-wrapper" id="leave-button" value="stay">
         <button type="button" id="try-to-leave">Try to Exit</button>
       </div>
     </div>
-    <!-- built files will be auto injected -->
-    <script type= "text/javacript" src="/src/game/ExitButton.js"> </script>
-    <script type= "text/javacript" src="/src/game/Dice.js"> </script>
+    <script type="text/javacript" src="/src/game/ExitButton.js"></script>
+    <script type="text/javacript" src="/src/game/Dice.js"></script>
   </body>
 </html>

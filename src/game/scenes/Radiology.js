@@ -40,6 +40,10 @@ class Radiology extends Scene {
 
     //POP UP
     this.load.image("comboCode", combination_code);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {
