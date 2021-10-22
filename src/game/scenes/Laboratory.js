@@ -334,7 +334,6 @@ class Laboratory extends Scene {
       callback: () => specimenFalskPopUp.destroy(),
       loop: false,
     });
-
     eventsCenter.emit("update-bank", "specimenFlask");
     nextSceneFunc(this, "MainScene");
   }
