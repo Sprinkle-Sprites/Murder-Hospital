@@ -17,27 +17,50 @@ export default class Story extends Scene {
   }
 
   createStory() {
-    this.add.text(200, 10, "You are driving alone...", {
-      fontFamily: "GypsyCurse",
-      fontSize: 125,
-      color: "red",
-    }).setShadow(5, 5, 'black', 5, false, true);
-    this.add.text(100, 170, "...down a dark country road. It is storming. Your car breaks down. \n \n You remember passing what looked like a hospital a few miles back. You walk to the hospital to get help. When you go inside, you're locked in and a timer appears on the wall. \n \n A disembodied voice comes through the hospital speakers:", {
-      fontSize: 20,
-      wordWrap: {width: 900, useAdvancedWrap: true},
-    }).setShadow(3, 3, 'black', 7, false, true)
+    this.add
+      .text(200, 10, "You are driving alone...", {
+        fontFamily: "GypsyCurse",
+        fontSize: 125,
+        color: "red",
+      })
+      .setShadow(5, 5, "black", 5, false, true);
+    this.add
+      .text(
+        100,
+        170,
+        "...down a dark country road. It is storming. Your car breaks down. \n \n You remember passing what looked like a hospital a few miles back. You walk to the hospital to get help. When you go inside, you're locked in and a timer appears on the wall. \n \n A disembodied voice comes through the hospital speakers:",
+        {
+          fontSize: 20,
+          wordWrap: { width: 900, useAdvancedWrap: true },
+        }
+      )
+      .setShadow(3, 3, "black", 7, false, true);
 
-    this.add.text(100, 320, "Hello, strangers. Welcome to my humble abode. You've caught me at a bad time, and I had to run out for a few essentials...you're locked in until I return in an hour. Make yourself at home...if you can.", {
-      fontSize: 20,
-      fontStyle: "italic",
-      wordWrap: {width: 900, useAdvancedWrap: true},
-      color: "red",
-    }).setShadow(3, 3, 'black', 7, false, true)
+    this.add
+      .text(
+        100,
+        320,
+        "Hello, strangers. Welcome to my humble abode. You've caught me at a bad time, and I had to run out for a few essentials...you're locked in until I return in an hour. Make yourself at home...if you can.",
+        {
+          fontSize: 20,
+          fontStyle: "italic",
+          wordWrap: { width: 900, useAdvancedWrap: true },
+          color: "red",
+        }
+      )
+      .setShadow(3, 3, "black", 7, false, true);
 
-    this.add.text(100, 420, "The transmission ends. You see there is a key pad by the door. Can you figure out the code and get out of the hospital before the Doctor returns?", {
-      fontSize: 20,
-      wordWrap: {width: 900, useAdvancedWrap: true},
-    }).setShadow(3, 3, 'black', 7, false, true)
+    this.add
+      .text(
+        100,
+        420,
+        "The transmission ends. You see there is a key pad by the door. Can you figure out the code and get out of the hospital before the Doctor returns?",
+        {
+          fontSize: 20,
+          wordWrap: { width: 900, useAdvancedWrap: true },
+        }
+      )
+      .setShadow(3, 3, "black", 7, false, true);
   }
 
   createPlayButton() {

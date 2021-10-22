@@ -30,6 +30,7 @@ import blueButton from "@/game/assets/menu/blue_button01.png";
 import blueButton2 from "@/game/assets/menu/blue_button02.png";
 import hospital from "@/game/assets/menu/abandoned_Hospital.png";
 import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
+import victory from "@/game/assets/menu/parking-lot-victory.jpg"
 
 //AUDIO
 import bgMusic from "@/game/assets/audio/Paranormal Phenomena 1.wav";
@@ -61,10 +62,10 @@ export default class Preloader extends Phaser.Scene {
       //set loading text in the middle of the screen
       x: width / 2,
       y: height / 2 - 50,
-      text: "A Crime is Occurring ...",
+      text: "Loading Blood...there's a lot of it...",
       style: {
         //look for font to change
-        font: "30px Inconsolata",
+        font: "30px",
         color: "#ffffff",
       },
     });
@@ -106,11 +107,12 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
-    // load assets for title scene
+    // load assets for title scene & story scenes
     this.load.image("blueButton", blueButton);
     this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
     this.load.image("hospital2", hospital2);
+    this.load.image("victory", victory);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
