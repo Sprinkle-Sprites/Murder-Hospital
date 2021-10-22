@@ -6,13 +6,14 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 
 class Exit extends Scene {
   constructor() {
-    super({key: "Exit"});
+    super({ key: "Exit" });
     this.combination = 0;
   }
 
@@ -21,6 +22,9 @@ class Exit extends Scene {
 
     //exit panel
     this.load.image("panel", collider);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    changeDieClass();
   }
 
   create() {
@@ -29,7 +33,6 @@ class Exit extends Scene {
     this.createPanel();
     this.createColliders();
   }
-
 
   createMap() {
     const map = this.make.tilemap({ key: "exit" });
@@ -72,18 +75,15 @@ class Exit extends Scene {
     //LAYERS
     const floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
     const wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
-    const backgroundLayer = map.createLayer("exitBackground", InteriorAlt).setDepth(-1);
+    const backgroundLayer = map
+      .createLayer("exitBackground", InteriorAlt)
+      .setDepth(-1);
     const detailsCLayer = map
       .createLayer("exitDetailsC", InteriorC)
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
-    const layers = [
-      floorLayer,
-      wallLayer,
-      backgroundLayer,
-      detailsCLayer,
-    ];
+    const layers = [floorLayer, wallLayer, backgroundLayer, detailsCLayer];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
@@ -128,10 +128,11 @@ class Exit extends Scene {
     this.panel = this.physics.add
       .sprite(410, 10, "panel")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(25, 15, true)
+      .setDepth(-2)
+      .setSize(25, 15, true);
   }
 
-  createColliders(){
+  createColliders() {
     this.physics.add.overlap(
       this.player,
       this.panel,
@@ -142,7 +143,6 @@ class Exit extends Scene {
   }
 
   onPanelCollision() {
-    console.log("you hit the panel!")
     const text1 = this.add
       .text(
         400,
@@ -179,13 +179,13 @@ class Exit extends Scene {
       this.combination = parseInt(text2._text);
       text1.destroy();
       if (this.combination === 428395) {
+        const width = this.sys.canvas.width;
+        const height = this.sys.canvas.height;
         this.player.disableBody();
-        //CURRENTLY GOES TO MAIN SCENE, NEEDS TO GO TO VICTORY SCENE
-        nextSceneFunc(this, "MainScene");
+        nextSceneFunc(this, "Victory");
       }
       if (this.combination !== 428395 && !isNaN(this.combination)) {
-        const wrongCodeMessage =
-          "Whoops. That ain't it!";
+        const wrongCodeMessage = "Whoops. That ain't it!";
         this.player.disableBody();
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");

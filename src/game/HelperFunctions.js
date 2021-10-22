@@ -5,7 +5,7 @@ export function resizeCollider(obj, width, height) {
 }
 
 export function resizeMapLayer(scene, layer) {
-  layer.displayWidth = scene.sys.canvas.width - 200;
+  layer.displayWidth = scene.sys.canvas.width - 300;
   layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
@@ -56,8 +56,32 @@ export function nextSceneFunc(scene, nextScene) {
         scene.scene.start(nextScene);
       }
     );
-  }, 6000);
+  }, 3000);
 }
+
+export function handleRoomCountdownFinished() {
+  this.player.active = false;
+  const { width, height } = this.scale;
+  this.add
+    .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+      fontSize: 30,
+      backgroundColor: "black",
+    })
+    .setOrigin(0.5);
+  nextSceneFunc(this, "MainScene");
+}
+
+//COLLIDER DEBUG COLOR
+export function displayTiledCollider(layer) {
+  const debugGraphics = this.add.graphics().setAlpha(0.7);
+
+  layer.renderDebug(debugGraphics, {
+    tileColor: null,
+    collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+  });
+}
+
 export function diceNextSceneFunc(scene, nextScene) {
   setTimeout(() => {
     scene.cameras.main.fadeOut(250, 0, 0, 0);
@@ -68,4 +92,16 @@ export function diceNextSceneFunc(scene, nextScene) {
       }
     );
   }, 2000);
+}
+
+export function changeDieClass() {
+  let className = document.getElementById("die").className;
+
+  if (className === "container") {
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
+  } else if (className === "hide") {
+    document.getElementById("die").classList.remove("hide");
+    document.getElementById("die").classList.add("container");
+  }
 }

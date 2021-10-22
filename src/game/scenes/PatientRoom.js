@@ -1,5 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -7,6 +8,8 @@ import {
   createMessage,
   nextSceneFunc,
   createMessageForImage,
+  handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -20,6 +23,7 @@ class PatientRoom extends Scene {
   constructor() {
     super({ key: "PatientRoom" });
     this.check = false;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -45,9 +49,13 @@ class PatientRoom extends Scene {
     this.load.image("flowers", flowers);
     this.load.image("blanket", blanket);
     this.load.image("paperScrap", paperScrap);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    changeDieClass();
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createFlower();
@@ -55,7 +63,31 @@ class PatientRoom extends Scene {
     this.createDoll();
     this.createDrawer();
     this.createColliders();
+    this.createTimer();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
+  }
+
+  createTitle() {
+    this.add.text(320, 605, "THE PATIENT'S ROOM", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
+      color: "red",
+    });
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+
+    // ROOM TIMER
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -108,75 +140,27 @@ class PatientRoom extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("patientsFloor", InteriorB).setDepth(-1);
-    const wallLayer = map.createLayer("patientsWall", InteriorA).setDepth(-1);
-    const backgroundLayer = map
-      .createLayer("patientsBackground", InteriorAlt)
-      .setDepth(-1);
-    const detailsCLayer = map
-      .createLayer("patientsDetailsC", InteriorC)
-      .setDepth(-1);
-    const detailsLabLayer = map
-      .createLayer("patientsDetailsLab", Lab3)
-      .setDepth(-1);
-    const creepyDollLayer = map
-      .createLayer("patientsCreepyDoll", CreepyDoll)
-      .setDepth(-1);
+    this.floorLayer = map.createLayer("patientsFloor", InteriorB);
+    this.wallLayer = map.createLayer("patientsWall", InteriorA);
+    this.backgroundLayer = map.createLayer("patientsBackground", InteriorAlt);
+    this.detailsCLayer = map.createLayer("patientsDetailsC", InteriorC);
+    this.detailsLabLayer = map.createLayer("patientsDetailsLab", Lab3);
+    this.creepyDollLayer = map.createLayer("patientsCreepyDoll", CreepyDoll);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      backgroundLayer,
-      detailsCLayer,
-      detailsLabLayer,
-      creepyDollLayer,
+      this.floorLayer,
+      this.wallLayer,
+      this.backgroundLayer,
+      this.detailsCLayer,
+      this.detailsLabLayer,
+      this.creepyDollLayer,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    detailsCLayer.setCollisionByProperty({ collides: true });
-    detailsLabLayer.setCollisionByProperty({ collides: true });
-    backgroundLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, detailsCLayer);
-    this.physics.add.collider(this.player, detailsLabLayer);
-    this.physics.add.collider(this.player, backgroundLayer);
-
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-
-    //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // borderLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -200,6 +184,12 @@ class PatientRoom extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the Patient Room (dice # 1) being rolled
+      eventEmitter.emit("completed", 1);
   }
 
   createFlower() {
@@ -257,6 +247,18 @@ class PatientRoom extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.detailsCLayer.setCollisionByProperty({ collides: true });
+    this.detailsLabLayer.setCollisionByProperty({ collides: true });
+    this.backgroundLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.detailsCLayer);
+    this.physics.add.collider(this.player, this.detailsLabLayer);
+    this.physics.add.collider(this.player, this.backgroundLayer);
+
     this.physics.add.overlap(
       this.player,
       this.flowers1,
@@ -299,6 +301,12 @@ class PatientRoom extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("flowers")) {
+      this.collectedClues.push("flowers");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -311,15 +319,27 @@ class PatientRoom extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("blanket")) {
+      this.collectedClues.push("blanket");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
   onDollCollision() {
     const dollMessage =
-      "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose a minute.";
-
+      "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose 5 minutes.";
     this.player.disableBody();
     createMessage(this, dollMessage);
+    this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("creepyDoll")) {
+      this.collectedClues.push("creepyDoll");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -339,6 +359,12 @@ class PatientRoom extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "paperScrap");
+
+        if (!this.collectedClues.includes("paperScrap")) {
+          this.collectedClues.push("paperScrap");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       }, 3000);
     } else {

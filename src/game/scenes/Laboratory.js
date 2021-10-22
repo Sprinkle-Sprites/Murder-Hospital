@@ -5,19 +5,25 @@ import {
   resizeCollider,
   nextSceneFunc,
   createMessage,
+  handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
-import test_tube from "@/game/assets/popups/test_tube.jpeg";
+import test_tube from "@/game/assets/popups/test_tube.png";
 import specimen_flask from "@/game/assets/popups/specimen_flask.png";
+import computerScreen from "@/game/assets/popups/computerScreen.png";
 
 import RoomTimer from "@/game/scenes/RoomTimer";
 
 class Laboratory extends Scene {
   constructor() {
     super({ key: "Laboratory" });
+    this.password = null;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -26,8 +32,8 @@ class Laboratory extends Scene {
     //Calendar
     this.load.image("calendar", collider);
 
-    //computer
-    this.load.image("computer", collider);
+    //Desk
+    this.load.image("desk", collider);
 
     //skeleton
     this.load.image("skeleton", collider);
@@ -45,9 +51,14 @@ class Laboratory extends Scene {
     this.load.image("calendar_date", calendar_date);
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
+    this.load.image("computerScreen", computerScreen);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    changeDieClass();
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createCalendar();
@@ -55,7 +66,32 @@ class Laboratory extends Scene {
     this.createTestTube();
     this.createSpecimenFlask();
     this.createCandyBar();
+    this.createDesk();
     this.createColliders();
+    this.createTimer();
+  }
+
+  createTitle() {
+    this.add.text(360, 605, "LABORATORY", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
+      color: "red",
+    });
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 10,
+    });
+
+    //ROOM TIMER
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -104,62 +140,27 @@ class Laboratory extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("floors", InteriorB).setDepth(-2);
-    const wallLayer = map.createLayer("Walls", InteriorA).setDepth(-2);
-    const blood = map.createLayer("Blood", InteriorAlt).setDepth(-2);
+    this.floorLayer = map.createLayer("floors", InteriorB).setDepth(-1);
+    this.wallLayer = map.createLayer("Walls", InteriorA).setDepth(-1);
+    this.blood = map.createLayer("Blood", InteriorAlt).setDepth(-1);
 
-    const computer = map.createLayer("Computer", Lab_Office).setDepth(-1);
-    const labOffice = map.createLayer("Lab Office", Lab_Office).setDepth(-2);
-    const labStuff = map.createLayer("Lab Stuff", Lab3).setDepth(-2);
+    this.computer = map.createLayer("Computer", Lab_Office).setDepth(0);
+    this.labOffice = map.createLayer("Lab Office", Lab_Office).setDepth(-1);
+    this.labStuff = map.createLayer("Lab Stuff", Lab3).setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      blood,
-      computer,
-      labOffice,
-      labStuff,
+      this.floorLayer,
+      this.wallLayer,
+      this.blood,
+      this.computer,
+      this.labOffice,
+      this.labStuff,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    blood.setCollisionByProperty({ collides: true });
-    computer.setCollisionByProperty({ collides: true });
-    labOffice.setCollisionByProperty({ collides: true });
-    labStuff.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, blood);
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, computer);
-    this.physics.add.collider(this.player, labOffice);
-    this.physics.add.collider(this.player, labStuff);
-
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(100, 35, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 10,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -185,6 +186,12 @@ class Laboratory extends Scene {
     this.roomTimer.update();
   }
 
+  completed() {
+    if (this.collectedClues.length === 6)
+      //send a message to dice to lower prob of the laboratory (dice # 4) being rolled
+      eventEmitter.emit("completed", 4);
+  }
+
   createCalendar() {
     this.calendar1 = this.physics.add
       .sprite(450, 60, "calendar")
@@ -202,10 +209,10 @@ class Laboratory extends Scene {
 
   createTestTube() {
     this.testTube = this.physics.add
-      .sprite(445, 170, "testTube")
+      .sprite(445, 178, "testTube")
       .setOrigin(0, 0)
       .setDepth(-2)
-      .setSize(25, 35, true);
+      .setSize(25, 50, true);
   }
 
   createSpecimenFlask() {
@@ -224,7 +231,29 @@ class Laboratory extends Scene {
       .setSize(25, 35, true);
   }
 
+  createDesk() {
+    this.desk = this.physics.add
+      .sprite(710, 110, "desk")
+      .setOrigin(0, 0)
+      .setDepth(-2)
+      .setSize(25, 35, true);
+  }
+
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.blood.setCollisionByProperty({ collides: true });
+    this.computer.setCollisionByProperty({ collides: true });
+    this.labOffice.setCollisionByProperty({ collides: true });
+    this.labStuff.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.blood);
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.computer);
+    this.physics.add.collider(this.player, this.labOffice);
+    this.physics.add.collider(this.player, this.labStuff);
+
     this.physics.add.overlap(
       this.player,
       this.calendar1,
@@ -264,17 +293,33 @@ class Laboratory extends Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.player,
+      this.desk,
+      this.onDeskCollision,
+      null,
+      this
+    );
   }
 
   onCalendarCollision() {
-    const calPopUp = this.add.image(400, 300, "calendar_date");
+    const calPopUp = this.add
+      .image(400, 300, "calendar_date")
+      .setScale(0.7, 0.7);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => calPopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "calendar_date");
+
+    if (!this.collectedClues.includes("calendar_date")) {
+      this.collectedClues.push("calendar_date");
+      this.completed();
+    }
     nextSceneFunc(this, "MainScene");
   }
 
@@ -282,6 +327,12 @@ class Laboratory extends Scene {
     const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
     this.player.disableBody();
     createMessage(this, skeletonMessage);
+
+    if (!this.collectedClues.includes("skeleton")) {
+      this.collectedClues.push("skeleton");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -294,7 +345,14 @@ class Laboratory extends Scene {
       callback: () => testTubePopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "test_tube");
+
+    if (!this.collectedClues.includes("test_tube")) {
+      this.collectedClues.push("test_tube");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -307,15 +365,90 @@ class Laboratory extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "specimenFlask");
+
+    if (!this.collectedClues.includes("specimenFlask")) {
+      this.collectedClues.push("specimenFlask");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
   onCandyBarCollision() {
     const candyBarMessage =
-      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snakcs from evil doctors. You have to recover for a turn.";
+      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
     this.player.disableBody();
+    this.mainTimer.minusFive();
     createMessage(this, candyBarMessage);
+
+    if (!this.collectedClues.includes("candyBar")) {
+      this.collectedClues.push("candyBar");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
+  }
+
+  onDeskCollision() {
+    const text1 = this.add
+      .text(400, 300, "PASSWORD:", {
+        fixedWidth: 700,
+        fixedHeight: 50,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
+
+    const text2 = this.add
+      .text(400, 370, "", {
+        fixedWidth: 300,
+        fixedHeight: 40,
+        backgroundColor: "black",
+        align: "center",
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      })
+      .setOrigin(0.5, 0.5);
+
+    text2.setInteractive().on("pointerdown", () => {
+      this.rexUI.edit(text2);
+    });
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
+    enter.on("down", () => {
+      this.password = text2._text.toUpperCase();
+      text1.destroy();
+
+      if (this.password === "SUE") {
+        const popup = this.add.image(400, 300, "computerScreen");
+        popup.setScale(0.25, 0.25);
+        this.player.disableBody();
+        this.time.addEvent({
+          delay: 4000,
+          callback: () => popup.destroy(),
+          loop: false,
+        });
+
+        eventsCenter.emit("update-bank", "computerScreen");
+
+        if (!this.collectedClues.includes("computerScreen")) {
+          this.collectedClues.push("computerScreen");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      } else if (this.password !== "SUE" && this.password !== "") {
+        const wrongCodeMessage = "INCORRECT";
+        this.player.disableBody();
+        createMessage(this, wrongCodeMessage);
+        nextSceneFunc(this, "MainScene");
+      }
+
+      text2.destroy();
+    });
   }
 }
 

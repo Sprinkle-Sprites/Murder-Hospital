@@ -1,14 +1,17 @@
 import Phaser from "phaser";
+
+//TILES
 import InteriorA from "@/game/assets/tiles/Interior-Hospital-A.png";
 import InteriorB from "@/game/assets/tiles/Interior-Hospital-B.png";
 import InteriorC from "@/game/assets/tiles/Interior-Hospital-C.png";
 import InteriorAlt from "@/game/assets/tiles/Interior-Hospital-Alt.png";
 import Lab2 from "@/game/assets/tiles/Laboratory-2.png";
 import Lab3 from "@/game/assets/tiles/Laboratory-3.png";
-import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import bathroom from "@/game/assets/tiles/bathroom.png";
 import creepyDoll from "@/game/assets/tiles/creepy_toys.png";
-
 import Elevator from "@/game/assets/tiles/Elevator-Doors-Alt.png";
+
+//SCENES
 import board from "@/game/assets/tiles/board.json";
 import radiology from "@/game/assets/tiles/radiology.json";
 import surgery from "@/game/assets/tiles/surgery.json";
@@ -16,7 +19,18 @@ import morgue from "@/game/assets/tiles/morgue.json";
 import laboratory from "@/game/assets/tiles/Laboratory.json";
 import patients_room from "@/game/assets/tiles/patients_room.json";
 import pharmacy from "@/game/assets/tiles/Pharmacy.json";
+import ICU from "@/game/assets/tiles/ICU.json";
 import exit_room from "@/game/assets/tiles/exit_room.json";
+import locker_room from "@/game/assets/tiles/LockerRoom.json";
+
+//GAME ASSETS
+import combination_code from "@/game/assets/popups/locker_combo.png";
+import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
+import blueButton from "@/game/assets/menu/blue_button01.png";
+import blueButton2 from "@/game/assets/menu/blue_button02.png";
+import hospital from "@/game/assets/menu/abandoned_Hospital.png";
+import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
+import victory from "@/game/assets/menu/parking-lot-victory.jpg"
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -28,12 +42,13 @@ export default class Preloader extends Phaser.Scene {
   }
   preload() {
     //create progress bar
-    let progressBar = this.add.graphics();
-    //create progress box
-    let progressBox = this.add.graphics();
-    //fill the progress box
-    progressBox.fillStyle(0x282d36);
-    progressBox.fillRect(240, 270, 320, 50);
+    let progressBar = this.add.graphics().setPosition(140, 90);
+    // //create & fill progress box
+    let progressBox = this.add
+      .graphics()
+      .setPosition(140, 90)
+      .fillStyle(0x282d36, 0.5)
+      .fillRect(240, 270, 320, 50);
 
     //set the cameras width and height
     let width = this.cameras.main.width;
@@ -44,10 +59,10 @@ export default class Preloader extends Phaser.Scene {
       //set loading text in the middle of the screen
       x: width / 2,
       y: height / 2 - 50,
-      text: "A Crime is Occurring ...",
+      text: "Loading Blood...there's a lot of it...",
       style: {
         //look for font to change
-        font: "30px Inconsolata",
+        font: "30px",
         color: "#ffffff",
       },
     });
@@ -89,8 +104,14 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
+    // load assets for title scene & story scenes
+    this.load.image("blueButton", blueButton);
+    this.load.image("blueButton2", blueButton2);
+    this.load.image("hospital", hospital);
+    this.load.image("hospital2", hospital2);
+    this.load.image("victory", victory);
 
-    // load any assests needed for game
+    // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
     this.load.image("Interior-B", InteriorB);
     this.load.image("Interior-C", InteriorC);
@@ -100,6 +121,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("lockerRoom", lockerRoom);
     this.load.image("Lab-3", Lab3);
     this.load.image("Creepy-Doll", creepyDoll);
+    this.load.image("pop-up-image", combination_code);
+    this.load.image("Bathroom", bathroom);
 
     this.load.tilemapTiledJSON("board", board);
     this.load.tilemapTiledJSON("radiology", radiology);
@@ -108,17 +131,17 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("Laboratory", laboratory);
     this.load.tilemapTiledJSON("patient", patients_room);
     this.load.tilemapTiledJSON("pharmacy", pharmacy);
+    this.load.tilemapTiledJSON("ICU", ICU);
     this.load.tilemapTiledJSON("exit", exit_room);
+    this.load.tilemapTiledJSON("LockerRoom", locker_room);
   } //end of preload
 
   readyScene() {
     this.readyCount++;
     //once readyCount is equal to 2, we know it is safe to start title scene
     if (this.readyCount === 2) {
-      // have it lead to first scene
-      this.scene.start("MainTimerScene");
-      this.scene.start("Radiology");
-      this.scene.start("ClueBank");
+      // have it lead to title scene
+      this.scene.start("TitleScene");
     }
   }
 }

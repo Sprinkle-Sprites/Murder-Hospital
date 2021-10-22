@@ -1,8 +1,18 @@
+body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
 .container {
-  position: absolute;
-  right: 25%;
-  top: 15%;
-  background-color: #ffffff;
+  /* position: absolute;
+  right: 20.5%; */
+  /* top: 15%; */
+  background-color: transparent;
+  margin-top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,22 +20,22 @@
 }
 
 .exit-wrapper {
-  padding: 10px
+  padding: 10px;
 }
 
-#game-container {
+/* #game-container {
   width: 800px;
   height: 800px;
-}
+} */
 
-#game-container canvas {
+/* #game-container canvas {
   width: 800px;
   height: 700px;
-}
+} */
 
-#containerId {
+/* #containerId {
   margin: 50px;
-}
+} */
 
 button {
   background-color: #e92e3d;
@@ -37,6 +47,10 @@ button {
   letter-spacing: 1px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.hide {
+  display: none;
 }
 
 .shake {

@@ -1,6 +1,7 @@
 import Phaser, { Scene } from "phaser";
 // import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 import Player from "@/game/Player";
 import {
@@ -8,10 +9,13 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
+  handleRoomCountdownFinished,
+  createMessageForImage,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
-import pillsPop from "@/game/assets/popups/pills.jpeg";
+import pillBottle from "@/game/assets/popups/pill-bottle.png";
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
@@ -22,6 +26,7 @@ class Pharmacy extends Scene {
   constructor() {
     super({ key: "Pharmacy" });
     this.combination = 0;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -42,13 +47,17 @@ class Pharmacy extends Scene {
     //TABLES
 
     //POPUPS
-    this.load.image("pills", pillsPop);
+    this.load.image("pillBottle", pillBottle);
     this.load.image("key", keyPop);
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    changeDieClass();
   }
 
   create() {
+    this.createTitle();
     this.createPlayer();
     this.createMap();
     this.createPills();
@@ -56,6 +65,30 @@ class Pharmacy extends Scene {
     this.createLockBox();
     this.createCabinet2();
     this.createColliders();
+    this.createTimer();
+  }
+
+  createTitle() {
+    this.add.text(365, 605, "PHARMACY", {
+      fontFamily: "GypsyCurse",
+      fontSize: 30,
+      color: "red",
+    });
+  }
+
+  createTimer() {
+    const roomTimerLabel = this.add.text(10, 610, "", {
+      fontSize: 20,
+      backgroundColor: "black",
+      padding: 5,
+    });
+
+    // ROOM TIMER
+    this.roomTimer = new RoomTimer(this, roomTimerLabel);
+    this.roomTimer.start(handleRoomCountdownFinished.bind(this));
+
+    // MAIN TIMER
+    this.mainTimer = this.scene.get("MainTimerScene").mainTimer;
   }
 
   createMap() {
@@ -101,71 +134,29 @@ class Pharmacy extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("Floor", lab2).setDepth(-1);
-    const wallLayer = map.createLayer("Walls", InteriorA).setDepth(-1);
-    const pharmacyThings = map
-      .createLayer("Pharmacy Things", InteriorC)
-      .setDepth(-1);
-    const pharmacyThings2 = map
-      .createLayer("Pharmacy Things 2", lab3)
-      .setDepth(-1);
-    const pharmacyThings3 = map
-      .createLayer("Pharmacy Things 3", InteriorAlt)
-      .setDepth(-1);
-    const pharmacyThings4 = map
-      .createLayer("Pharmacy Things 4", pharm4)
-      .setDepth(-1);
-    const blood = map.createLayer("Blood", InteriorAlt).setDepth(-1);
+    this.floorLayer = map.createLayer("Floor", lab2);
+    this.wallLayer = map.createLayer("Walls", InteriorA);
+    this.pharmacyThings = map.createLayer("Pharmacy Things", InteriorC);
+    this.pharmacyThings2 = map.createLayer("Pharmacy Things 2", lab3);
+    this.pharmacyThings3 = map.createLayer("Pharmacy Things 3", InteriorAlt);
+    this.pharmacyThings4 = map.createLayer("Pharmacy Things 4", pharm4);
+    this.blood = map.createLayer("Blood", InteriorAlt);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
     const layers = [
-      floorLayer,
-      wallLayer,
-      pharmacyThings,
-      pharmacyThings2,
-      pharmacyThings3,
-      pharmacyThings4,
-      blood,
+      this.floorLayer,
+      this.wallLayer,
+      this.pharmacyThings,
+      this.pharmacyThings2,
+      this.pharmacyThings3,
+      this.pharmacyThings4,
+      this.blood,
     ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
+      layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    pharmacyThings.setCollisionByProperty({ collides: true });
-    pharmacyThings2.setCollisionByProperty({ collides: true });
-    pharmacyThings3.setCollisionByProperty({ collides: true });
-    pharmacyThings4.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, pharmacyThings);
-    this.physics.add.collider(this.player, pharmacyThings2);
-    this.physics.add.collider(this.player, pharmacyThings3);
-    this.physics.add.collider(this.player, pharmacyThings4);
-
-    //COUNTDOWN TIMER
-    const roomTimerLabel = this.add.text(10, 610, "", {
-      fontSize: 20,
-      backgroundColor: "black",
-      padding: 5,
-    });
-    this.roomTimer = new RoomTimer(this, roomTimerLabel);
-    this.roomTimer.start(this.handleRoomCountdownFinished.bind(this));
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -219,6 +210,20 @@ class Pharmacy extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.pharmacyThings.setCollisionByProperty({ collides: true });
+    this.pharmacyThings2.setCollisionByProperty({ collides: true });
+    this.pharmacyThings3.setCollisionByProperty({ collides: true });
+    this.pharmacyThings4.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.pharmacyThings);
+    this.physics.add.collider(this.player, this.pharmacyThings2);
+    this.physics.add.collider(this.player, this.pharmacyThings3);
+    this.physics.add.collider(this.player, this.pharmacyThings4);
+
     this.physics.add.overlap(
       this.player,
       this.pills,
@@ -253,15 +258,26 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
-    const pillsPopUp = this.add.image(400, 300, "pills");
-    pillsPopUp.setScale(0.75, 0.75);
+    const pillMessage =
+      "You take a mystery pill. What were you thinking? Lose 5 minutes";
+    createMessageForImage(this, pillMessage);
+
+    const pillsPopUp = this.add.image(400, 300, "pillBottle");
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => pillsPopUp.destroy(),
       loop: false,
     });
-    eventsCenter.emit("update-bank", "pills");
+
+    eventsCenter.emit("update-bank", "pillBottle");
+    this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("pillBottle")) {
+      this.collectedClues.push("pillBottle");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -271,10 +287,17 @@ class Pharmacy extends Scene {
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
-      callback: () => keyPop.destroy(),
+      callback: () => keyPopUp.destroy(),
       loop: false,
     });
+
     eventsCenter.emit("update-bank", "key");
+
+    if (!this.collectedClues.includes("key")) {
+      this.collectedClues.push("key");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -324,6 +347,12 @@ class Pharmacy extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "twoDollar");
+
+        if (!this.collectedClues.includes("twoDollar")) {
+          this.collectedClues.push("twoDollar");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       } else if (this.combination !== 1022 && !isNaN(this.combination)) {
         const wrongCodeMessage =
@@ -346,12 +375,24 @@ class Pharmacy extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "bandages");
+
+    if (!this.collectedClues.includes("bandages")) {
+      this.collectedClues.push("bandages");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the Pharmacy (dice # 5) being rolled
+      eventEmitter.emit("completed", 5);
   }
 }
 

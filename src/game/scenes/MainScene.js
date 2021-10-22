@@ -2,11 +2,21 @@ import Phaser, { Scene } from "phaser";
 import Player from "@/game/Player";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
+import exitButton from "../ExitButton";
 import { io } from "socket.io-client";
-import { socket } from "../../components/Chat.vue";
+// import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
-import { diceNextSceneFunc, createMessage } from "../HelperFunctions";
+
+import {
+  diceNextSceneFunc,
+  createMessage,
+  nextSceneFunc,
+  changeDieClass,
+} from "../HelperFunctions";
+
+// const exitButton = document.getElementById("try-to-leave")
+// exitButton.addEventListener("click", MainScene.goToEnd, true)
 
 class MainScene extends Scene {
   constructor() {
@@ -18,6 +28,9 @@ class MainScene extends Scene {
 
   preload() {
     Player.preload(this);
+
+    //REMOVES HIDE CLASS TO DISPLAY DIE, BUTTONS AND ADDS STYLING CLASS
+    changeDieClass();
   }
 
   create() {
@@ -247,19 +260,18 @@ class MainScene extends Scene {
   rollRoom() {
     let value = document.getElementById("diceValue").getAttribute("value");
 
-    // code to check if dice works
     if (parseInt(value) === 1) {
       const patRoomMes = "To The Patient's Room";
       createMessage(this, patRoomMes);
       diceNextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 2) {
-      const surgRoomMes = "To The Surgery";
+      const surgRoomMes = "To Surgery";
       createMessage(this, surgRoomMes);
       diceNextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 3) {
-      const radRoomMes = "To The X-ray";
+      const radRoomMes = "To The X-ray Room";
       createMessage(this, radRoomMes);
       diceNextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
@@ -273,42 +285,41 @@ class MainScene extends Scene {
       createMessage(this, pharmRoomMes);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 6) {
+      const lockerRoomMes = "To The Locker Room";
+      createMessage(this, lockerRoomMes);
+      diceNextSceneFunc(this, "LockerRoom");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 7) {
+      const morgueRoomMes = "To The Morgue";
+      createMessage(this, morgueRoomMes);
+      diceNextSceneFunc(this, "Morgue");
+      document.querySelector("#diceValue").setAttribute("value", "0");
+    } else if (parseInt(value) === 8) {
+      const ICURoomMes = "To The ICU";
+      createMessage(this, ICURoomMes);
+      diceNextSceneFunc(this, "ICU");
+      document.querySelector("#diceValue").setAttribute("value", "0");
     } else {
-      return "More rooms need to be made";
+      return "You need to investigate a room";
     }
+  }
 
-    // pseudocode for rooms
-    // if (parseInt(value) === 1) {
-    //   nextSceneFunc(this, "ICU");
-    // } else if (parseInt(value) === 2) {
-    //   nextSceneFunc(this, "Locker Room");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 3) {
-    //   nextSceneFunc(this, "Patients Room");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 4) {
-    //   nextSceneFunc(this, "Surgery");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 5) {
-    //   nextSceneFunc(this, "Laboratory");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 6) {
-    //   nextSceneFunc(this, "Pharmacy");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 7) {
-    //   nextSceneFunc(this, "Morgue");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else if (parseInt(value) === 8) {
-    //   nextSceneFunc(this, "Radiology");
-    //   document.querySelector("#diceValue").setAttribute("value", "0");
-    // } else {
-    //   return "You need to investigate a room";
-    // }
+  goToExit() {
+    let value = document.getElementById("leave-button").getAttribute("value");
+
+    if (value === "leave") {
+      nextSceneFunc(this, "Exit");
+      document.querySelector("#leave-button").setAttribute("value", "stay");
+    } else {
+      return;
+    }
   }
 
   update() {
     this.player.update();
     this.rollRoom();
+    this.goToExit();
   }
 }
 
