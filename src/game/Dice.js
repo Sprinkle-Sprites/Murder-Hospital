@@ -42,7 +42,7 @@ function rollDie() {
 
   count++;
 
-  if (count % 6 === 0 || incompRooms.length === 0) {
+  if (count % 4 === 0 || incompRooms.length === 0) {
     dieIdx = Math.floor(Math.random() * roomsLeng);
 
     dieValue = rooms[dieIdx];
