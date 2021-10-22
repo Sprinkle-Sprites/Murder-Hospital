@@ -33,6 +33,7 @@ export default class CreditsScene extends Scene {
   }
 
   createTeam() {
+    // GABBY
     this.add
       .text(this.width * 0.18, this.height * 0.35, "Gabriella (Gabby) Apeadu", {
         fontFamily: "Oswald",
@@ -42,6 +43,7 @@ export default class CreditsScene extends Scene {
       .setOrigin(0, 0.5)
       .setShadow(5, 5, "black", 5, false, true);
 
+    // HELENA
     this.add
       .text(this.width * 0.62, this.height * 0.35, "Helena Bliss", {
         fontFamily: "Oswald",
@@ -51,6 +53,7 @@ export default class CreditsScene extends Scene {
       .setOrigin(0, 0.5)
       .setShadow(5, 5, "black", 5, false, true);
 
+    // NICOLE
     this.add
       .text(this.width * 0.18, this.height * 0.52, "Nicole Buendia", {
         fontFamily: "Oswald",
@@ -60,6 +63,7 @@ export default class CreditsScene extends Scene {
       .setOrigin(0, 0.5)
       .setShadow(5, 5, "black", 5, false, true);
 
+    // SARAH
     this.add
       .text(this.width * 0.62, this.height * 0.52, "Sarah Sheppard", {
         fontFamily: "Oswald",
@@ -137,5 +141,33 @@ export default class CreditsScene extends Scene {
         .setScale(0.08)
         .setOrigin(0, 0.5)
     );
+
+    this.addLinks();
+  }
+
+  goToLink(url) {
+    const tab = window.open(url, "_blank");
+    if (tab && tab.focus) {
+      tab.focus();
+    } else if (!tab) {
+      window.location.href = url;
+    }
+  }
+
+  addLinks() {
+    const urls = [
+      "https://github.com/gapeadu",
+      "https://www.linkedin.com/in/gabriellaap/",
+      "https://github.com/hbliss2",
+      "https://www.linkedin.com/in/helena-bliss/",
+      "https://github.com/nbuendia",
+      "https://www.linkedin.com/in/nicole-buendia/",
+      "https://github.com/sheppas",
+      "https://www.linkedin.com/in/sheppas/",
+    ];
+
+    for (let i = 0; i < this.logos.length; i++) {
+      this.logos[i].on("pointerup", () => this.goToLink(urls[i]), this);
+    }
   }
 }
