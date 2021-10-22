@@ -15,13 +15,14 @@ export default class TitleScene extends Phaser.Scene {
 
   createBackground() {
     this.add.image(200, 200, "hospital2").setScale(0.9);
-    this.add
+    const header = this.add
       .text(280, 50, "Murder Hospital", {
         fontFamily: "GypsyCurse",
         fontSize: 125,
         color: "red",
       })
       .setOrigin(0, 0);
+    header.setShadow(5, 5, 'black', 5, false, true)
   }
 
   createPlayButton() {
@@ -41,8 +42,6 @@ export default class TitleScene extends Phaser.Scene {
       "pointerdown",
       function() {
         this.scene.start("Story");
-        // this.scene.start("ClueBank");
-        // this.scene.start("MainTimerScene");
       }.bind(this)
     );
 
