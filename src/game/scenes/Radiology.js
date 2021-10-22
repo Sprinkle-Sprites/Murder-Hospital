@@ -17,7 +17,7 @@ import eventEmitter from "../eventEmitter";
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
-    this.completedClus = [];
+    this.collectedClues = [];
   }
 
   preload() {
@@ -60,8 +60,8 @@ class Radiology extends Scene {
 
   completed() {
     if (this.collectedClues.length === 3)
-      //send a message to dice to lower prob of the radiology (index 6) being rolled
-      eventEmitter.emit("completed", 2);
+      //send a message to dice to lower prob of the radiology (dice # 3) being rolled
+      eventEmitter.emit("completed", 3);
   }
 
   createTitle() {

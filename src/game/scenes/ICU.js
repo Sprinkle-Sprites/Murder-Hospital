@@ -67,8 +67,8 @@ class ICU extends Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the ICU (index 7) being rolled
-      eventEmitter.emit("completed", 7);
+      //send a message to dice to lower prob of the ICU (dice # 8) being rolled
+      eventEmitter.emit("completed", 8);
   }
 
   createTitle() {

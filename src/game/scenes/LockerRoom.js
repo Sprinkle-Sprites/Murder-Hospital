@@ -287,6 +287,12 @@ class LockerRoom extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "deoderant");
+
+    if (!this.collectedClues.includes("deoderant")) {
+      this.collectedClues.push("deoderant");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -399,8 +405,8 @@ class LockerRoom extends Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the locker room (index 6) being rolled
-      eventEmitter.emit("completed", 5);
+      //send a message to dice to lower prob of the locker room (dice # 6) being rolled
+      eventEmitter.emit("completed", 6);
   }
 }
 

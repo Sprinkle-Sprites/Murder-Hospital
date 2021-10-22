@@ -20,7 +20,9 @@ let roomsLeng = rooms.length;
 
 let incompRooms = [1, 2, 3, 4, 5, 6, 7, 8];
 let inCompRoomsLeng = incompRooms.length;
-eventEmitter.on("completed", (idx) => {
+
+eventEmitter.on("completed", (roomNum) => {
+  let idx = incompRooms.indexOf(roomNum);
   incompRooms.splice(idx, 1);
   inCompRoomsLeng = incompRooms.length;
 });
@@ -40,18 +42,14 @@ function rollDie() {
 
   count++;
 
-  if (count % 4 === 0) {
+  if (count % 6 === 0 || incompRooms.length === 0) {
     dieIdx = Math.floor(Math.random() * roomsLeng);
 
     dieValue = rooms[dieIdx];
-    console.log("count", count);
-    console.log("die value", dieValue);
   } else {
     dieIdx = Math.floor(Math.random() * inCompRoomsLeng);
 
     dieValue = incompRooms[dieIdx];
-    console.log("incomplete length", inCompRoomsLeng);
-    console.log("die value", dieValue);
   }
   // dieValue must be a number from 1 - 8
 

@@ -25,7 +25,7 @@ class Pharmacy extends Scene {
   constructor() {
     super({ key: "Pharmacy" });
     this.combination = 0;
-    this.completedClues = [];
+    this.collectedClues = [];
   }
 
   preload() {
@@ -387,8 +387,8 @@ class Pharmacy extends Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the Pharmacy (index 4) being rolled
-      eventEmitter.emit("completed", 4);
+      //send a message to dice to lower prob of the Pharmacy (dice # 5) being rolled
+      eventEmitter.emit("completed", 5);
   }
 }
 

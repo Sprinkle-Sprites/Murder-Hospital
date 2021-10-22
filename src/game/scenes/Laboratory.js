@@ -6,7 +6,6 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
-  displayTiledCollider,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -52,8 +51,6 @@ class Laboratory extends Scene {
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
     this.load.image("computerScreen", computerScreen);
-
-    console.log("collected clues", this.collectedClues);
   }
 
   create() {
@@ -187,8 +184,8 @@ class Laboratory extends Scene {
 
   completed() {
     if (this.collectedClues.length === 6)
-      //send a message to dice to lower prob of the laboratory (index 6) being rolled
-      eventEmitter.emit("completed", 3);
+      //send a message to dice to lower prob of the laboratory (dice # 4) being rolled
+      eventEmitter.emit("completed", 4);
   }
 
   createCalendar() {

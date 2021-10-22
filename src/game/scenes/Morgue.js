@@ -84,8 +84,8 @@ export default class Morgue extends Phaser.Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the morgue (index 6) being rolled
-      eventEmitter.emit("completed", 6);
+      //send a message to dice to lower prob of the morgue (dice # 7) being rolled
+      eventEmitter.emit("completed", 7);
   }
 
   createMap() {
@@ -275,7 +275,7 @@ export default class Morgue extends Phaser.Scene {
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
       this.player.disableBody();
-      createMessageForImage(this, drawerMessage);
+      createMessage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -284,7 +284,7 @@ export default class Morgue extends Phaser.Scene {
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
-    createMessageForImage(this, lockedBodyMessage);
+    createMessage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("ghostDrawer")) {

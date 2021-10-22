@@ -367,8 +367,8 @@ class Surgery extends Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the surgery (index 1) being rolled
-      eventEmitter.emit("completed", 1);
+      //send a message to dice to lower prob of the surgery (dice # 2) being rolled
+      eventEmitter.emit("completed", 2);
   }
 }
 

@@ -184,8 +184,8 @@ class PatientRoom extends Scene {
 
   completed() {
     if (this.collectedClues.length === 4)
-      //send a message to dice to lower prob of the Patient Room (index 0) being rolled
-      eventEmitter.emit("completed", 0);
+      //send a message to dice to lower prob of the Patient Room (dice # 1) being rolled
+      eventEmitter.emit("completed", 1);
   }
 
   createFlower() {
