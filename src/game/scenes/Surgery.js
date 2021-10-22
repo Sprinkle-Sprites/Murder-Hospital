@@ -1,5 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -19,6 +20,7 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 class Surgery extends Scene {
   constructor() {
     super({ key: "Surgery" });
+    this.collectedClues = [];
   }
 
   preload() {
@@ -300,6 +302,12 @@ class Surgery extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("glove")) {
+      this.collectedClues.push("glove");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -307,6 +315,12 @@ class Surgery extends Scene {
     const cannisterMessage = "Huh, it's a gas cannister. It's heavy.";
     this.player.disableBody();
     createMessage(this, cannisterMessage);
+
+    if (!this.collectedClues.includes("gasCannister")) {
+      this.collectedClues.push("gasCannister");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -319,6 +333,12 @@ class Surgery extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("soap")) {
+      this.collectedClues.push("soap");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -331,12 +351,24 @@ class Surgery extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("scapel")) {
+      this.collectedClues.push("scapel");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the surgery (index 1) being rolled
+      eventEmitter.emit("completed", 1);
   }
 }
 
