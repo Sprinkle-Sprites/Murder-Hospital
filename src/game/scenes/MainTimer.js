@@ -28,7 +28,7 @@ export default class MainTimer {
    * @param {number} duration
    */
 
-  start(callback, duration = 5000) {
+  start(callback, duration = 3599000) {
     this.stop();
 
     this.finishedCallback = callback;
