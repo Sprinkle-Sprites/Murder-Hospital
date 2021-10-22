@@ -4,7 +4,7 @@ import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
 import exitButton from "../ExitButton";
 import { io } from "socket.io-client";
-import { socket } from "../../components/Chat.vue";
+// import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
 
