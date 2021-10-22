@@ -10,6 +10,7 @@ export default class CreditsScene extends Scene {
     this.createScale();
     this.createTitleText();
     this.createTeam();
+    this.createFeatureLinks();
   }
 
   createBackground() {
@@ -67,5 +68,30 @@ export default class CreditsScene extends Scene {
       })
       .setOrigin(0, 0.5)
       .setShadow(5, 5, "black", 5, false, true);
+  }
+
+  createFeatureLinks() {
+    this.teamButtons = [];
+    // GABBY
+    this.teamButtons.push(
+      this.add
+        .image(this.width * 0.25, this.height * 0.42, "githubLogo")
+        .setInteractive()
+        .setScale(0.1)
+        .setOrigin(0, 0.5)
+    );
+    this.teamButtons.push(
+      this.add
+        .image(this.width * 0.3, this.height * 0.42, "linkedinLogo")
+        .setInteractive()
+        .setScale(0.1)
+        .setOrigin(0, 0.5)
+    );
+
+    // HELENA
+
+    // NICOLE
+
+    // SARAH
   }
 }

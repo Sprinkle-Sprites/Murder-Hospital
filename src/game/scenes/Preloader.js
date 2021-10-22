@@ -28,6 +28,8 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
 import blueButton from "@/game/assets/buttons/blue_button01.png";
 import blueButton2 from "@/game/assets/buttons/blue_button02.png";
+import githubLogo from "@/game/assets/buttons/github.png";
+import linkedinLogo from "@/game/assets/buttons/linkedin.png";
 
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
@@ -104,11 +106,13 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
-    // load assets for title scene
+    // load assets for title & credit scenes
     this.load.image("blueButton", blueButton);
     this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
     this.load.image("credits-Background", creditBackground);
+    this.load.image("githubLogo", githubLogo);
+    this.load.image("linkedinLogo", linkedinLogo);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
