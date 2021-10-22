@@ -44,7 +44,7 @@ function launch(containerId) {
         gravity: {
           y: 0,
         },
-        debug: true,
+        debug: false,
       },
     },
 
@@ -65,7 +65,7 @@ function launch(containerId) {
       Exit,
       LockerRoom,
       ICU,
-      VictoryScene
+      VictoryScene,
     ],
   });
 }
