@@ -26,11 +26,15 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
-import blueButton from "@/game/assets/menu/blue_button01.png";
-import blueButton2 from "@/game/assets/menu/blue_button02.png";
-import hospital from "@/game/assets/menu/abandoned_Hospital.png";
-import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
-import victory from "@/game/assets/menu/parking-lot-victory.jpg"
+import blueButton from "@/game/assets/buttons/blue_button01.png";
+import blueButton2 from "@/game/assets/buttons/blue_button02.png";
+import githubLogo from "@/game/assets/buttons/github.png";
+import linkedinLogo from "@/game/assets/buttons/linkedin.png";
+
+// BACKGROUND IMAGES
+import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
+import creditBackground from "@/game/assets/background/burgandy-background.jpg";
+import victory from "@/game/assets/background/parking-lot-victory.jpg";
 
 //AUDIO
 import bgMusic from "@/game/assets/audio/Paranormal Phenomena 1.wav";
@@ -90,8 +94,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.on("progress", (value) => {
       percentText.setText(parseInt(value) * 100 + "%");
       progressBar.clear();
-      progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(250, 280, 300 * value, 30);
+      progressBar.fillStyle(0xffffff, 1).fillRect(250, 280, 300 * value, 30);
     });
 
     //remove the loading screen once we have reached 100%
@@ -107,11 +110,13 @@ export default class Preloader extends Phaser.Scene {
     );
 
     this.timedEvent = this.time.delayedCall(1000, this.readyScene, [], this);
-    // load assets for title scene & story scenes
+    // load assets for non-gameplay scenes
     this.load.image("blueButton", blueButton);
     this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
-    this.load.image("hospital2", hospital2);
+    this.load.image("credits-Background", creditBackground);
+    this.load.image("githubLogo", githubLogo);
+    this.load.image("linkedinLogo", linkedinLogo);
     this.load.image("victory", victory);
 
     // load any assets needed for game

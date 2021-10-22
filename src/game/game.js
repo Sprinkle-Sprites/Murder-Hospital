@@ -5,6 +5,7 @@ import MainScene from "@/game/scenes/MainScene";
 import TitleScene from "@/game/scenes/TitleScene";
 import Story from "@/game/scenes/Story";
 import Preloader from "@/game/scenes/Preloader";
+import CreditsScene from "@/game/scenes/CreditsScene";
 import Radiology from "@/game/scenes/Radiology";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import Surgery from "@/game/scenes/Surgery";
@@ -44,13 +45,14 @@ function launch(containerId) {
         gravity: {
           y: 0,
         },
-        debug: true,
+        debug: false,
       },
     },
 
     scene: [
       Preloader,
       TitleScene,
+      CreditsScene,
       Story,
       Radiology,
       Surgery,

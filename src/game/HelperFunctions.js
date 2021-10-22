@@ -63,7 +63,7 @@ export function handleRoomCountdownFinished() {
   this.player.active = false;
   const { width, height } = this.scale;
   this.add
-    .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
+    .text(width * 0.5, height * 0.5, "Time's up, go back to the waiting room", {
       fontSize: 30,
       backgroundColor: "black",
     })

@@ -1,7 +1,6 @@
-import Phaser from "phaser";
-import config from "../game";
+import Phaser, { Scene } from "phaser";
 
-export default class TitleScene extends Phaser.Scene {
+export default class TitleScene extends Scene {
   constructor() {
     super("TitleScene");
   }
@@ -18,15 +17,15 @@ export default class TitleScene extends Phaser.Scene {
     this.scene.stop("MainScene");
   }
   createBackground() {
-    this.add.image(200, 200, "hospital2").setScale(0.9);
-    const header = this.add
+    this.add.image(200, 200, "hospital").setScale(0.9);
+    this.add
       .text(280, 50, "Murder Hospital", {
         fontFamily: "GypsyCurse",
         fontSize: 125,
         color: "red",
       })
-      .setOrigin(0, 0);
-    header.setShadow(5, 5, "black", 5, false, true);
+      .setOrigin(0, 0)
+      .setShadow(5, 5, "black", 5, false, true);
   }
 
   createPlayButton() {
@@ -45,7 +44,9 @@ export default class TitleScene extends Phaser.Scene {
     this.playButton.on(
       "pointerdown",
       function() {
-        this.scene.start("Story");
+        this.scene.start("MainScene");
+        this.scene.start("ClueBank");
+        this.scene.start("MainTimerScene");
       }.bind(this)
     );
 
@@ -99,30 +100,6 @@ export default class TitleScene extends Phaser.Scene {
       gameObjects[0].setTexture("blueButton2");
     });
   }
-
-  //If we do not need an options button, use code below
-  // createCreditsButton() {
-  //   this.creditsButton = this.add
-  //     .sprite(500, 360, "blueButton2")
-  //     .setInteractive();
-
-  //   this.creditsText = this.add.text(0, 0, "Credits", {
-  //     fontSize: "32px",
-  //     fill: "#fff",
-  //   });
-
-  //   this.centerButtonText(this.creditsText, this.creditsButton);
-
-  //   this.creditsButton.on(
-  //     "pointerdown",
-  //     function(pointer) {
-  //       this.scene.start("CreditsScene");
-  //     }.bind(this)
-  //   );
-  //   this.input.on("pointerover", function(event, gameObjects) {
-  //     gameObjects[0].setTexture("blueButton2");
-  //   });
-  // }
 
   centerButtonText(gameText, playButton) {
     Phaser.Display.Align.In.Center(gameText, playButton);
