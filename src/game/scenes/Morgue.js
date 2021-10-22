@@ -40,6 +40,10 @@ export default class Morgue extends Phaser.Scene {
     //POP UPS
     this.load.image("password", password);
     this.load.image("toeTag", toeTag);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {
