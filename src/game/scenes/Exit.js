@@ -12,7 +12,7 @@ import collider from "@/game/assets/collider.png";
 
 class Exit extends Scene {
   constructor() {
-    super({key: "Exit"});
+    super({ key: "Exit" });
     this.combination = 0;
   }
 
@@ -21,6 +21,10 @@ class Exit extends Scene {
 
     //exit panel
     this.load.image("panel", collider);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {
@@ -29,7 +33,6 @@ class Exit extends Scene {
     this.createPanel();
     this.createColliders();
   }
-
 
   createMap() {
     const map = this.make.tilemap({ key: "exit" });
@@ -72,18 +75,15 @@ class Exit extends Scene {
     //LAYERS
     const floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
     const wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
-    const backgroundLayer = map.createLayer("exitBackground", InteriorAlt).setDepth(-1);
+    const backgroundLayer = map
+      .createLayer("exitBackground", InteriorAlt)
+      .setDepth(-1);
     const detailsCLayer = map
       .createLayer("exitDetailsC", InteriorC)
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
-    const layers = [
-      floorLayer,
-      wallLayer,
-      backgroundLayer,
-      detailsCLayer,
-    ];
+    const layers = [floorLayer, wallLayer, backgroundLayer, detailsCLayer];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
@@ -128,10 +128,11 @@ class Exit extends Scene {
     this.panel = this.physics.add
       .sprite(410, 10, "panel")
       .setOrigin(0, 0)
-      .setDepth(-2).setSize(25, 15, true)
+      .setDepth(-2)
+      .setSize(25, 15, true);
   }
 
-  createColliders(){
+  createColliders() {
     this.physics.add.overlap(
       this.player,
       this.panel,
@@ -182,21 +183,26 @@ class Exit extends Scene {
         const height = this.sys.canvas.height;
         this.player.disableBody();
         //CURRENTLY SENDS A MESSAGE, NEEDS TO GO TO VICTORY SCENE
-        this.add.text(width * 0.5, height * 0.5, "Holy crap, the door actually opened. You did it! Get the *#!% outta here!", {
-          fontSize: 30,
-          backgroundColor: "#4c517d",
-          wordWrap: { width: 300, useAdvancedWrap: true },
-          strokeThickness: 1,
-          stroke: "#fdcd83",
-          align: "center",
-          fixedWidth: width,
-          fixedHeight: height,
-        }).setOrigin(0.5, 0.5);
-
+        this.add
+          .text(
+            width * 0.5,
+            height * 0.5,
+            "Holy crap, the door actually opened. You did it! Get the *#!% outta here!",
+            {
+              fontSize: 30,
+              backgroundColor: "#4c517d",
+              wordWrap: { width: 300, useAdvancedWrap: true },
+              strokeThickness: 1,
+              stroke: "#fdcd83",
+              align: "center",
+              fixedWidth: width,
+              fixedHeight: height,
+            }
+          )
+          .setOrigin(0.5, 0.5);
       }
       if (this.combination !== 428395 && !isNaN(this.combination)) {
-        const wrongCodeMessage =
-          "Whoops. That ain't it!";
+        const wrongCodeMessage = "Whoops. That ain't it!";
         this.player.disableBody();
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");

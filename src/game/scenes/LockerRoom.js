@@ -47,6 +47,10 @@ class LockerRoom extends Scene {
     this.load.image("deoderant", deoderant);
     this.load.image("toothbrush", toothbrush);
     this.load.image("note", groceryList);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {
