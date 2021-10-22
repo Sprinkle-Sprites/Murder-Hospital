@@ -7,25 +7,65 @@ export default class CreditsScene extends Scene {
 
   create() {
     this.createBackground();
+    this.createScale();
     this.createTitleText();
+    this.createTeam();
   }
 
   createBackground() {
     this.add.image(200, 200, "credits-Background");
   }
+  createScale() {
+    this.width = this.cameras.main.width;
+    this.height = this.cameras.main.height;
+  }
 
   createTitleText() {
-    let width = this.cameras.main.width;
-    let height = this.cameras.main.height;
-
     this.add
-      .text(width * 0.5, height * 0.1, "Murder Hospital", {
+      .text(this.width * 0.5, this.height * 0.1, "Murder Hospital", {
         fontFamily: "GypsyCurse",
         fontSize: "50px",
       })
       .setOrigin(0.5, 0.5)
-      .setColor("#DD9200");
+      .setColor("red")
+      .setShadow(5, 5, "black", 5, false, true);
   }
 
-  createTeam() {}
+  createTeam() {
+    this.add
+      .text(this.width * 0.18, this.height * 0.35, "Gabriella (Gabby) Apeadu", {
+        fontFamily: "Oswald",
+        fontSize: "25px",
+        stroke: "#D9B48FFF",
+      })
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
+
+    this.add
+      .text(this.width * 0.6, this.height * 0.35, "Helena Bliss", {
+        fontFamily: "Oswald",
+        fontSize: "25px",
+        stroke: "#D9B48FFF",
+      })
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
+
+    this.add
+      .text(this.width * 0.18, this.height * 0.52, "Nicole Buendia", {
+        fontFamily: "Oswald",
+        fontSize: "25px",
+        stroke: "#D9B48FFF",
+      })
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
+
+    this.add
+      .text(this.width * 0.6, this.height * 0.52, "Sarah Sheppard", {
+        fontFamily: "Oswald",
+        fontSize: "25px",
+        stroke: "#D9B48FFF",
+      })
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
+  }
 }

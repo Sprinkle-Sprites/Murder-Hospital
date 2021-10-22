@@ -20,8 +20,8 @@ export default class TitleScene extends Scene {
         fontSize: 125,
         color: "red",
       })
-      .setOrigin(0, 0);
-    header.setShadow(5, 5, "black", 5, false, true);
+      .setOrigin(0, 0)
+      .setShadow(5, 5, "black", 5, false, true);
   }
 
   createPlayButton() {
