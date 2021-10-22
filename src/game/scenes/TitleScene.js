@@ -44,9 +44,7 @@ export default class TitleScene extends Scene {
     this.playButton.on(
       "pointerdown",
       function() {
-        this.scene.start("MainScene");
-        this.scene.start("ClueBank");
-        this.scene.start("MainTimerScene");
+        this.scene.start("Story");
       }.bind(this)
     );
 
