@@ -1,5 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import Player from "@/game/Player";
 import {
   resizeMapLayer,
@@ -180,6 +181,12 @@ class PatientRoom extends Scene {
     this.roomTimer.update();
   }
 
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the Patient Room (index 0) being rolled
+      eventEmitter.emit("completed", 0);
+  }
+
   createFlower() {
     this.flowers1 = this.physics.add
       .sprite(40, 360, "flowers1")
@@ -289,6 +296,12 @@ class PatientRoom extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("flowers")) {
+      this.collectedClues.push("flowers");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -301,6 +314,12 @@ class PatientRoom extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("blanket")) {
+      this.collectedClues.push("blanket");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -310,6 +329,12 @@ class PatientRoom extends Scene {
     this.player.disableBody();
     createMessage(this, dollMessage);
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("creepyDoll")) {
+      this.collectedClues.push("creepyDoll");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -329,6 +354,12 @@ class PatientRoom extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "paperScrap");
+
+        if (!this.collectedClues.includes("paperScrap")) {
+          this.collectedClues.push("paperScrap");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       }, 3000);
     } else {
