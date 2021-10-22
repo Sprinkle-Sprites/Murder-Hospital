@@ -10,8 +10,12 @@ export default class TitleScene extends Scene {
     this.createPlayButton();
     this.createOptionsButton();
     this.createCreditsButton();
+    this.createTurnOffPreviousScenes();
   }
 
+  createTurnOffPreviousScenes() {
+    this.scene.stop("MainScene");
+  }
   createBackground() {
     this.add.image(200, 200, "hospital").setScale(0.9);
     this.add
@@ -96,30 +100,6 @@ export default class TitleScene extends Scene {
       gameObjects[0].setTexture("blueButton2");
     });
   }
-
-  //If we do not need an options button, use code below
-  // createCreditsButton() {
-  //   this.creditsButton = this.add
-  //     .sprite(500, 360, "blueButton2")
-  //     .setInteractive();
-
-  //   this.creditsText = this.add.text(0, 0, "Credits", {
-  //     fontSize: "32px",
-  //     fill: "#fff",
-  //   });
-
-  //   this.centerButtonText(this.creditsText, this.creditsButton);
-
-  //   this.creditsButton.on(
-  //     "pointerdown",
-  //     function(pointer) {
-  //       this.scene.start("CreditsScene");
-  //     }.bind(this)
-  //   );
-  //   this.input.on("pointerover", function(event, gameObjects) {
-  //     gameObjects[0].setTexture("blueButton2");
-  //   });
-  // }
 
   centerButtonText(gameText, playButton) {
     Phaser.Display.Align.In.Center(gameText, playButton);

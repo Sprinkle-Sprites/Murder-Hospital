@@ -1,6 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import MainTimer from "@/game/scenes/MainTimer";
-
+import { diceNextSceneFunc } from "@/game/HelperFunctions";
 //NOTE: MainTimer functionality has not been removed from homepage, and is commented out in Radiology
 
 class MainSceneTimer extends Phaser.Scene {
@@ -19,12 +19,13 @@ class MainSceneTimer extends Phaser.Scene {
   }
 
   handleCountdownFinished() {
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "You've been captured", {
-        fontSize: 30,
-      })
-      .setOrigin(0.5);
+    // const { width, height } = this.scale;
+    // this.add
+    //   .text(width * 0.5, height * 0.5, "You've been captured", {
+    //     fontSize: 30,
+    //   })
+    //   .setOrigin(0.5);
+    diceNextSceneFunc(this, "EndScene");
   }
 
   update() {

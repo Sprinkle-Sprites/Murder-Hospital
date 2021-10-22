@@ -36,6 +36,9 @@ import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
 import creditBackground from "@/game/assets/background/burgandy-background.jpg";
 import victory from "@/game/assets/background/parking-lot-victory.jpg";
 
+//AUDIO
+import bgMusic from "@/game/assets/audio/Paranormal Phenomena 1.wav";
+
 export default class Preloader extends Phaser.Scene {
   constructor() {
     super("Preloader");
@@ -139,7 +142,30 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("ICU", ICU);
     this.load.tilemapTiledJSON("exit", exit_room);
     this.load.tilemapTiledJSON("LockerRoom", locker_room);
+
+    //AUDIO
+    this.load.audio("bgMusic", bgMusic);
   } //end of preload
+
+  create() {
+    this.bgAudio();
+  }
+
+  bgAudio() {
+    const bgMusic = this.sound.add("bgMusic", {
+      loop: true,
+    });
+
+    if (!this.sound.locked) {
+      bgMusic.play();
+    } else {
+      this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+        bgMusic.play();
+      });
+    }
+
+    // bgMusic.play();
+  }
 
   readyScene() {
     this.readyCount++;
