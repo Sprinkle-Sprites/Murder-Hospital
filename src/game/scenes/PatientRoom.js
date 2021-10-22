@@ -22,6 +22,7 @@ class PatientRoom extends Scene {
   constructor() {
     super({ key: "PatientRoom" });
     this.check = false;
+    this.collectedClues = [];
   }
 
   preload() {
