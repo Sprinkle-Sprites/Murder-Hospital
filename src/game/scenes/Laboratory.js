@@ -187,7 +187,7 @@ class Laboratory extends Scene {
 
   completed() {
     if (this.collectedClues.length === 6)
-      //send a message to dice to lower prob of the morgue (index 6) being rolled
+      //send a message to dice to lower prob of the laboratory (index 6) being rolled
       eventEmitter.emit("completed", 3);
   }
 
