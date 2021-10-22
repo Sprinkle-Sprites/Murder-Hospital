@@ -41,13 +41,7 @@ export default class TitleScene extends Phaser.Scene {
     this.playButton.on(
       "pointerdown",
       function() {
-<<<<<<< HEAD
         this.scene.start("Story");
-=======
-        this.scene.start("MainScene");
-        this.scene.start("ClueBank");
-        this.scene.start("MainTimerScene");
->>>>>>> main
       }.bind(this)
     );
 
