@@ -93,3 +93,15 @@ export function diceNextSceneFunc(scene, nextScene) {
     );
   }, 2000);
 }
+
+export function changeDieClass() {
+  let className = document.getElementById("die").className;
+
+  if (className === "container") {
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
+  } else if (className === "hide") {
+    document.getElementById("die").classList.remove("hide");
+    document.getElementById("die").classList.add("container");
+  }
+}

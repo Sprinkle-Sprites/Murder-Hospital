@@ -11,6 +11,7 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
@@ -49,8 +50,7 @@ class LockerRoom extends Scene {
     this.load.image("note", groceryList);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {
