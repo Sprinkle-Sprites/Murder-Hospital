@@ -205,10 +205,10 @@ class Laboratory extends Scene {
 
   createTestTube() {
     this.testTube = this.physics.add
-      .sprite(445, 170, "testTube")
+      .sprite(445, 178, "testTube")
       .setOrigin(0, 0)
       .setDepth(-2)
-      .setSize(25, 35, true);
+      .setSize(25, 50, true);
   }
 
   createSpecimenFlask() {
