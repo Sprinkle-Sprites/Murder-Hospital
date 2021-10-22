@@ -12,10 +12,12 @@ import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
+    this.completedClus = [];
   }
 
   preload() {
@@ -54,6 +56,12 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 3)
+      //send a message to dice to lower prob of the radiology (index 6) being rolled
+      eventEmitter.emit("completed", 2);
   }
 
   createTitle() {
@@ -268,6 +276,12 @@ class Radiology extends Scene {
     this.player.disableBody();
     createMessage(this, lightSwitchMessage);
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("switch")) {
+      this.collectedClues.push("switch");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -281,6 +295,12 @@ class Radiology extends Scene {
     });
 
     eventsCenter.emit("update-bank", "comboCode");
+
+    if (!this.collectedClues.includes("comboCode")) {
+      this.collectedClues.push("comboCode");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -288,6 +308,12 @@ class Radiology extends Scene {
     const machineMessage = "Machine doesnt seem to work... Oh, well.";
     this.player.disableBody();
     createMessage(this, machineMessage);
+
+    if (!this.collectedClues.includes("machine")) {
+      this.collectedClues.push("machine");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 }
