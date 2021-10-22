@@ -1,6 +1,6 @@
-import Phaser from "phaser";
+import Phaser, { Scene } from "phaser";
 
-export default class TitleScene extends Phaser.Scene {
+export default class TitleScene extends Scene {
   constructor() {
     super("TitleScene");
   }
@@ -13,7 +13,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   createBackground() {
-    this.add.image(200, 200, "hospital2").setScale(0.9);
+    this.add.image(200, 200, "hospital").setScale(0.9);
     this.add
       .text(280, 50, "Murder Hospital", {
         fontFamily: "GypsyCurse",
@@ -39,7 +39,7 @@ export default class TitleScene extends Phaser.Scene {
     this.playButton.on(
       "pointerdown",
       function() {
-        this.scene.start("Laboratory");
+        this.scene.start("MainScene");
         this.scene.start("ClueBank");
         this.scene.start("MainTimerScene");
       }.bind(this)

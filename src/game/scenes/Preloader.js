@@ -26,10 +26,12 @@ import locker_room from "@/game/assets/tiles/LockerRoom.json";
 //GAME ASSETS
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import lockerRoom from "@/game/assets/tiles/LockerRoom.png";
-import blueButton from "@/game/assets/menu/blue_button01.png";
-import blueButton2 from "@/game/assets/menu/blue_button02.png";
-import hospital from "@/game/assets/menu/abandoned_Hospital.png";
-import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
+import blueButton from "@/game/assets/buttons/blue_button01.png";
+import blueButton2 from "@/game/assets/buttons/blue_button02.png";
+
+// BACKGROUND IMAGES
+import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
+import creditBackground from "@/game/assets/background/burgandy-background.jpg";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -106,7 +108,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("blueButton", blueButton);
     this.load.image("blueButton2", blueButton2);
     this.load.image("hospital", hospital);
-    this.load.image("hospital2", hospital2);
+    this.load.image("credits-Background", creditBackground);
 
     // load any assets needed for game
     this.load.image("Interior-A", InteriorA);
