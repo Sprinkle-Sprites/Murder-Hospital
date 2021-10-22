@@ -41,12 +41,13 @@ export default class Preloader extends Phaser.Scene {
   }
   preload() {
     //create progress bar
-    let progressBar = this.add.graphics();
-    //create progress box
-    let progressBox = this.add.graphics();
-    //fill the progress box
-    progressBox.fillStyle(0x282d36);
-    progressBox.fillRect(240, 270, 320, 50);
+    let progressBar = this.add.graphics().setPosition(140, 90);
+    // //create & fill progress box
+    let progressBox = this.add
+      .graphics()
+      .setPosition(140, 90)
+      .fillStyle(0x282d36, 0.5)
+      .fillRect(240, 270, 320, 50);
 
     //set the cameras width and height
     let width = this.cameras.main.width;
