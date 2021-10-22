@@ -223,7 +223,7 @@ export default class Morgue extends Phaser.Scene {
       .setDepth(-2);
 
     //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
-    resizeCollider(this.boneSaw, 5, 10);
+    resizeCollider(this.boneSaw, 2, 10);
   }
 
   onNoteBookCollision() {
