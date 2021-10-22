@@ -48,6 +48,10 @@ class PatientRoom extends Scene {
     this.load.image("flowers", flowers);
     this.load.image("blanket", blanket);
     this.load.image("paperScrap", paperScrap);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {

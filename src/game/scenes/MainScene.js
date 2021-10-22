@@ -27,6 +27,10 @@ class MainScene extends Scene {
 
   preload() {
     Player.preload(this);
+
+    //REMOVES HIDE CLASS TO DISPLAY DIE, BUTTONS AND ADDS STYLING CLASS
+    document.getElementById("die").classList.remove("hide");
+    document.getElementById("die").classList.add("container");
   }
 
   create() {
