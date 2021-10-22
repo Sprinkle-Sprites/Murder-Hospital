@@ -8,6 +8,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
+  changeDieClass,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -53,8 +54,7 @@ class Surgery extends Scene {
     this.load.image("scapel", scapel);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieClass();
   }
 
   create() {
