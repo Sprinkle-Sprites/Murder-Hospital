@@ -260,10 +260,10 @@ class ICU extends Scene {
   }
 
   createSounds() {
-    this.slip = this.sound.add("blood");
-    this.IVBloodBag = this.sound.add("IVBag");
-    this.monitorTurnOn = this.sound.add("monitor");
-    this.posterGrab = this.sound.add("poster");
+    this.slipSound = this.sound.add("blood");
+    this.IVBloodBagSound = this.sound.add("IVBag");
+    this.monitorTurnOnSound = this.sound.add("monitor");
+    this.posterGrabSound = this.sound.add("poster");
   }
 
   createColliders() {
@@ -348,7 +348,7 @@ class ICU extends Scene {
 
   onBloodCollision() {
     this.player.disableBody();
-    this.slip.play();
+    this.slipSound.play();
 
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
@@ -365,7 +365,7 @@ class ICU extends Scene {
 
   onIVCollision() {
     this.player.disableBody();
-    this.IVBloodBag.play();
+    this.IVBloodBagSound.play();
 
     const IVMessage =
       "Oh, hey, a bag of blood. If you lose a bunch later, maybe this will come in handy?";
@@ -390,7 +390,7 @@ class ICU extends Scene {
 
   onMonitorCollision() {
     this.player.disableBody();
-    this.monitorTurnOn.play();
+    this.monitorTurnOnSound.play();
 
     const monitorMessage = "How is this monitor supposed to help you?";
     createMessage(this, monitorMessage);
@@ -405,7 +405,7 @@ class ICU extends Scene {
 
   onPosterCollision() {
     this.player.disableBody();
-    this.posterGrab.play();
+    this.posterGrabSound.play();
 
     const popUp = this.add.image(400, 300, "poster").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "poster");
