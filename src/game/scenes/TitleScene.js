@@ -11,8 +11,12 @@ export default class TitleScene extends Phaser.Scene {
     this.createPlayButton();
     this.createOptionsButton();
     this.createCreditsButton();
+    this.createTurnOffPreviousScenes();
   }
 
+  createTurnOffPreviousScenes() {
+    this.scene.stop("MainScene");
+  }
   createBackground() {
     this.add.image(200, 200, "hospital2").setScale(0.9);
     const header = this.add
@@ -22,7 +26,7 @@ export default class TitleScene extends Phaser.Scene {
         color: "red",
       })
       .setOrigin(0, 0);
-    header.setShadow(5, 5, 'black', 5, false, true)
+    header.setShadow(5, 5, "black", 5, false, true);
   }
 
   createPlayButton() {
