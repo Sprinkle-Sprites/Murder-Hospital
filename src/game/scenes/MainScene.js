@@ -12,6 +12,7 @@ import {
   diceNextSceneFunc,
   createMessage,
   nextSceneFunc,
+  changeDieClass,
 } from "../HelperFunctions";
 
 // const exitButton = document.getElementById("try-to-leave")
@@ -29,8 +30,7 @@ class MainScene extends Scene {
     Player.preload(this);
 
     //REMOVES HIDE CLASS TO DISPLAY DIE, BUTTONS AND ADDS STYLING CLASS
-    document.getElementById("die").classList.remove("hide");
-    document.getElementById("die").classList.add("container");
+    changeDieClass();
   }
 
   create() {
