@@ -8,7 +8,6 @@ import scapel from "@/game/assets/popups/scapel.png";
 import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
-import e from "cors";
 
 class ClueBank extends Scene {
   constructor() {
@@ -103,23 +102,18 @@ class ClueBank extends Scene {
     let columnCDiff = Math.abs(1050-xAxis)
     if (columnADiff < columnBDiff && columnADiff < columnCDiff) {
       let aCol = arrOfValues.filter((val) => {
-        console.log("this is the val", val)
-        console.log("this should be true", val.x === 850)
         return val.x === 850
     })
-      console.log("this is the aCol", aCol)
       return aCol
     } else if (columnBDiff < columnADiff && columnBDiff < columnCDiff) {
       let bCol = arrOfValues.filter((val) => {
         return val.x === 950
       })
-      console.log("this is the bCol", bCol)
       return bCol
     } else {
       let cCol = arrOfValues.filter((val) => {
         return val.x === 1050
       })
-      console.log("this is the cCol", cCol)
       return cCol
     }
   }
