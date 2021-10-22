@@ -30,7 +30,7 @@ import blueButton from "@/game/assets/menu/blue_button01.png";
 import blueButton2 from "@/game/assets/menu/blue_button02.png";
 import hospital from "@/game/assets/menu/abandoned_Hospital.png";
 import hospital2 from "@/game/assets/menu/abandoned_Hospital.jpg";
-import victory from "@/game/assets/menu/parking-lot-victory.jpg"
+import victory from "@/game/assets/menu/parking-lot-victory.jpg";
 
 //AUDIO
 import bgMusic from "@/game/assets/audio/Paranormal Phenomena 1.wav";
@@ -158,8 +158,6 @@ export default class Preloader extends Phaser.Scene {
         bgMusic.play();
       });
     }
-
-    // bgMusic.play();
   }
 
   readyScene() {
