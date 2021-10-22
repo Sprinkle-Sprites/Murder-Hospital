@@ -46,6 +46,10 @@ class ICU extends Scene {
     //POSTER IMAGE
     this.load.image("poster", poster);
     this.load.image("IVbag", ivBag);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {

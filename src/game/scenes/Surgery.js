@@ -51,6 +51,10 @@ class Surgery extends Scene {
     this.load.image("glove", rubber_glove);
     this.load.image("soap", bar_of_soap);
     this.load.image("scapel", scapel);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {

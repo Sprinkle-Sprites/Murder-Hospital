@@ -50,6 +50,10 @@ class Pharmacy extends Scene {
     this.load.image("key", keyPop);
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {

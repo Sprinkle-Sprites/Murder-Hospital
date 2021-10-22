@@ -51,6 +51,10 @@ class Laboratory extends Scene {
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
     this.load.image("computerScreen", computerScreen);
+
+    //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
 
   create() {
