@@ -19,14 +19,7 @@ class ClueBank extends Scene {
   }
 
   preload() {
-    //surgery
-    this.load.image("glove", rubber_glove);
-    this.load.image("soap", bar_of_soap);
-    this.load.image("scapel", scapel);
-    //patient's room
-    this.load.image("flowers", flowers);
-    this.load.image("blanket", blanket);
-    this.load.image("paperScrap", paperScrap);
+    //this preloader is not needed at the moment but keeping for the time, just in case
   }
 
   create() {
@@ -61,8 +54,8 @@ class ClueBank extends Scene {
     } else if (this.count % 3 === 0) {
       this.x = 1050;
     } else if (this.count % 3 === 2) {
-      this.x = 950
-    } else  if (this.count % 3 === 1) {
+      this.x = 950;
+    } else if (this.count % 3 === 1) {
       this.y = this.y + 65;
       this.x = 850;
     }

@@ -14,7 +14,7 @@ import ClueBank from "@/game/scenes/ClueBank";
 import Pharmacy from "@/game/scenes/Pharmacy";
 import Exit from "@/game/scenes/Exit";
 import LockerRoom from "@/game/scenes/LockerRoom";
-import ICU from "@/game/scenes/ICU"
+import ICU from "@/game/scenes/ICU";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -59,7 +59,7 @@ function launch(containerId) {
       Morgue,
       Exit,
       LockerRoom,
-      ICU
+      ICU,
     ],
   });
 }

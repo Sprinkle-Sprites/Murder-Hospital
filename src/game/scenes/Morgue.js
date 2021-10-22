@@ -6,7 +6,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessageForImage,
-  createMessage
+  createMessage,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -14,11 +14,13 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 import password from "@/game/assets/popups/password.png";
 import toeTag from "@/game/assets/popups/toeTag.png";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
     this.check = false;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -78,6 +80,12 @@ export default class Morgue extends Phaser.Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the morgue (dice # 7) being rolled
+      eventEmitter.emit("completed", 7);
   }
 
   createMap() {
@@ -154,23 +162,6 @@ export default class Morgue extends Phaser.Scene {
     }
   } //end createMap
 
-  // // LAYER COLLIDERS
-  // borderLayer.setCollisionByProperty({ collides: true });
-  // wallLayer.setCollisionByProperty({ collides: true });
-  // morgueLabLayer.setCollisionByProperty({ collides: true });
-  // elevatorLayer.setCollisionByProperty({ collides: true });
-  // morgueAltLayer.setCollisionByProperty({ collides: true });
-  // morgueObjLayer.setCollisionByProperty({ collides: true });
-
-  // // INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-  // this.physics.add.collider(this.player, borderLayer);
-  // this.physics.add.collider(this.player, wallLayer);
-  // this.physics.add.collider(this.player, morgueLabLayer);
-  // this.physics.add.collider(this.player, elevatorLayer);
-  // this.physics.add.collider(this.player, morgueAltLayer);
-  // this.physics.add.collider(this.player, morgueObjLayer);
-  // } //end createMap
-
   createPlayer() {
     this.player = this.physics.add.existing(
       new Player(this, 250, 250, "player1")
@@ -232,7 +223,7 @@ export default class Morgue extends Phaser.Scene {
       .setDepth(-2);
 
     //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
-    resizeCollider(this.boneSaw, 5, 10);
+    resizeCollider(this.boneSaw, 2, 10);
   }
 
   onNoteBookCollision() {
@@ -248,6 +239,12 @@ export default class Morgue extends Phaser.Scene {
         loop: false,
       });
       eventsCenter.emit("update-bank", "password");
+
+      if (!this.collectedClues.includes("password")) {
+        this.collectedClues.push("password");
+        this.completed();
+      }
+
       nextSceneFunc(this, "MainScene");
     }, 3000);
   }
@@ -269,12 +266,16 @@ export default class Morgue extends Phaser.Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "toeTag");
+        if (!this.collectedClues.includes("toeTag")) {
+          this.collectedClues.push("toeTag");
+          this.completed();
+        }
         nextSceneFunc(this, "MainScene");
       }, 3000);
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
       this.player.disableBody();
-      createMessageForImage(this, drawerMessage);
+      createMessage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -283,15 +284,26 @@ export default class Morgue extends Phaser.Scene {
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
 
     this.player.disableBody();
-    createMessageForImage(this, lockedBodyMessage);
+    createMessage(this, lockedBodyMessage);
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("ghostDrawer")) {
+      this.collectedClues.push("ghostDrawer");
+      this.completed();
+    }
     nextSceneFunc(this, "MainScene");
   }
 
   onBoneSaw() {
     const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
     this.player.disableBody();
-    createMessageForImage(this, boneSawMessage);
+    createMessage(this, boneSawMessage);
+
+    if (!this.collectedClues.includes("bone saw")) {
+      this.collectedClues.push("bone saw");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 

@@ -1,6 +1,7 @@
 import Phaser, { Scene } from "phaser";
 // import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 import Player from "@/game/Player";
 import {
@@ -9,7 +10,7 @@ import {
   createMessageForImage,
   nextSceneFunc,
   createMessage,
-  handleRoomCountdownFinished
+  handleRoomCountdownFinished,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
@@ -25,6 +26,7 @@ class LockerRoom extends Scene {
   constructor() {
     super({ key: "LockerRoom" });
     this.combination = 0;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -285,6 +287,12 @@ class LockerRoom extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "deoderant");
+
+    if (!this.collectedClues.includes("deoderant")) {
+      this.collectedClues.push("deoderant");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -330,6 +338,12 @@ class LockerRoom extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "mirror");
+
+        if (!this.collectedClues.includes("mirror")) {
+          this.collectedClues.push("mirror");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       } else if (this.combination !== 15931 && !isNaN(this.combination)) {
         const wrongCodeMessage =
@@ -352,6 +366,12 @@ class LockerRoom extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "toothbrush");
+
+    if (!this.collectedClues.includes("toothbrush")) {
+      this.collectedClues.push("toothbrush");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -368,6 +388,12 @@ class LockerRoom extends Scene {
         loop: false,
       });
       eventsCenter.emit("update-bank", "note");
+
+      if (!this.collectedClues.includes("note")) {
+        this.collectedClues.push("note");
+        this.completed();
+      }
+
       nextSceneFunc(this, "MainScene");
     }, 3000);
   }
@@ -375,6 +401,12 @@ class LockerRoom extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the locker room (dice # 6) being rolled
+      eventEmitter.emit("completed", 6);
   }
 }
 

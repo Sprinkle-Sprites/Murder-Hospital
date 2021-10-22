@@ -6,10 +6,10 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
-  displayTiledCollider,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 import collider from "@/game/assets/collider.png";
 import calendar_date from "@/game/assets/popups/calendar_date.png";
 import test_tube from "@/game/assets/popups/test_tube.png";
@@ -22,6 +22,7 @@ class Laboratory extends Scene {
   constructor() {
     super({ key: "Laboratory" });
     this.password = null;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -181,6 +182,12 @@ class Laboratory extends Scene {
     this.roomTimer.update();
   }
 
+  completed() {
+    if (this.collectedClues.length === 6)
+      //send a message to dice to lower prob of the laboratory (dice # 4) being rolled
+      eventEmitter.emit("completed", 4);
+  }
+
   createCalendar() {
     this.calendar1 = this.physics.add
       .sprite(450, 60, "calendar")
@@ -293,7 +300,9 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
-    const calPopUp = this.add.image(400, 300, "calendar_date").setScale(0.7, 0.7);
+    const calPopUp = this.add
+      .image(400, 300, "calendar_date")
+      .setScale(0.7, 0.7);
     this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
@@ -302,6 +311,11 @@ class Laboratory extends Scene {
     });
 
     eventsCenter.emit("update-bank", "calendar_date");
+
+    if (!this.collectedClues.includes("calendar_date")) {
+      this.collectedClues.push("calendar_date");
+      this.completed();
+    }
     nextSceneFunc(this, "MainScene");
   }
 
@@ -309,6 +323,12 @@ class Laboratory extends Scene {
     const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
     this.player.disableBody();
     createMessage(this, skeletonMessage);
+
+    if (!this.collectedClues.includes("skeleton")) {
+      this.collectedClues.push("skeleton");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -323,6 +343,12 @@ class Laboratory extends Scene {
     });
 
     eventsCenter.emit("update-bank", "test_tube");
+
+    if (!this.collectedClues.includes("test_tube")) {
+      this.collectedClues.push("test_tube");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -336,6 +362,12 @@ class Laboratory extends Scene {
     });
 
     eventsCenter.emit("update-bank", "specimenFlask");
+
+    if (!this.collectedClues.includes("specimenFlask")) {
+      this.collectedClues.push("specimenFlask");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -345,6 +377,12 @@ class Laboratory extends Scene {
     this.player.disableBody();
     this.mainTimer.minusFive();
     createMessage(this, candyBarMessage);
+
+    if (!this.collectedClues.includes("candyBar")) {
+      this.collectedClues.push("candyBar");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -392,6 +430,12 @@ class Laboratory extends Scene {
         });
 
         eventsCenter.emit("update-bank", "computerScreen");
+
+        if (!this.collectedClues.includes("computerScreen")) {
+          this.collectedClues.push("computerScreen");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       } else if (this.password !== "SUE" && this.password !== "") {
         const wrongCodeMessage = "INCORRECT";

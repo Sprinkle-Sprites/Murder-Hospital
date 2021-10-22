@@ -1,6 +1,7 @@
 import Phaser, { Scene } from "phaser";
 // import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 import Player from "@/game/Player";
 import {
@@ -24,6 +25,7 @@ class Pharmacy extends Scene {
   constructor() {
     super({ key: "Pharmacy" });
     this.combination = 0;
+    this.collectedClues = [];
   }
 
   preload() {
@@ -266,6 +268,12 @@ class Pharmacy extends Scene {
 
     eventsCenter.emit("update-bank", "pillBottle");
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("pillBottle")) {
+      this.collectedClues.push("pillBottle");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -280,6 +288,12 @@ class Pharmacy extends Scene {
     });
 
     eventsCenter.emit("update-bank", "key");
+
+    if (!this.collectedClues.includes("key")) {
+      this.collectedClues.push("key");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -329,6 +343,12 @@ class Pharmacy extends Scene {
           loop: false,
         });
         eventsCenter.emit("update-bank", "twoDollar");
+
+        if (!this.collectedClues.includes("twoDollar")) {
+          this.collectedClues.push("twoDollar");
+          this.completed();
+        }
+
         nextSceneFunc(this, "MainScene");
       } else if (this.combination !== 1022 && !isNaN(this.combination)) {
         const wrongCodeMessage =
@@ -351,12 +371,24 @@ class Pharmacy extends Scene {
       loop: false,
     });
     eventsCenter.emit("update-bank", "bandages");
+
+    if (!this.collectedClues.includes("bandages")) {
+      this.collectedClues.push("bandages");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the Pharmacy (dice # 5) being rolled
+      eventEmitter.emit("completed", 5);
   }
 }
 

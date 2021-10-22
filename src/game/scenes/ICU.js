@@ -12,6 +12,7 @@ import {
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import eventsCenter from "@/game/eventsCenter";
+import eventEmitter from "../eventEmitter";
 
 import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
@@ -19,6 +20,7 @@ import ivBag from "@/game/assets/popups/iv-bag.png";
 class ICU extends Scene {
   constructor() {
     super({ key: "ICU" });
+    this.collectedClues = [];
   }
 
   preload() {
@@ -61,6 +63,12 @@ class ICU extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+  }
+
+  completed() {
+    if (this.collectedClues.length === 4)
+      //send a message to dice to lower prob of the ICU (dice # 8) being rolled
+      eventEmitter.emit("completed", 8);
   }
 
   createTitle() {
@@ -320,6 +328,12 @@ class ICU extends Scene {
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
     createMessage(this, bloodMessage);
     this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("bloodPool")) {
+      this.collectedClues.push("bloodPool");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -337,6 +351,12 @@ class ICU extends Scene {
       });
     });
     eventsCenter.emit("update-bank", "IVbag");
+
+    if (!this.collectedClues.includes("ivBag")) {
+      this.collectedClues.push("ivBag");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -344,6 +364,12 @@ class ICU extends Scene {
     const monitorMessage = "How is this monitor supposed to help you?";
     this.player.disableBody();
     createMessage(this, monitorMessage);
+
+    if (!this.collectedClues.includes("monitor")) {
+      this.collectedClues.push("monitor");
+      this.completed();
+    }
+
     nextSceneFunc(this, "MainScene");
   }
 
@@ -356,6 +382,11 @@ class ICU extends Scene {
       callback: () => popUp.destroy(),
       loop: false,
     });
+
+    if (!this.collectedClues.includes("poster")) {
+      this.collectedClues.push("poster");
+      this.completed();
+    }
 
     nextSceneFunc(this, "MainScene");
   }
