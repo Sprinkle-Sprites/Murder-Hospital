@@ -3,6 +3,7 @@ import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 import MainScene from "@/game/scenes/MainScene";
 import TitleScene from "@/game/scenes/TitleScene";
+import Story from "@/game/scenes/Story";
 import Preloader from "@/game/scenes/Preloader";
 import Radiology from "@/game/scenes/Radiology";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
@@ -48,6 +49,7 @@ function launch(containerId) {
     scene: [
       Preloader,
       TitleScene,
+      Story,
       Radiology,
       Surgery,
       MainScene,
