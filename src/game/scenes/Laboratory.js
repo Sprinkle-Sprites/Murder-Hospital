@@ -16,8 +16,15 @@ import calendar_date from "@/game/assets/popups/calendar_date.png";
 import test_tube from "@/game/assets/popups/test_tube.png";
 import specimen_flask from "@/game/assets/popups/specimen_flask.png";
 import computerScreen from "@/game/assets/popups/computerScreen.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import calendarCrumble from "@/game/assets/audio/paper.wav";
+import skeletonMovement from "@/game/assets/audio/movement.wav";
+import testTubeGrab from "@/game/assets/audio/click.wav";
+import beakerGrab from "@/game/assets/audio/beaker.wav";
+import candyTray from "@/game/assets/audio/object-movement.wav";
+import deskDrawer from "@/game/assets/audio/door-closing.wav";
 
 class Laboratory extends Scene {
   constructor() {
@@ -53,6 +60,14 @@ class Laboratory extends Scene {
     this.load.image("specimenFlask", specimen_flask);
     this.load.image("computerScreen", computerScreen);
 
+    //AUDIO
+    this.load.audio("calendar", calendarCrumble);
+    this.load.audio("skeleton", skeletonMovement);
+    this.load.audio("test tube", testTubeGrab);
+    this.load.audio("beaker", beakerGrab);
+    this.load.audio("candy", candyTray);
+    this.load.audio("desk", deskDrawer);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -69,6 +84,7 @@ class Laboratory extends Scene {
     this.createDesk();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -239,6 +255,15 @@ class Laboratory extends Scene {
       .setSize(25, 35, true);
   }
 
+  createSounds() {
+    this.calendarSound = this.sound.add("calendar");
+    this.skeletonSound = this.sound.add("skeleton");
+    this.testTubeSound = this.sound.add("test tube");
+    this.beakerSound = this.sound.add("beaker");
+    this.candySound = this.sound.add("candy");
+    this.deskSound = this.sound.add("desk");
+  }
+
   createColliders() {
     //LAYER COLLIDERS
     this.wallLayer.setCollisionByProperty({ collides: true });
@@ -304,10 +329,12 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
+    this.player.disableBody();
+    this.calendarSound.play();
+
     const calPopUp = this.add
       .image(400, 300, "calendar_date")
       .setScale(0.7, 0.7);
-    this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => calPopUp.destroy(),
@@ -320,12 +347,15 @@ class Laboratory extends Scene {
       this.collectedClues.push("calendar_date");
       this.completed();
     }
+
     nextSceneFunc(this, "MainScene");
   }
 
   onSkeletonCollision() {
-    const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
     this.player.disableBody();
+    this.skeletonSound.play();
+
+    const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
     createMessage(this, skeletonMessage);
 
     if (!this.collectedClues.includes("skeleton")) {
@@ -337,9 +367,11 @@ class Laboratory extends Scene {
   }
 
   onTestTubeCollision() {
+    this.player.disableBody();
+    this.testTubeSound.play();
+
     const testTubePopUp = this.add.image(400, 300, "test_tube");
     testTubePopUp.setScale(0.25, 0.25);
-    this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => testTubePopUp.destroy(),
@@ -357,8 +389,10 @@ class Laboratory extends Scene {
   }
 
   onSpecimenFlaskCollision() {
-    const specimenFalskPopUp = this.add.image(400, 300, "specimenFlask");
     this.player.disableBody();
+    this.beakerSound.play();
+
+    const specimenFalskPopUp = this.add.image(400, 300, "specimenFlask");
     this.time.addEvent({
       delay: 4750,
       callback: () => specimenFalskPopUp.destroy(),
@@ -375,9 +409,11 @@ class Laboratory extends Scene {
   }
 
   onCandyBarCollision() {
+    this.player.disableBody();
+    this.candySound.play();
+
     const candyBarMessage =
       "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
-    this.player.disableBody();
     this.mainTimer.minusFive();
     createMessage(this, candyBarMessage);
 
@@ -390,6 +426,9 @@ class Laboratory extends Scene {
   }
 
   onDeskCollision() {
+    this.player.disableBody();
+    this.deskSound.play();
+
     const text1 = this.add
       .text(400, 300, "PASSWORD:", {
         fixedWidth: 700,
@@ -425,7 +464,6 @@ class Laboratory extends Scene {
       if (this.password === "SUE") {
         const popup = this.add.image(400, 300, "computerScreen");
         popup.setScale(0.25, 0.25);
-        this.player.disableBody();
         this.time.addEvent({
           delay: 4000,
           callback: () => popup.destroy(),
@@ -442,7 +480,6 @@ class Laboratory extends Scene {
         nextSceneFunc(this, "MainScene");
       } else if (this.password !== "SUE" && this.password !== "") {
         const wrongCodeMessage = "INCORRECT";
-        this.player.disableBody();
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");
       }
