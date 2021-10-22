@@ -86,8 +86,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.on("progress", (value) => {
       percentText.setText(parseInt(value) * 100 + "%");
       progressBar.clear();
-      progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(250, 280, 300 * value, 30);
+      progressBar.fillStyle(0xffffff, 1).fillRect(250, 280, 300 * value, 30);
     });
 
     //remove the loading screen once we have reached 100%
