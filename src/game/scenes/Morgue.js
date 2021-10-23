@@ -20,7 +20,7 @@ import eventEmitter from "../eventEmitter";
 //AUDIO
 import bodyLocker from "@/game/assets/audio/action-doorhandle01.wav";
 import bodyLocker2 from "@/game/assets/audio/human-giggle05.wav";
-import chainsawLoveNote from "@/game/assets/audio/human-giggle04.wav";
+import chainsawLoveNote from "@/game/assets/audio/zipper_1.wav";
 import notebook from "@/game/assets/audio/action-objectmove.wav";
 import photo from "@/game/assets/audio/object-paperbagcrunch04.wav";
 
