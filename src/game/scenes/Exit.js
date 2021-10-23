@@ -73,37 +73,26 @@ class Exit extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
-    const wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
-    const backgroundLayer = map
+    this.floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
+    this.wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
+    this.backgroundLayer = map
       .createLayer("exitBackground", InteriorAlt)
       .setDepth(-1);
-    const detailsCLayer = map
+    this.detailsCLayer = map
       .createLayer("exitDetailsC", InteriorC)
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
-    const layers = [floorLayer, wallLayer, backgroundLayer, detailsCLayer];
+    const layers = [
+      this.floorLayer,
+      this.wallLayer,
+      this.backgroundLayer,
+      this.detailsCLayer,
+    ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    detailsCLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, detailsCLayer);
-
-    // //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // detailsAltLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   createPlayer() {
@@ -133,6 +122,14 @@ class Exit extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.detailsCLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.detailsCLayer);
+
     this.physics.add.overlap(
       this.player,
       this.panel,
@@ -143,6 +140,12 @@ class Exit extends Scene {
   }
 
   onPanelCollision() {
+    this.player.disableBody();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(
         400,
@@ -166,28 +169,30 @@ class Exit extends Scene {
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.rexUI.edit(text2);
+      });
 
-    text2.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text2);
-    });
-
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 428395) {
-        const width = this.sys.canvas.width;
-        const height = this.sys.canvas.height;
-        this.player.disableBody();
         nextSceneFunc(this, "Victory");
       }
+
       if (this.combination !== 428395 && !isNaN(this.combination)) {
         const wrongCodeMessage = "Whoops. That ain't it!";
-        this.player.disableBody();
-        createMessage(this, wrongCodeMessage);
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          135,
+          this.sys.canvas.height / 2
+        );
+
         nextSceneFunc(this, "MainScene");
         //THIS CURRENT SET UP ALLOWS FOR UNLIMITED TRIES. WHILE THIS IS AN OPTION, WE SHOULD TRY TO FIGURE OUT HOW TO LIMIT.
       }
