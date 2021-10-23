@@ -18,10 +18,14 @@ import deoderant from "@/game/assets/popups/deoderant.png";
 import groceryList from "@/game/assets/popups/grocery-list.png";
 import mirror from "@/game/assets/popups/mirror.png";
 import toothbrush from "@/game/assets/popups/toothbrush.png";
-
 import collider from "@/game/assets/collider.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import lockerDoor from "@/game/assets/audio/object-gateswing04.wav";
+import lockerDoor2 from "@/game/assets/audio/action-doorhandle01.wav";
+import toothbrushSink from "@/game/assets/audio/object-gateclang01.wav";
+import showerNote from "@/game/assets/audio/water-drop04.wav";
 
 class LockerRoom extends Scene {
   constructor() {
@@ -49,6 +53,12 @@ class LockerRoom extends Scene {
     this.load.image("toothbrush", toothbrush);
     this.load.image("note", groceryList);
 
+    //ADUIO
+    this.load.audio("locker", lockerDoor);
+    this.load.audio("locker2", lockerDoor2);
+    this.load.audio("toothbrush", toothbrushSink);
+    this.load.audio("shower", showerNote);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -64,6 +74,7 @@ class LockerRoom extends Scene {
     this.createShower();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -185,18 +196,6 @@ class LockerRoom extends Scene {
     // });
   }
 
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
-  }
-
   createPlayer() {
     this.player = this.physics.add.existing(
       new Player(this, 350, 520, "player1")
@@ -247,6 +246,13 @@ class LockerRoom extends Scene {
       .setSize(35, 20, true);
   }
 
+  createSounds() {
+    this.lockerSound = this.sound.add("locker");
+    this.lockerSound2 = this.sound.add("locker2");
+    this.toothbrushSound = this.sound.add("toothbrush");
+    this.showerSound = this.sound.add("shower");
+  }
+
   createColliders() {
     this.physics.add.overlap(
       this.player,
@@ -282,25 +288,43 @@ class LockerRoom extends Scene {
   }
 
   onLocker1Collision() {
-    const popUp = this.add.image(400, 300, "deoderant");
-    popUp.setScale(0.75, 0.75);
     this.player.disableBody();
+    this.lockerSound.play();
+
+    //WRAPED ALL ACTIONS TO RUN AFTER SOUND FINSIHES PLAYING
     this.time.addEvent({
-      delay: 4750,
-      callback: () => popUp.destroy(),
+      delay: 1500,
+      callback: () => {
+        const popUp = this.add
+          .image(400, 300, "deoderant")
+          .setScale(0.75, 0.75);
+
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "deoderant");
+
+        if (!this.collectedClues.includes("deoderant")) {
+          this.collectedClues.push("deoderant");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      },
       loop: false,
     });
-    eventsCenter.emit("update-bank", "deoderant");
-
-    if (!this.collectedClues.includes("deoderant")) {
-      this.collectedClues.push("deoderant");
-      this.completed();
-    }
-
-    nextSceneFunc(this, "MainScene");
   }
 
   onLocker2Collision() {
+    this.player.disableBody();
+    this.lockerSound2.play();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(400, 300, "This locker is locked. Enter the combination below...", {
         fixedWidth: 700,
@@ -319,23 +343,19 @@ class LockerRoom extends Scene {
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-      .setOrigin(0.5, 0.5);
-
-    text2.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text2);
-    });
-
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
+      .setOrigin(0.5, 0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.rexUI.edit(text2);
+      });
 
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 15931) {
-        const popUp = this.add.image(400, 300, "mirror");
-        popUp.setScale(0.25, 0.25);
-        this.player.disableBody();
+        const popUp = this.add.image(400, 300, "mirror").setScale(0.25, 0.25);
+
         this.time.addEvent({
           delay: 4750,
           callback: () => popUp.destroy(),
@@ -352,18 +372,21 @@ class LockerRoom extends Scene {
       } else if (this.combination !== 15931 && !isNaN(this.combination)) {
         const wrongCodeMessage =
           "You try to open the locker, but it won't budge. Better keep looking for the combo";
-        this.player.disableBody();
+
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");
       }
+
       text2.destroy();
     });
   }
 
   onSinkCollision() {
-    const popUp = this.add.image(400, 300, "toothbrush");
-    popUp.setScale(0.25, 0.25);
     this.player.disableBody();
+    this.toothbrushSound.play();
+
+    const popUp = this.add.image(400, 300, "toothbrush").setScale(0.25, 0.25);
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -381,9 +404,12 @@ class LockerRoom extends Scene {
 
   onShowerCollision() {
     this.player.disableBody();
+    this.showerSound.play();
+
     const openMessage =
       "You find a grocery list stuck to the wall of the shower. Strange contents...";
     createMessageForImage(this, openMessage);
+
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "note").setScale(0.5, 0.5);
       this.time.addEvent({
