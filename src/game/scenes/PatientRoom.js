@@ -16,8 +16,14 @@ import collider from "@/game/assets/collider.png";
 import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import flowerWater from "@/game/assets/audio/water-drop03.wav";
+import bedSheets from "@/game/assets/audio/action-objectmove.wav";
+import doll from "@/game/assets/audio/action-objectmove.wav";
+import lockedDrawer from "@/game/assets/audio/action-doorhandle01.wav";
+import openedDrawer from "@/game/assets/audio/object-doorcreak10.wav";
 
 class PatientRoom extends Scene {
   constructor() {
@@ -50,6 +56,13 @@ class PatientRoom extends Scene {
     this.load.image("blanket", blanket);
     this.load.image("paperScrap", paperScrap);
 
+    //AUDIO
+    this.load.audio("flower", flowerWater);
+    this.load.audio("sheets", bedSheets);
+    this.load.audio("doll", doll);
+    this.load.audio("locked drawer", lockedDrawer);
+    this.load.audio("opened drawer", openedDrawer);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -64,6 +77,7 @@ class PatientRoom extends Scene {
     this.createDrawer();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
   }
 
@@ -292,10 +306,21 @@ class PatientRoom extends Scene {
     );
   }
 
+  createSounds() {
+    this.flowerWaterSound = this.sound.add("flower");
+    this.bedSheetSound = this.sound.add("sheets");
+    this.dollSound = this.sound.add("doll");
+    this.lockedDrawerSound = this.sound.add("locked drawer");
+    this.openedDrawerSound = this.sound.add("opened drawer");
+  }
+
   onFlowerCollision() {
-    const popUp = this.add.image(400, 300, "flowers").setScale(0.5, 0.5);
     this.player.disableBody();
+    this.flowerWaterSound.play();
+
+    const popUp = this.add.image(400, 300, "flowers").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "flowers");
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -311,9 +336,12 @@ class PatientRoom extends Scene {
   }
 
   onBedCollision() {
-    const popUp = this.add.image(400, 300, "blanket").setScale(0.5, 0.5);
     this.player.disableBody();
+    this.bedSheetSound.play();
+
+    const popUp = this.add.image(400, 300, "blanket").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "blanket");
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -329,9 +357,11 @@ class PatientRoom extends Scene {
   }
 
   onDollCollision() {
+    this.player.disableBody();
+    this.dollSound.play();
+
     const dollMessage =
       "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose 5 minutes.";
-    this.player.disableBody();
     createMessage(this, dollMessage);
     this.mainTimer.minusFive();
 
@@ -344,15 +374,20 @@ class PatientRoom extends Scene {
   }
 
   onDrawerCollision() {
+    this.player.disableBody();
+
     eventsCenter.emit("check-scapel", "scapel");
 
     if (this.check) {
-      this.player.disableBody();
+      this.openedDrawerSound.play();
+
       const openMessage =
         "You are able to open the box with the scapel you retrieved in the surgery...";
       createMessageForImage(this, openMessage);
+
       setTimeout(() => {
         const popUp = this.add.image(400, 300, "paperScrap").setScale(0.5, 0.5);
+
         this.time.addEvent({
           delay: 4750,
           callback: () => popUp.destroy(),
@@ -368,9 +403,11 @@ class PatientRoom extends Scene {
         nextSceneFunc(this, "MainScene");
       }, 3000);
     } else {
+      this.lockedDrawerSound.play();
+
       const drawerMessage =
         "The drawer appears to be jammed. Maybe there's something to open it with.";
-      this.player.disableBody();
+
       createMessage(this, drawerMessage);
       nextSceneFunc(this, "MainScene");
     }
