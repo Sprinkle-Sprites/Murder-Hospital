@@ -356,7 +356,13 @@ class Laboratory extends Scene {
     this.skeletonSound.play();
 
     const skeletonMessage = "I'm just a bag of bones. Wanna dance?";
-    createMessage(this, skeletonMessage);
+    createMessage(
+      this,
+      skeletonMessage,
+      "center",
+      85,
+      this.sys.canvas.height / 2
+    );
 
     if (!this.collectedClues.includes("skeleton")) {
       this.collectedClues.push("skeleton");
@@ -415,9 +421,16 @@ class Laboratory extends Scene {
     this.candySound.play();
 
     const candyBarMessage =
-      "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
+      // "Here's a snack on the surgical tray. You eat it. Are you crazy? Don't eat weird snacks from evil doctors. Take 5 minutes to recover.";
+      "You eat weird looking snack on surgical tray. Take 5 minutes to recover.";
     this.mainTimer.minusFive();
-    createMessage(this, candyBarMessage);
+    createMessage(
+      this,
+      candyBarMessage,
+      "center",
+      50,
+      this.sys.canvas.height / 2
+    );
 
     if (!this.collectedClues.includes("candyBar")) {
       this.collectedClues.push("candyBar");
@@ -483,7 +496,13 @@ class Laboratory extends Scene {
         nextSceneFunc(this, "MainScene");
       } else if (this.password !== "SUE" && this.password !== "") {
         const wrongCodeMessage = "INCORRECT";
-        createMessage(this, wrongCodeMessage);
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          150,
+          this.sys.canvas.height / 2
+        );
         nextSceneFunc(this, "MainScene");
       }
 

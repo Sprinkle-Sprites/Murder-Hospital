@@ -7,7 +7,6 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
-  createMessageForImage,
   handleRoomCountdownFinished,
   changeDieClass,
 } from "@/game/HelperFunctions";
@@ -361,8 +360,9 @@ class PatientRoom extends Scene {
     this.dollSound.play();
 
     const dollMessage =
-      "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose 5 minutes.";
-    createMessage(this, dollMessage);
+      // "You find a creepy doll and gaze deeply into its eyes. What you see there so haunts you, you have to sit in the corner and cry. Lose 5 minutes.";
+      "You get hypnotized by the creepy doll. You need five minutes to recover.";
+    createMessage(this, dollMessage, "center", 50, this.sys.canvas.height / 2);
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("creepyDoll")) {
@@ -383,7 +383,7 @@ class PatientRoom extends Scene {
 
       const openMessage =
         "You are able to open the box with the scapel you retrieved in the surgery...";
-      createMessageForImage(this, openMessage);
+      createMessage(this, openMessage, "top", 50, this.sys.canvas.height / 2);
 
       setTimeout(() => {
         const popUp = this.add.image(400, 300, "paperScrap").setScale(0.5, 0.5);
@@ -408,7 +408,13 @@ class PatientRoom extends Scene {
       const drawerMessage =
         "The drawer appears to be jammed. Maybe there's something to open it with.";
 
-      createMessage(this, drawerMessage);
+      createMessage(
+        this,
+        drawerMessage,
+        "center",
+        50,
+        this.sys.canvas.height / 2
+      );
       nextSceneFunc(this, "MainScene");
     }
   }

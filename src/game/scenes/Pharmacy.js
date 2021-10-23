@@ -10,7 +10,6 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage,
   changeDieClass,
 } from "@/game/HelperFunctions";
 
@@ -282,7 +281,7 @@ class Pharmacy extends Scene {
 
     const pillMessage =
       "You take a mystery pill. What were you thinking? Lose 5 minutes";
-    createMessageForImage(this, pillMessage);
+    createMessage(this, pillMessage, "top", 50, this.sys.canvas.height / 2);
 
     const pillsPopUp = this.add.image(400, 300, "pillBottle");
     this.time.addEvent({
@@ -385,7 +384,13 @@ class Pharmacy extends Scene {
         const wrongCodeMessage =
           "You try to open the lock box, but it won't budge. Better keep looking for the code";
 
-        createMessage(this, wrongCodeMessage);
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          50,
+          this.sys.canvas.height / 2
+        );
         nextSceneFunc(this, "MainScene");
       }
       text2.destroy();

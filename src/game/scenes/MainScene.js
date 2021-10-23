@@ -262,42 +262,42 @@ class MainScene extends Scene {
 
     if (parseInt(value) === 1) {
       const patRoomMes = "To The Patient's Room";
-      createMessage(this, patRoomMes);
+      createMessage(this, patRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "PatientRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 2) {
       const surgRoomMes = "To Surgery";
-      createMessage(this, surgRoomMes);
+      createMessage(this, surgRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "Surgery");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 3) {
       const radRoomMes = "To The X-ray Room";
-      createMessage(this, radRoomMes);
+      createMessage(this, radRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "Radiology");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 4) {
       const labRoomMes = "To The Laboratory";
-      createMessage(this, labRoomMes);
+      createMessage(this, labRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "Laboratory");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 5) {
       const pharmRoomMes = "To The Pharmacy";
-      createMessage(this, pharmRoomMes);
+      createMessage(this, pharmRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "Pharmacy");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 6) {
       const lockerRoomMes = "To The Locker Room";
-      createMessage(this, lockerRoomMes);
+      createMessage(this, lockerRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "LockerRoom");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 7) {
       const morgueRoomMes = "To The Morgue";
-      createMessage(this, morgueRoomMes);
+      createMessage(this, morgueRoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "Morgue");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else if (parseInt(value) === 8) {
       const ICURoomMes = "To The ICU";
-      createMessage(this, ICURoomMes);
+      createMessage(this, ICURoomMes, "center", 300, this.sys.canvas.height);
       diceNextSceneFunc(this, "ICU");
       document.querySelector("#diceValue").setAttribute("value", "0");
     } else {

@@ -6,7 +6,6 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage,
   changeDieClass,
 } from "@/game/HelperFunctions";
 
@@ -277,23 +276,6 @@ class ICU extends Scene {
     this.physics.add.collider(this.player, this.wallLayer);
     this.physics.add.collider(this.player, this.nurseStationLayer2);
 
-    //PLAYER AND BLOOD COLLIDERS
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.blood1,
-    //   this.onBloodCollision,
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.blood2,
-    //   this.onBloodCollision,
-    //   null,
-    //   this
-    // );
-
     this.physics.add.overlap(
       this.player,
       this.blood3,
@@ -301,15 +283,6 @@ class ICU extends Scene {
       null,
       this
     );
-
-    //PLAYER AND IV BAG COLLIDERS
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.IVBag1,
-    //   this.onIVCollision,
-    //   null,
-    //   this
-    // );
 
     this.physics.add.overlap(
       this.player,
@@ -319,7 +292,6 @@ class ICU extends Scene {
       this
     );
 
-    //PLAYER AND MONITOR COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.monitor1,
@@ -328,15 +300,6 @@ class ICU extends Scene {
       this
     );
 
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.monitor2,
-    //   this.onMonitorCollision,
-    //   null,
-    //   this
-    // );
-
-    //POSTER COLLIDER
     this.physics.add.overlap(
       this.player,
       this.posterC,
@@ -352,7 +315,7 @@ class ICU extends Scene {
 
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
-    createMessage(this, bloodMessage);
+    createMessage(this, bloodMessage, "center", 200, this.sys.canvas.height);
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("bloodPool")) {
@@ -369,7 +332,8 @@ class ICU extends Scene {
 
     const IVMessage =
       "Oh, hey, a bag of blood. If you lose a bunch later, maybe this will come in handy?";
-    createMessageForImage(this, IVMessage);
+    createMessage(this, IVMessage, "top", 50, this.sys.canvas.height / 2);
+
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "IVbag").setScale(0.5, 0.5);
       this.time.addEvent({
@@ -393,7 +357,13 @@ class ICU extends Scene {
     this.monitorTurnOnSound.play();
 
     const monitorMessage = "How is this monitor supposed to help you?";
-    createMessage(this, monitorMessage);
+    createMessage(
+      this,
+      monitorMessage,
+      "center",
+      75,
+      this.sys.canvas.height / 2
+    );
 
     if (!this.collectedClues.includes("monitor")) {
       this.collectedClues.push("monitor");

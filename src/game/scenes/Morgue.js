@@ -5,7 +5,6 @@ import {
   resizeCollider,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage,
   createMessage,
   changeDieClass,
 } from "@/game/HelperFunctions";
@@ -313,11 +312,11 @@ export default class Morgue extends Phaser.Scene {
 
     const openMessage =
       "You find a picture of a creepy family. On the back... who's this??";
-    createMessageForImage(this, openMessage);
+    createMessage(this, openMessage, "top", 75, this.sys.canvas.height / 2);
 
     setTimeout(() => {
       this.photoSound.play();
-      const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
+      const popUp = this.add.image(400, 325, "password").setScale(0.5, 0.5);
 
       this.time.addEvent({
         delay: 4750,
@@ -343,7 +342,7 @@ export default class Morgue extends Phaser.Scene {
     if (this.check) {
       const openMessage =
         "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
-      createMessageForImage(this, openMessage);
+      createMessage(this, openMessage, "top", 50, this.sys.canvas.height / 2);
 
       setTimeout(() => {
         const popUp = this.add.image(400, 300, "toeTag").setScale(0.7, 0.7);
@@ -363,7 +362,14 @@ export default class Morgue extends Phaser.Scene {
       }, 3000);
     } else {
       const drawerMessage = "Huh? Why would a body drawer need to be locked?";
-      createMessage(this, drawerMessage);
+      createMessage(
+        this,
+        drawerMessage,
+        "center",
+        100,
+        this.sys.canvas.height / 2
+      );
+
       nextSceneFunc(this, "MainScene");
     }
   }
@@ -373,7 +379,13 @@ export default class Morgue extends Phaser.Scene {
     this.bodyLockerSound2.play();
 
     const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
-    createMessage(this, lockedBodyMessage);
+    createMessage(
+      this,
+      lockedBodyMessage,
+      "center",
+      50,
+      this.sys.canvas.height / 2
+    );
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("ghostDrawer")) {
@@ -389,7 +401,13 @@ export default class Morgue extends Phaser.Scene {
     this.loveNoteSound.play();
 
     const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
-    createMessage(this, boneSawMessage);
+    createMessage(
+      this,
+      boneSawMessage,
+      "center",
+      75,
+      this.sys.canvas.height / 2
+    );
 
     if (!this.collectedClues.includes("bone saw")) {
       this.collectedClues.push("bone saw");

@@ -7,7 +7,6 @@ import Player from "@/game/Player";
 import {
   resizeMapLayer,
   resizeCollider,
-  createMessageForImage,
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
@@ -373,7 +372,13 @@ class LockerRoom extends Scene {
         const wrongCodeMessage =
           "You try to open the locker, but it won't budge. Better keep looking for the combo";
 
-        createMessage(this, wrongCodeMessage);
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          50,
+          this.sys.canvas.height / 2
+        );
         nextSceneFunc(this, "MainScene");
       }
 
@@ -408,7 +413,7 @@ class LockerRoom extends Scene {
 
     const openMessage =
       "You find a grocery list stuck to the wall of the shower. Strange contents...";
-    createMessageForImage(this, openMessage);
+    createMessage(this, openMessage, "top", 50, this.sys.canvas.height / 2);
 
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "note").setScale(0.5, 0.5);
