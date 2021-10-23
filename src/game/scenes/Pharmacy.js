@@ -19,8 +19,13 @@ import pillBottle from "@/game/assets/popups/pill-bottle.png";
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import pills from "@/game/assets/audio/pill-shake.wav";
+import keys from "@/game/assets/audio/key-jingle.wav";
+import boxUnlock from "@/game/assets/audio/action-unlock02.wav";
+import bandaid from "@/game/assets/audio/object-paper02.wav";
 
 class Pharmacy extends Scene {
   constructor() {
@@ -52,6 +57,12 @@ class Pharmacy extends Scene {
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
 
+    //AUDIO
+    this.load.audio("pills", pills);
+    this.load.audio("keys", keys);
+    this.load.audio("box", boxUnlock);
+    this.load.audio("bandaid", bandaid);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -66,6 +77,7 @@ class Pharmacy extends Scene {
     this.createCabinet2();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -209,6 +221,13 @@ class Pharmacy extends Scene {
       .setSize(55, 63, true);
   }
 
+  createSounds() {
+    this.pillSound = this.sound.add("pills");
+    this.keySound = this.sound.add("keys");
+    this.boxSound = this.sound.add("box");
+    this.bandaidSound = this.sound.add("bandaid");
+  }
+
   createColliders() {
     //LAYER COLLIDERS
     this.wallLayer.setCollisionByProperty({ collides: true });
@@ -258,12 +277,14 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
+    this.player.disableBody();
+    this.pillSound.play();
+
     const pillMessage =
       "You take a mystery pill. What were you thinking? Lose 5 minutes";
     createMessageForImage(this, pillMessage);
 
     const pillsPopUp = this.add.image(400, 300, "pillBottle");
-    this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => pillsPopUp.destroy(),
@@ -282,9 +303,10 @@ class Pharmacy extends Scene {
   }
 
   onCabinetCollision() {
-    const keyPopUp = this.add.image(400, 300, "key");
-    keyPopUp.setScale(0.25, 0.25);
     this.player.disableBody();
+    this.keySound.play();
+
+    const keyPopUp = this.add.image(400, 300, "key").setScale(0.25, 0.25);
     this.time.addEvent({
       delay: 4750,
       callback: () => keyPopUp.destroy(),
@@ -302,6 +324,13 @@ class Pharmacy extends Scene {
   }
 
   onLockBoxCollision() {
+    this.player.disableBody();
+    this.boxSound.play();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(
         400,
@@ -331,16 +360,14 @@ class Pharmacy extends Scene {
       this.rexUI.edit(text2);
     });
 
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 1022) {
         const popup = this.add.image(400, 300, "twoDollar");
         popup.setScale(0.25, 0.25);
-        this.player.disableBody();
+
         this.time.addEvent({
           delay: 4000,
           callback: () => popup.destroy(),
@@ -357,7 +384,7 @@ class Pharmacy extends Scene {
       } else if (this.combination !== 1022 && !isNaN(this.combination)) {
         const wrongCodeMessage =
           "You try to open the lock box, but it won't budge. Better keep looking for the code";
-        this.player.disableBody();
+
         createMessage(this, wrongCodeMessage);
         nextSceneFunc(this, "MainScene");
       }
@@ -366,9 +393,13 @@ class Pharmacy extends Scene {
   }
 
   onCabinet2Collision() {
-    const bandagesPopUp = this.add.image(400, 300, "bandages");
-    bandagesPopUp.setScale(0.5, 0.5);
     this.player.disableBody();
+    this.bandaidSound.play();
+
+    const bandagesPopUp = this.add
+      .image(400, 300, "bandages")
+      .setScale(0.5, 0.5);
+
     this.time.addEvent({
       delay: 4750,
       callback: () => bandagesPopUp.destroy(),
