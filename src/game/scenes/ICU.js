@@ -19,10 +19,10 @@ import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
 
 //AUDIO
-import bloodSlip from "@/game/assets/audio/action-squelch.wav";
-import IVBloodBag from "@/game/assets/audio/plastic-bag.wav";
-import monitorSound from "@/game/assets/audio/action-lighton.wav";
-import posterCrumble from "@/game/assets/audio/poster.wav";
+import bloodSlip from "@/game/assets/audio/action-squelch03.wav";
+import IVBloodBag from "@/game/assets/audio/object-plasticbag02.wav";
+import monitorSound from "@/game/assets/audio/action-lighton01.wav";
+import posterCrumble from "@/game/assets/audio/object-paperbagcrunch04.wav";
 
 class ICU extends Scene {
   constructor() {

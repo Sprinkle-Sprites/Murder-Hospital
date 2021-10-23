@@ -19,12 +19,12 @@ import computerScreen from "@/game/assets/popups/computerScreen.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 
 //AUDIO
-import calendarCrumble from "@/game/assets/audio/paper.wav";
-import skeletonMovement from "@/game/assets/audio/movement.wav";
-import testTubeGrab from "@/game/assets/audio/click.wav";
-import beakerGrab from "@/game/assets/audio/beaker.wav";
-import candyTray from "@/game/assets/audio/object-movement.wav";
-import deskDrawer from "@/game/assets/audio/door-closing.wav";
+import calendarCrumble from "@/game/assets/audio/object-paper05.wav";
+import skeletonMovement from "@/game/assets/audio/action-openbook02.wav";
+import testTubeGrab from "@/game/assets/audio/action-lightclick01.wav";
+import beakerGrab from "@/game/assets/audio/action-unlock04.wav";
+import candyTray from "@/game/assets/audio/action-objectmove.wav";
+import deskDrawer from "@/game/assets/audio/action-doorshut01.wav";
 
 class Laboratory extends Scene {
   constructor() {
@@ -370,8 +370,10 @@ class Laboratory extends Scene {
     this.player.disableBody();
     this.testTubeSound.play();
 
-    const testTubePopUp = this.add.image(400, 300, "test_tube");
-    testTubePopUp.setScale(0.25, 0.25);
+    const testTubePopUp = this.add
+      .image(400, 300, "test_tube")
+      .setScale(0.25, 0.25);
+
     this.time.addEvent({
       delay: 4750,
       callback: () => testTubePopUp.destroy(),
@@ -429,6 +431,10 @@ class Laboratory extends Scene {
     this.player.disableBody();
     this.deskSound.play();
 
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(400, 300, "PASSWORD:", {
         fixedWidth: 700,
@@ -447,23 +453,21 @@ class Laboratory extends Scene {
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-      .setOrigin(0.5, 0.5);
-
-    text2.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text2);
-    });
-
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
+      .setOrigin(0.5, 0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.rexUI.edit(text2);
+      });
 
     enter.on("down", () => {
       this.password = text2._text.toUpperCase();
       text1.destroy();
 
       if (this.password === "SUE") {
-        const popup = this.add.image(400, 300, "computerScreen");
-        popup.setScale(0.25, 0.25);
+        const popup = this.add
+          .image(400, 300, "computerScreen")
+          .setScale(0.25, 0.25);
+
         this.time.addEvent({
           delay: 4000,
           callback: () => popup.destroy(),
@@ -476,7 +480,6 @@ class Laboratory extends Scene {
           this.collectedClues.push("computerScreen");
           this.completed();
         }
-
         nextSceneFunc(this, "MainScene");
       } else if (this.password !== "SUE" && this.password !== "") {
         const wrongCodeMessage = "INCORRECT";
