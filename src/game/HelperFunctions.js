@@ -9,7 +9,7 @@ export function resizeMapLayer(scene, layer) {
   layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
-export function createMessage(scene, message) {
+export function createMessage(scene, message, align, padding, backgroundSize) {
   const width = scene.sys.canvas.width;
   const height = scene.sys.canvas.height;
 
@@ -21,28 +21,11 @@ export function createMessage(scene, message) {
       strokeThickness: 5,
       stroke: "#69070c",
       padding: {
-        top: 200,
+        top: padding,
       },
-      align: "center",
+      align: align, //"center",
       fixedWidth: width,
-      fixedHeight: height,
-    })
-    .setOrigin(0.5, 0.5);
-}
-
-export function createMessageForImage(scene, message) {
-  const width = scene.sys.canvas.width;
-  const height = scene.sys.canvas.height;
-  scene.add
-    .text(width * 0.5, height * 0.5, message, {
-      fontSize: 30,
-      backgroundColor: "black",
-      wordWrap: { width: 300, useAdvancedWrap: true },
-      strokeThickness: 5,
-      stroke: "#69070c",
-      align: "top",
-      fixedWidth: width,
-      fixedHeight: height / 2,
+      fixedHeight: backgroundSize,
     })
     .setOrigin(0.5, 0.5);
 }
