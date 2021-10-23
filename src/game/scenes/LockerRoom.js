@@ -55,7 +55,7 @@ class LockerRoom extends Scene {
 
     //ADUIO
     this.load.audio("locker", lockerDoor);
-    this.load.audio("locker2", lockerDoor2);
+    this.load.audio("locker 2", lockerDoor2);
     this.load.audio("toothbrush", toothbrushSink);
     this.load.audio("shower", showerNote);
 
@@ -248,7 +248,7 @@ class LockerRoom extends Scene {
 
   createSounds() {
     this.lockerSound = this.sound.add("locker");
-    this.lockerSound2 = this.sound.add("locker2");
+    this.lockerSound2 = this.sound.add("locker 2");
     this.toothbrushSound = this.sound.add("toothbrush");
     this.showerSound = this.sound.add("shower");
   }
