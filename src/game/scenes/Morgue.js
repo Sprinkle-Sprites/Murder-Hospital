@@ -17,6 +17,13 @@ import toeTag from "@/game/assets/popups/toeTag.png";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
 
+//AUDIO
+import bodyLocker from "@/game/assets/audio/action-doorhandle01.wav";
+import bodyLocker2 from "@/game/assets/audio/human-giggle05.wav";
+import chainsawLoveNote from "@/game/assets/audio/human-giggle04.wav";
+import notebook from "@/game/assets/audio/action-objectmove.wav";
+import photo from "@/game/assets/audio/object-paperbagcrunch04.wav";
+
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
@@ -42,6 +49,13 @@ export default class Morgue extends Phaser.Scene {
     this.load.image("password", password);
     this.load.image("toeTag", toeTag);
 
+    //AUDIO
+    this.load.audio("body locker", bodyLocker);
+    this.load.audio("body locker 2", bodyLocker2);
+    this.load.audio("love note", chainsawLoveNote);
+    this.load.audio("notebook", notebook);
+    this.load.audio("photo", photo);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -55,6 +69,7 @@ export default class Morgue extends Phaser.Scene {
     this.createNotebook();
     this.createBoneSaw();
     this.createColliders();
+    this.createSounds();
     eventsCenter.on("confirmation-check", this.returnConfirmation, this);
   }
 
@@ -230,85 +245,12 @@ export default class Morgue extends Phaser.Scene {
     resizeCollider(this.boneSaw, 2, 10);
   }
 
-  onNoteBookCollision() {
-    this.player.disableBody();
-    const openMessage =
-      "You find a picture of a creepy family. On the back...who's this??";
-    createMessageForImage(this, openMessage);
-    setTimeout(() => {
-      const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
-      this.time.addEvent({
-        delay: 4750,
-        callback: () => popUp.destroy(),
-        loop: false,
-      });
-      eventsCenter.emit("update-bank", "password");
-
-      if (!this.collectedClues.includes("password")) {
-        this.collectedClues.push("password");
-        this.completed();
-      }
-
-      nextSceneFunc(this, "MainScene");
-    }, 3000);
-  }
-
-  onLockedLockerCollision() {
-    eventsCenter.emit("check-key", "key");
-
-    if (this.check) {
-      this.player.disableBody();
-      const openMessage =
-        "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
-      createMessageForImage(this, openMessage);
-      setTimeout(() => {
-        const popUp = this.add.image(400, 300, "toeTag").setScale(0.7, 0.7);
-        this.player.disableBody();
-        this.time.addEvent({
-          delay: 4750,
-          callback: () => popUp.destroy(),
-          loop: false,
-        });
-        eventsCenter.emit("update-bank", "toeTag");
-        if (!this.collectedClues.includes("toeTag")) {
-          this.collectedClues.push("toeTag");
-          this.completed();
-        }
-        nextSceneFunc(this, "MainScene");
-      }, 3000);
-    } else {
-      const drawerMessage = "Huh? Why would a body drawer need to be locked?";
-      this.player.disableBody();
-      createMessage(this, drawerMessage);
-      nextSceneFunc(this, "MainScene");
-    }
-  }
-
-  onUnlockedBodyDrawer() {
-    const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
-
-    this.player.disableBody();
-    createMessage(this, lockedBodyMessage);
-    this.mainTimer.minusFive();
-
-    if (!this.collectedClues.includes("ghostDrawer")) {
-      this.collectedClues.push("ghostDrawer");
-      this.completed();
-    }
-    nextSceneFunc(this, "MainScene");
-  }
-
-  onBoneSaw() {
-    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
-    this.player.disableBody();
-    createMessage(this, boneSawMessage);
-
-    if (!this.collectedClues.includes("bone saw")) {
-      this.collectedClues.push("bone saw");
-      this.completed();
-    }
-
-    nextSceneFunc(this, "MainScene");
+  createSounds() {
+    this.bodyLockerSound = this.sound.add("body locker");
+    this.bodyLockerSound2 = this.sound.add("body locker 2");
+    this.loveNoteSound = this.sound.add("love note");
+    this.notebookSound = this.sound.add("notebook");
+    this.photoSound = this.sound.add("photo");
   }
 
   createColliders() {
@@ -332,7 +274,7 @@ export default class Morgue extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.bodyLocker3,
-      this.onUnlockedBodyDrawer,
+      this.onUnlockedBodyDrawerCollision,
       null,
       this
     );
@@ -341,7 +283,7 @@ export default class Morgue extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.boneSaw,
-      this.onBoneSaw,
+      this.onBoneSawCollision,
       null,
       this
     );
@@ -363,6 +305,98 @@ export default class Morgue extends Phaser.Scene {
       null,
       this
     );
+  }
+
+  onNoteBookCollision() {
+    this.player.disableBody();
+    this.notebookSound.play();
+
+    const openMessage =
+      "You find a picture of a creepy family. On the back... who's this??";
+    createMessageForImage(this, openMessage);
+
+    setTimeout(() => {
+      this.photoSound.play();
+      const popUp = this.add.image(400, 300, "password").setScale(0.5, 0.5);
+
+      this.time.addEvent({
+        delay: 4750,
+        callback: () => popUp.destroy(),
+        loop: false,
+      });
+      eventsCenter.emit("update-bank", "password");
+
+      if (!this.collectedClues.includes("password")) {
+        this.collectedClues.push("password");
+        this.completed();
+      }
+
+      nextSceneFunc(this, "MainScene");
+    }, 3000);
+  }
+
+  onLockedLockerCollision() {
+    this.player.disableBody();
+    this.bodyLockerSound.play();
+
+    eventsCenter.emit("check-key", "key");
+    if (this.check) {
+      const openMessage =
+        "You are able to open the morgue drawer with the key you retrieved in the pharmacy...";
+      createMessageForImage(this, openMessage);
+
+      setTimeout(() => {
+        const popUp = this.add.image(400, 300, "toeTag").setScale(0.7, 0.7);
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "toeTag");
+
+        if (!this.collectedClues.includes("toeTag")) {
+          this.collectedClues.push("toeTag");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      }, 3000);
+    } else {
+      const drawerMessage = "Huh? Why would a body drawer need to be locked?";
+      createMessage(this, drawerMessage);
+      nextSceneFunc(this, "MainScene");
+    }
+  }
+
+  onUnlockedBodyDrawerCollision() {
+    this.player.disableBody();
+    this.bodyLockerSound2.play();
+
+    const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
+    createMessage(this, lockedBodyMessage);
+    this.mainTimer.minusFive();
+
+    if (!this.collectedClues.includes("ghostDrawer")) {
+      this.collectedClues.push("ghostDrawer");
+      this.completed();
+    }
+
+    nextSceneFunc(this, "MainScene");
+  }
+
+  onBoneSawCollision() {
+    this.player.disableBody();
+    this.loveNoteSound.play();
+
+    const boneSawMessage = `To be sawed or to not to be? That is the question. XOXO Dr.Scott`;
+    createMessage(this, boneSawMessage);
+
+    if (!this.collectedClues.includes("bone saw")) {
+      this.collectedClues.push("bone saw");
+      this.completed();
+    }
+
+    nextSceneFunc(this, "MainScene");
   }
 
   returnConfirmation(bool) {
