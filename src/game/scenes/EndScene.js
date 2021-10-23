@@ -7,7 +7,10 @@ class EndScene extends Phaser.Scene {
   }
 
   preload() {
-    changeDieClass();
+    //HAVE TO HARD CODE DIE CLASS TO MAKE SURE IT HIDES
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
+
     this.scene.setVisible(false, "MainScene");
     this.scene.setVisible(false, "ClueBank");
   }
