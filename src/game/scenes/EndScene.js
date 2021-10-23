@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { createMessage, changeDieClass } from "@/game/HelperFunctions";
+import { changeDieClass } from "@/game/HelperFunctions";
 
 class EndScene extends Phaser.Scene {
   constructor() {
@@ -31,7 +31,7 @@ class EndScene extends Phaser.Scene {
       })
       .setShadow(5, 5, "black", 5, false, true);
 
-      this.add
+    this.add
       .text(
         100,
         200,
@@ -43,7 +43,7 @@ class EndScene extends Phaser.Scene {
       )
       .setShadow(3, 3, "black", 7, false, true);
 
-      this.add
+    this.add
       .text(
         100,
         310,
@@ -57,7 +57,7 @@ class EndScene extends Phaser.Scene {
       )
       .setShadow(3, 3, "black", 7, false, true);
 
-      this.add
+    this.add
       .text(
         100,
         410,
@@ -69,18 +69,13 @@ class EndScene extends Phaser.Scene {
       )
       .setShadow(3, 3, "black", 7, false, true);
 
-      this.add
-      .text(
-        100,
-        490,
-        "Now tell me, does this hurt...",
-        {
-          fontSize: 20,
-          fontStyle: "italic",
-          wordWrap: { width: 900, useAdvancedWrap: true },
-          color: "red",
-        }
-      )
+    this.add
+      .text(100, 490, "Now tell me, does this hurt...", {
+        fontSize: 20,
+        fontStyle: "italic",
+        wordWrap: { width: 900, useAdvancedWrap: true },
+        color: "red",
+      })
       .setShadow(3, 3, "black", 7, false, true);
   }
 }
