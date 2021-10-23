@@ -15,6 +15,11 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
 
+//AUDIO
+import lightClick from "@/game/assets/audio/action-lightclick01.wav";
+import xrayOn from "@/game/assets/audio/action-lighton01.wav";
+import xrayMachine from "@/game/assets/audio/typing.wav";
+
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
@@ -42,6 +47,11 @@ class Radiology extends Scene {
     //POP UP
     this.load.image("comboCode", combination_code);
 
+    //AUDIO
+    this.load.audio("light", lightClick);
+    this.load.audio("xray on", xrayOn);
+    this.load.audio("xray machine", xrayMachine);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieClass();
   }
@@ -55,6 +65,7 @@ class Radiology extends Scene {
     this.createXrayMachines();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   update() {
@@ -273,12 +284,26 @@ class Radiology extends Scene {
     );
   }
 
+  createSounds() {
+    this.lightClickSound = this.sound.add("light");
+    this.xrayOnSound = this.sound.add("xray on");
+    this.xrayMachineScound = this.sound.add("xray machine");
+  }
+
   onSwitchCollision() {
+    this.player.disableBody();
+    this.lightClickSound.play();
+
     const lightSwitchMessage =
       "Oh man, where'd the lights go? You've lost 5 minutes";
 
-    this.player.disableBody();
-    createMessage(this, lightSwitchMessage);
+    createMessage(
+      this,
+      lightSwitchMessage,
+      "center",
+      225,
+      this.sys.canvas.height
+    );
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("switch")) {
@@ -290,8 +315,10 @@ class Radiology extends Scene {
   }
 
   onXrayCollision() {
-    const popUp = this.add.image(400, 300, "comboCode");
     this.player.disableBody();
+    this.xrayOnSound.play();
+
+    const popUp = this.add.image(400, 300, "comboCode");
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -309,16 +336,30 @@ class Radiology extends Scene {
   }
 
   onXrayMachineCollision() {
-    const machineMessage = "Machine doesnt seem to work... Oh, well.";
     this.player.disableBody();
-    createMessage(this, machineMessage);
+    this.xrayMachineScound.play();
 
-    if (!this.collectedClues.includes("machine")) {
-      this.collectedClues.push("machine");
-      this.completed();
-    }
+    this.time.addEvent({
+      delay: 2250,
+      callback: () => {
+        const machineMessage = "Machine doesnt seem to work... Oh, well.";
+        createMessage(
+          this,
+          machineMessage,
+          "center",
+          125,
+          this.sys.canvas.height / 2
+        );
 
-    nextSceneFunc(this, "MainScene");
+        if (!this.collectedClues.includes("machine")) {
+          this.collectedClues.push("machine");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      },
+      loop: false,
+    });
   }
 }
 
