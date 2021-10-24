@@ -7,6 +7,7 @@ import {
   handleRoomCountdownFinished,
   createMessage,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -98,6 +99,10 @@ export default class Morgue extends Phaser.Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -182,7 +187,7 @@ export default class Morgue extends Phaser.Scene {
 
   createPlayer() {
     this.player = this.physics.add.existing(
-      new Player(this, 250, 250, "player1")
+      new Player(this, 250, 100, "player1")
     );
 
     //ADJUSTS PLAYER SPRITE SIZE
@@ -196,14 +201,20 @@ export default class Morgue extends Phaser.Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createBodyLocker() {
     //LOCKED BODY DRAWER
     this.bodyLocker1 = this.physics.add
-      .sprite(550, 23, "bodyLocker 1")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+      .sprite(566, 37, "bodyLocker 1")
+      // .setDepth(-2)
+      .setSize(20, 24)
+      .setScale(1.5, 0.7)
+      .setVisible(false);
 
     // UNLOCKED BODY DRAWER
     this.bodyLocker2 = this.physics.add
@@ -213,35 +224,29 @@ export default class Morgue extends Phaser.Scene {
 
     // UNLOCKED BODY DRAWER(2)
     this.bodyLocker3 = this.physics.add
-      .sprite(260, 300, "bodyLocker 3")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALES COLLIDERS ON BODY LOCKERS TO APPROPRIATE SIZE
-    const bodyLockers = [this.bodyLocker1, this.bodyLocker2, this.bodyLocker3];
-    for (let i = 0; i < bodyLockers.length; i++) {
-      resizeCollider(bodyLockers[i], 5, 15);
-    }
+      .sprite(275, 315, "bodyLocker 3")
+      // .setDepth(-2)
+      .setSize(20, 24)
+      .setScale(1.5, 1)
+      .setVisible(false);
   }
 
   createNotebook() {
     this.notebook = this.physics.add
-      .sprite(738, 540, "notebook")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALE COLLIDER ON NOTEBOOK TO APPROPRIATE SIZE
-    resizeCollider(this.notebook, 5, 20);
+      .sprite(755, 556, "notebook")
+      // .setDepth(-2)
+      .setSize(20, 25)
+      .setScale(0.9, 0.5)
+      .setVisible(false);
   }
 
   createBoneSaw() {
     this.boneSaw = this.physics.add
-      .sprite(357, 475, "bone saw")
-      .setOrigin(0, 0)
-      .setDepth(-2);
-
-    //SCALE COLLIDER ON BONE SAW TO APPROPRIATE SIZE
-    resizeCollider(this.boneSaw, 2, 10);
+      .sprite(374, 491, "bone saw")
+      // .setDepth(-2)
+      .setSize(23, 20)
+      .setScale(1.1, 0.4)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -301,6 +306,39 @@ export default class Morgue extends Phaser.Scene {
       this.player,
       this.notebook,
       this.onNoteBookCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.bodyLocker3,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.boneSaw,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.bodyLocker1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.notebook,
+      onZoneCollision,
       null,
       this
     );
