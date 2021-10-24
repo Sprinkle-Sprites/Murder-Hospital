@@ -20,10 +20,12 @@ Watch our full 4-minute demo video [here](linktbd).
 
 # Tech Stack
 
+- Javascript
 - Node.js
 - Express
 - Phaser3
 - Vue.js
+- Heroku
 
 # Game Play
 - When your character arrives in the waiting room, roll the dice by clicking “Investigate a Room” to the right of the board. It will send you into a room in the hospital to explore.
