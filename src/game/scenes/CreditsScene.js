@@ -11,6 +11,7 @@ export default class CreditsScene extends Scene {
     this.createTitleText();
     this.createTeam();
     this.createFeatureLogos();
+    this.createSpecialThanks();
   }
 
   createBackground() {
@@ -167,7 +168,36 @@ export default class CreditsScene extends Scene {
     ];
 
     for (let i = 0; i < this.logos.length; i++) {
-      this.logos[i].on("pointerup", () => this.goToLink(urls[i]), this);
+      this.logos[i].addListener(
+        "mouseover",
+        () => this.goToLink(urls[i]),
+        this
+      );
     }
+  }
+
+  createSpecialThanks() {
+    this.add
+      .text(this.width * 0.18, this.height * 0.8, "Special Thanks : ", {
+        fontFamily: "GypsyCurse",
+        fontSize: "40px",
+      })
+      .setOrigin(0.5, 0.5)
+      .setColor("red")
+      .setShadow(5, 5, "black", 5, false, true);
+
+    this.add
+      .text(
+        this.width * 0.25,
+        this.height * 0.8,
+        " Mac Mcinerney (instructor), Joe Alves (instructor), and McKenna Warren (PM)",
+        {
+          fontFamily: "Oswald",
+          fontSize: "25px",
+          stroke: "#D9B48FFF",
+        }
+      )
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
   }
 }
