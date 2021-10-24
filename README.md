@@ -28,7 +28,7 @@ Watch our full 4-minute demo video [here](linktbd).
 # Game Play
 - When your character arrives in the waiting room, roll the dice by clicking “Investigate a Room” to the right of the board. It will send you into a room in the hospital to explore.
 - You have 30 seconds to check the room for clues by walking into things.
-![Demo](https://www.screencast.com/t/6r0m8kWhCun)
+[Demo](https://www.screencast.com/t/6r0m8kWhCun)
 - After 30 seconds, or after you interact with an object in the room, you’ll be sent back to the main room to roll the dice again.
 - Once you think you have figured out the code to escape, click the “Try to Exit” button to the right. You will not be able to leave the exit room without trying a code, so make sure you have a guess before you try.
 - If your code is right, you’ll be able to leave. If not, you’ll have to try again.
