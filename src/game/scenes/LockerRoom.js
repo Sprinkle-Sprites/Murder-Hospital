@@ -11,6 +11,7 @@ import {
   createMessage,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
@@ -171,28 +172,6 @@ class LockerRoom extends Scene {
       resizeMapLayer(this, layers[i]);
       layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    this.borderLayer.setCollisionByProperty({ collides: true });
-    this.stallsLayer.setCollisionByProperty({ collides: true });
-    this.bathroomLayer.setCollisionByProperty({ collides: true });
-    this.extra2Layer.setCollisionByProperty({ collides: true });
-    this.lockersLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, this.borderLayer);
-    this.physics.add.collider(this.player, this.stallsLayer);
-    this.physics.add.collider(this.player, this.bathroomLayer);
-    this.physics.add.collider(this.player, this.extra2Layer);
-    this.physics.add.collider(this.player, this.lockersLayer);
-
-    //     //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // extra2Layer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   createPlayer() {
@@ -211,38 +190,46 @@ class LockerRoom extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createLocker1() {
     this.locker1 = this.physics.add
-      .sprite(500, 60, "locker1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(20, 50, true);
+      .sprite(503, 80, "locker1")
+      // .setDepth(-2)
+      .setSize(20, 22)
+      .setScale(0.6, 1.5)
+      .setVisible(false);
   }
 
   createLocker2() {
     this.locker2 = this.physics.add
-      .sprite(690, 60, "locker2")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(20, 50, true);
+      .sprite(712, 80, "locker2")
+      // .setDepth(-2)
+      .setSize(20, 22)
+      .setScale(0.6, 1.5)
+      .setVisible(false);
   }
 
   createSink() {
     this.sink = this.physics.add
-      .sprite(734, 511, "sink")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(19, 20, true);
+      .sprite(752, 527, "sink")
+      // .setDepth(-2)
+      .setSize(19, 20)
+      .setScale(0.8, 0.7)
+      .setVisible(false);
   }
 
   createShower() {
     this.shower = this.physics.add
-      .sprite(229, 50, "shower")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(35, 20, true);
+      .sprite(245, 82, "shower")
+      // .setDepth(-2)
+      .setSize(18, 23)
+      .setScale(1.6, 2.5)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -253,6 +240,20 @@ class LockerRoom extends Scene {
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.stallsLayer.setCollisionByProperty({ collides: true });
+    this.bathroomLayer.setCollisionByProperty({ collides: true });
+    this.extra2Layer.setCollisionByProperty({ collides: true });
+    this.lockersLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.stallsLayer);
+    this.physics.add.collider(this.player, this.bathroomLayer);
+    this.physics.add.collider(this.player, this.extra2Layer);
+    this.physics.add.collider(this.player, this.lockersLayer);
+
     this.physics.add.overlap(
       this.player,
       this.locker1,
@@ -281,6 +282,33 @@ class LockerRoom extends Scene {
       this.player,
       this.shower,
       this.onShowerCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.locker1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.locker2,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(this.zone, this.sink, onZoneCollision, null, this);
+
+    this.physics.add.overlap(
+      this.zone,
+      this.shower,
+      onZoneCollision,
       null,
       this
     );
@@ -436,6 +464,10 @@ class LockerRoom extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
