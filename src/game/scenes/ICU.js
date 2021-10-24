@@ -7,6 +7,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -330,7 +331,7 @@ class ICU extends Scene {
     this.physics.add.overlap(
       this.zone,
       this.blood3,
-      this.onZoneCollision,
+      onZoneCollision,
       null,
       this
     );
@@ -338,7 +339,7 @@ class ICU extends Scene {
     this.physics.add.overlap(
       this.zone,
       this.IVBag2,
-      this.onZoneCollision,
+      onZoneCollision,
       null,
       this
     );
@@ -346,7 +347,7 @@ class ICU extends Scene {
     this.physics.add.overlap(
       this.zone,
       this.monitor1,
-      this.onZoneCollision,
+      onZoneCollision,
       null,
       this
     );
@@ -354,7 +355,7 @@ class ICU extends Scene {
     this.physics.add.overlap(
       this.zone,
       this.posterC,
-      this.onZoneCollision,
+      onZoneCollision,
       null,
       this
     );
@@ -442,20 +443,6 @@ class ICU extends Scene {
     }
 
     nextSceneFunc(this, "MainScene");
-  }
-
-  onZoneCollision(zone, obj) {
-    obj.setVisible(true);
-    obj.setTintFill(0xfc0303);
-
-    this.time.addEvent({
-      delay: 500,
-      callback: () => {
-        obj.setVisible(false);
-        obj.clearTint();
-      },
-      loop: false,
-    });
   }
 }
 
