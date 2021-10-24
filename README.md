@@ -20,10 +20,11 @@ Watch our full 4-minute demo video [here](linktbd).
 
 # Tech Stack
 
-- Javascript
+- JavaScript
 - Node.js
 - Express
 - Phaser3
+- Tiled
 - Vue.js
 - Heroku
 
