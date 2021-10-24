@@ -79,6 +79,10 @@ class ICU extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -111,6 +115,10 @@ class ICU extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createTimer() {
@@ -222,40 +230,50 @@ class ICU extends Scene {
       .setSize(15, 10);
 
     this.blood3 = this.physics.add
-      .sprite(420, 475, "Blood pool 3")
-      .setDepth(-2)
-      .setSize(15, 10);
+      .sprite(423, 476, "Blood pool 3")
+      // .setDepth(-2)
+      .setSize(17, 17)
+      .setScale(0.8, 0.5)
+      .setVisible(false);
   }
 
   createIVs() {
     this.IVBag1 = this.physics.add
       .sprite(617, 55, "IV bag 1")
       .setDepth(-2)
-      .setSize(15, 10);
+      .setSize(15, 15)
+      .setScale(0.7, 0.7);
 
     this.IVBag2 = this.physics.add
-      .sprite(193, 543, "IV bag 2")
-      .setDepth(-2)
-      .setSize(15, 10);
+      .sprite(194, 542, "IV bag 2")
+      // .setDepth(-2)
+      .setSize(15, 15)
+      .setScale(0.7, 0.7)
+      .setVisible(false);
   }
 
   createMonitors() {
     this.monitor1 = this.physics.add
       .sprite(125, 63, "Monitor 1")
-      .setDepth(-2)
-      .setSize(25, 28);
+      // .setDepth(-2)
+      .setSize(21, 25)
+      .setScale(1.2, 1.3)
+      .setVisible(false);
 
     this.monitor2 = this.physics.add
-      .sprite(685, 63, "Monitor 2")
+      .sprite(684, 63, "Monitor 2")
       .setDepth(-2)
-      .setSize(25, 28);
+      .setSize(21, 25)
+      .setScale(1.2, 1.3);
   }
 
   createPoster() {
     this.posterC = this.physics.add
       .sprite(725, 440, "poster-collider")
-      .setDepth(-2)
-      .setSize(20, 28, true);
+      // .setDepth(-2)
+      .setSize(20, 25, true)
+      .setScale(1, 1.1)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -304,6 +322,39 @@ class ICU extends Scene {
       this.player,
       this.posterC,
       this.onPosterCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.blood3,
+      this.onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.IVBag2,
+      this.onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.monitor1,
+      this.onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.posterC,
+      this.onZoneCollision,
       null,
       this
     );
@@ -391,6 +442,20 @@ class ICU extends Scene {
     }
 
     nextSceneFunc(this, "MainScene");
+  }
+
+  onZoneCollision(zone, obj) {
+    obj.setVisible(true);
+    obj.setTintFill(0xfc0303);
+
+    this.time.addEvent({
+      delay: 500,
+      callback: () => {
+        obj.setVisible(false);
+        obj.clearTint();
+      },
+      loop: false,
+    });
   }
 }
 
