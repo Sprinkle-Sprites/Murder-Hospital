@@ -7,6 +7,7 @@ import {
   createMessage,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -195,11 +196,19 @@ class Laboratory extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -210,49 +219,56 @@ class Laboratory extends Scene {
 
   createCalendar() {
     this.calendar1 = this.physics.add
-      .sprite(450, 60, "calendar")
-      .setOrigin(0, 0)
-      .setDepth(-2);
+      .sprite(465, 77, "calendar")
+      // .setDepth(-2)
+      .setSize(23, 23)
+      .setScale(1.4, 1.5)
+      .setVisible(false);
   }
 
   createSkeleton() {
     this.skeleton = this.physics.add
-      .sprite(390, 60, "skeleton")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 35, true);
+      .sprite(406, 75, "skeleton")
+      // .setDepth(-2)
+      .setSize(22, 23)
+      .setScale(0.9, 1.4)
+      .setVisible(false);
   }
 
   createTestTube() {
     this.testTube = this.physics.add
-      .sprite(445, 178, "testTube")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 50, true);
+      .sprite(462, 185, "testTube")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.5, 1.1)
+      .setVisible(false);
   }
 
   createSpecimenFlask() {
     this.specimenFlask = this.physics.add
-      .sprite(590, 435, "specimen_flask")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 35, true);
+      .sprite(608, 443, "specimen_flask")
+      // .setDepth(-2)
+      .setSize(23, 23)
+      .setScale(1.1, 0.6)
+      .setVisible(false);
   }
 
   createCandyBar() {
     this.candyBar = this.physics.add
-      .sprite(468, 435, "candyBar")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 35, true);
+      .sprite(486, 447, "candyBar")
+      // .setDepth(-2)
+      .setSize(21, 25)
+      .setScale(1.4, 0.7)
+      .setVisible(false);
   }
 
   createDesk() {
     this.desk = this.physics.add
-      .sprite(710, 110, "desk")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 35, true);
+      .sprite(721, 119, "desk")
+      // .setDepth(-2)
+      .setSize(22, 25)
+      .setScale(0.9, 0.7)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -326,6 +342,49 @@ class Laboratory extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.calendar1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.skeleton,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.testTube,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.specimenFlask,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.candyBar,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(this.zone, this.desk, onZoneCollision, null, this);
   }
 
   onCalendarCollision() {
