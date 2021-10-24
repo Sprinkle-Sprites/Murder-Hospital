@@ -8,7 +8,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -63,7 +63,7 @@ class PatientRoom extends Scene {
     this.load.audio("opened drawer", openedDrawer);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

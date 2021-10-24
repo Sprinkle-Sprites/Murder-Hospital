@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { changeDieClass } from "@/game/HelperFunctions";
+import { changeDieFunc } from "@/game/HelperFunctions";
 
 class EndScene extends Phaser.Scene {
   constructor() {
@@ -8,8 +8,7 @@ class EndScene extends Phaser.Scene {
 
   preload() {
     //HAVE TO HARD CODE DIE CLASS TO MAKE SURE IT HIDES
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
+    changeDieFunc(this.scene);
 
     this.scene.setVisible(false, "MainScene");
     this.scene.setVisible(false, "ClueBank");

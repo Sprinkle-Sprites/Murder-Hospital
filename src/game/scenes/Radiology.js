@@ -6,7 +6,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -53,7 +53,7 @@ class Radiology extends Scene {
     this.load.audio("xray machine", xrayMachine);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

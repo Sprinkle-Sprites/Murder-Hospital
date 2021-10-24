@@ -8,7 +8,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -65,7 +65,7 @@ class Surgery extends Scene {
     this.load.audio("scalpel", scalpelAudio);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

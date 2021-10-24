@@ -6,7 +6,7 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import eventsCenter from "@/game/eventsCenter";
@@ -69,7 +69,7 @@ class Laboratory extends Scene {
     this.load.audio("desk", deskDrawer);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

@@ -10,7 +10,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -63,7 +63,7 @@ class Pharmacy extends Scene {
     this.load.audio("bandaid", bandaid);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

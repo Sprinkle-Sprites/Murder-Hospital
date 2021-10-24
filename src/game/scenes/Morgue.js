@@ -6,7 +6,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   createMessage,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -56,7 +56,7 @@ export default class Morgue extends Phaser.Scene {
     this.load.audio("photo", photo);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

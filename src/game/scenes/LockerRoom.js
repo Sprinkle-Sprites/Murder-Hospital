@@ -10,7 +10,7 @@ import {
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
@@ -59,7 +59,7 @@ class LockerRoom extends Scene {
     this.load.audio("shower", showerNote);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

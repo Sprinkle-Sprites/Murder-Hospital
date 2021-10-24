@@ -6,7 +6,7 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -24,7 +24,7 @@ class Exit extends Scene {
     this.load.image("panel", collider);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {

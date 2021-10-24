@@ -6,7 +6,7 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -60,7 +60,7 @@ class ICU extends Scene {
     this.load.audio("poster", posterCrumble);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
