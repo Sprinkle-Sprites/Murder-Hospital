@@ -1,69 +1,66 @@
-# vue-phaser3
+# Murder Hospital
 
-#### Webpack boilerplate that integrates Phaser 3 into a Vue 3 project.
+## Table of Contents
 
-This project template has been set up using the **Vue CLI 4** and includes:
+- [Introduction](#introduction)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Next Steps](#next-steps)
+- [Creators](#creators)
+- [Docs](#docs)
 
-- _Sass_
-- _CSS Postprocessing_
-- _Babel_
-- _Source Minification_
+# Introduction
 
-## Build Setup
+Murder Hospital is a horror-themed escape room game.
 
-```bash
-# install dependencies
-npm install
+Watch our full 4-minute demo video [here](linktbd).
 
+# Tech Stack
+
+- Node.js
+- Express
+- Phaser3
+- Vue.js
+
+# Features
+
+# Getting Started
+
+Fork and clone this repo. Then, npm install.
+````javascript
 # serve with live reloading at localhost:8080
 npm run serve
 
 # build for production with transpilation / minification
 npm run build
 
-# serve your production build at localhost:5000
+# serve your production build
 npm start
-```
+````
 
-## Extending the project to your needs
+# Next Steps
 
-If you want to add more features like _linting_, _unit testing_ or _Typescript_ to
-your own project, you can do so quite easily via Vue CLI's plugin system. Read
-the <a href="https://cli.vuejs.org/guide/" target="_blank">documentation</a>
-if you want to know more.
+Our biggest priority for the future of Murder Hospital is to make it multi-player using Socket.io. The multiplayer version will have the following additional features:
+- Users can create a private room to play with up to 6 friends.
+- They can also select an avatar to play as
+- Chat with other players to discuss clues and strategies
 
-## Converting into your own repository
+In addition to multiplayer-functionality, we'd also like to add the following:
+- Text animation for the pop-up messages
+- Randomize the clue colliders and clues to allow for repeat play
 
-If you want to maintain your own repo based on this boilerplate, you first need
-to detach it from this repo. Here is what you need to do:
+# Creators
 
-1. edit these files and enter your own project info
+* Gabriella (Gabby) Apeadu: [GitHub](https://github.com/gapeadu) | [LinkedIn](https://www.linkedin.com/in/gabriellaap/)
+* Helena Bliss: [GitHub](https://github.com/hbliss2) | [LinkedIn](https://www.linkedin.com/in/helena-bliss/)
+* Nicole Buendia: [GitHub](https://github.com/nbuendia) | [LinkedIn](https://www.linkedin.com/in/nicole-buendia/)
+* Sarah Sheppard: [GitHub](https://github.com/sheppas) | [LinkedIn](https://www.linkedin.com/in/sheppas/)
 
-   - _package.json_
-   - _README.md_
-   - _public/index.html_
 
-2. delete _LICENSE_ (and perhaps add your own)
+# Docs
+Boilerplate: https://github.com/Sun0fABeach/vue-phaser3
 
-3. reinitialize git
-   <pre><code>rm -rf .git
-   git init
-   git add .
-   git commit -m "Initial commit"
-   </code></pre>
+Vue: https://v3.vuejs.org/guide/introduction.html
 
-## Sharing data between Vue and Phaser
-
-You might want to expose some game state that lives inside of your Phaser code
-to your Vue components and vice versa, for example a highscore. Here are two
-ways you can achieve sharing state between the frameworks.
-
-- Import a Phaser <a href="https://photonstorm.github.io/phaser3-docs/Phaser.Events.EventEmitter.html" target="_blank">EventEmitter</a> instance in
-  both your Vue components and Phaser modules. Both sides can then listen to and
-  emit events on that emitter.
-
-- Have both sides share a <a href="https://vuex.vuejs.org/guide/" target="_blank">
-  Vuex</a> store instance. It works like an event emitter, but can also hold
-  state. While the store is nicely integrated into your Vue components, on the
-  Phaser side you'll have to use the raw store
-  <a href="https://vuex.vuejs.org/api/#vuex-store-instance-properties" target="_blank">API</a>.
+Phaser 3: https://photonstorm.github.io/phaser3-docs/
