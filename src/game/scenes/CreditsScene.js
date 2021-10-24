@@ -178,7 +178,7 @@ export default class CreditsScene extends Scene {
 
   createSpecialThanks() {
     this.add
-      .text(this.width * 0.18, this.height * 0.8, "Special Thanks : ", {
+      .text(this.width * 0.18, this.height * 0.9, "Special Thanks : ", {
         fontFamily: "GypsyCurse",
         fontSize: "40px",
       })
@@ -189,7 +189,7 @@ export default class CreditsScene extends Scene {
     this.add
       .text(
         this.width * 0.25,
-        this.height * 0.8,
+        this.height * 0.9,
         " Mac Mcinerney (instructor), Joe Alves (instructor), and McKenna Warren (PM)",
         {
           fontFamily: "Oswald",
