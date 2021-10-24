@@ -69,7 +69,7 @@ export default class TitleScene extends Scene {
 
     this.optionsButton.on(
       "pointerdown",
-      function(pointer) {
+      function() {
         this.scene.start("OptionsScene");
       }.bind(this)
     );
@@ -92,7 +92,7 @@ export default class TitleScene extends Scene {
 
     this.creditsButton.on(
       "pointerdown",
-      function(pointer) {
+      function() {
         this.scene.start("CreditsScene");
       }.bind(this)
     );

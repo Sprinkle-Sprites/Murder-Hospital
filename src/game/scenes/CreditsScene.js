@@ -12,6 +12,7 @@ export default class CreditsScene extends Scene {
     this.createTeam();
     this.createFeatureLogos();
     this.createSpecialThanks();
+    this.createReturnButton();
   }
 
   createBackground() {
@@ -20,6 +21,9 @@ export default class CreditsScene extends Scene {
   createScale() {
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
+
+    console.log("width", this.width);
+    console.log("height", this.height);
   }
 
   createTitleText() {
@@ -168,13 +172,13 @@ export default class CreditsScene extends Scene {
     ];
 
     for (let i = 0; i < this.logos.length; i++) {
-      this.logos[i].on("pointerover", () => this.goToLink(urls[i]), this);
+      this.logos[i].on("pointerup", () => this.goToLink(urls[i]), this);
     }
   }
 
   createSpecialThanks() {
     this.add
-      .text(this.width * 0.18, this.height * 0.9, "Special Thanks : ", {
+      .text(this.width * 0.18, this.height * 0.85, "Special Thanks : ", {
         fontFamily: "GypsyCurse",
         fontSize: "40px",
       })
@@ -185,7 +189,7 @@ export default class CreditsScene extends Scene {
     this.add
       .text(
         this.width * 0.25,
-        this.height * 0.9,
+        this.height * 0.85,
         " Mac Mcinerney (instructor), Joe Alves (instructor), and McKenna Warren (PM)",
         {
           fontFamily: "Oswald",
@@ -195,5 +199,30 @@ export default class CreditsScene extends Scene {
       )
       .setOrigin(0, 0.5)
       .setShadow(5, 5, "black", 5, false, true);
+  }
+
+  createReturnButton() {
+    this.returnButton = this.add
+      .sprite(this.width * 0.9, this.height * 0.95, "blueButton2")
+      .setScale(0.5)
+      .setInteractive();
+
+    this.returnText = this.add.text(0, 0, "Return", {
+      fontSize: "16px",
+      fill: "#fff",
+    });
+
+    this.centerButtonText(this.returnText, this.returnButton);
+
+    this.returnButton.on(
+      "pointerdown",
+      function() {
+        this.scene.start("TitleScene");
+      }.bind(this)
+    );
+  }
+
+  centerButtonText(returnText, returnButton) {
+    Phaser.Display.Align.In.Center(returnText, returnButton);
   }
 }
