@@ -86,3 +86,17 @@ export function changeDieFunc(scene) {
     document.getElementById("die").classList.add("hide");
   }
 }
+
+export function onZoneCollision(zone, obj) {
+  obj.setVisible(true);
+  obj.setTintFill(0xfc0303);
+
+  this.time.addEvent({
+    delay: 500,
+    callback: () => {
+      obj.setVisible(false);
+      obj.clearTint();
+    },
+    loop: false,
+  });
+}
