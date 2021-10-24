@@ -27,15 +27,20 @@ Watch our full 4-minute demo video [here](linktbd).
 
 # Getting Started
 
-Fork and clone this repo. Then, npm install.
+Fork and clone this repo. Then,
 ````javascript
-# serve with live reloading at localhost:8080
+npm install.
+````
+Serve live reloading at localhost:8080
+````javascript
 npm run serve
-
-# build for production with transpilation / minification
+````
+Build for production
+````javascript
 npm run build
-
-# serve your production build
+````
+Serve your production build
+```javascript
 npm start
 ````
 
