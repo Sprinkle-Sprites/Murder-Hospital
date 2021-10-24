@@ -12,7 +12,9 @@
 
 # Introduction
 
-Murder Hospital is a horror-themed escape room game.
+Murder Hospital is a horror-themed escape room game. Players wander a creepy hospital, looking for clues and trying to escape before the hospital's resident physician traps them there forever.
+
+We took features of some of our favorite board games and combined it with puzzles and clues to create a unique online escape room experience.
 
 Watch our full 4-minute demo video [here](linktbd).
 
@@ -23,13 +25,20 @@ Watch our full 4-minute demo video [here](linktbd).
 - Phaser3
 - Vue.js
 
-# Features
+# Game Play
+- When your character arrives in the waiting room, roll the dice by clicking “Investigate a Room” to the right of the board. It will send you into a room in the hospital to explore.
+- You have 30 seconds to check the room for clues by walking into things.
+![Demo](https://www.screencast.com/t/6r0m8kWhCun)
+- After 30 seconds, or after you interact with an object in the room, you’ll be sent back to the main room to roll the dice again.
+- Once you think you have figured out the code to escape, click the “Try to Exit” button to the right. You will not be able to leave the exit room without trying a code, so make sure you have a guess before you try.
+- If your code is right, you’ll be able to leave. If not, you’ll have to try again.
+- You have one hour to find all the clues and escape. If not, we’re sorry. The Doctor is not what you’d call a “good guy.”
 
 # Getting Started
 
 Fork and clone this repo. Then,
 ````javascript
-npm install.
+npm install
 ````
 Serve live reloading at localhost:8080
 ````javascript
