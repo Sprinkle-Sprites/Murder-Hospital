@@ -168,7 +168,7 @@ export default class CreditsScene extends Scene {
     ];
 
     for (let i = 0; i < this.logos.length; i++) {
-      this.logos[i].on("pointerup", () => this.goToLink(urls[i]), this);
+      this.logos[i].on("pointerover", () => this.goToLink(urls[i]), this);
     }
   }
 
