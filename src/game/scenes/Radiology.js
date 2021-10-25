@@ -6,7 +6,8 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -14,6 +15,11 @@ import RoomTimer from "@/game/scenes/RoomTimer";
 import combination_code from "@/game/assets/popups/locker_combo.png";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
+
+//AUDIO
+import lightClick from "@/game/assets/audio/action-lightclick01.wav";
+import xrayOn from "@/game/assets/audio/action-lighton01.wav";
+import xrayMachine from "@/game/assets/audio/typing.wav";
 
 class Radiology extends Scene {
   constructor() {
@@ -36,14 +42,19 @@ class Radiology extends Scene {
     this.load.image("Xray 3", collider);
 
     //XRAY MACHINES
-    this.load.image("Xray Machine 1");
-    this.load.image("Xray Machine 2");
+    this.load.image("Xray Machine 1", collider);
+    this.load.image("Xray Machine 2", collider);
 
     //POP UP
     this.load.image("comboCode", combination_code);
 
+    //AUDIO
+    this.load.audio("light", lightClick);
+    this.load.audio("xray on", xrayOn);
+    this.load.audio("xray machine", xrayMachine);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -55,11 +66,16 @@ class Radiology extends Scene {
     this.createXrayMachines();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -166,6 +182,10 @@ class Radiology extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createTimer() {
@@ -184,8 +204,10 @@ class Radiology extends Scene {
   createSwitch() {
     this.switch1 = this.physics.add
       .sprite(205, 45, "lightSwitch 1")
-      .setDepth(-2)
-      .setSize(10, 10);
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.5, 0.5)
+      .setVisible(false);
 
     this.switch2 = this.physics.add
       .sprite(665, 45, "lightSwitch 2")
@@ -205,9 +227,11 @@ class Radiology extends Scene {
 
   createXrayBoards() {
     this.xray1 = this.physics.add
-      .sprite(710, 37, "Xray 1")
-      .setDepth(-2)
-      .setSize(50, 25);
+      .sprite(711, 38, "Xray 1")
+      // .setDepth(-2)
+      .setSize(22, 25)
+      .setScale(2.4, 1.1)
+      .setVisible(false);
 
     this.xray2 = this.physics.add
       .sprite(627, 315, "Xray 2")
@@ -222,9 +246,11 @@ class Radiology extends Scene {
 
   createXrayMachines() {
     this.xrayMachine1 = this.physics.add
-      .sprite(325, 440, "Xray Machine 1")
-      .setDepth(-2)
-      .setSize(60, 25);
+      .sprite(326, 441, "Xray Machine 1")
+      // .setDepth(-2)
+      .setSize(22, 25)
+      .setScale(2.8, 1)
+      .setVisible(false);
 
     this.xrayMachine2 = this.physics.add
       .sprite(475, 43, "Xray Machine 2")
@@ -245,7 +271,7 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, this.wallLayer2Lab);
     this.physics.add.collider(this.player, this.bedsLayer);
 
-    //PLAYER AND SWITCH COLLIDERS
+    //PLAYER COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.switch1,
@@ -254,7 +280,6 @@ class Radiology extends Scene {
       this
     );
 
-    //PLAYER AND XRAY COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.xray1,
@@ -263,7 +288,6 @@ class Radiology extends Scene {
       this
     );
 
-    //PLAYER AND XRAY MACHINE COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.xrayMachine1,
@@ -271,14 +295,53 @@ class Radiology extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.switch1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.xray1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.xrayMachine1,
+      onZoneCollision,
+      null,
+      this
+    );
+  }
+
+  createSounds() {
+    this.lightClickSound = this.sound.add("light");
+    this.xrayOnSound = this.sound.add("xray on");
+    this.xrayMachineScound = this.sound.add("xray machine");
   }
 
   onSwitchCollision() {
+    this.player.disableBody();
+    this.lightClickSound.play();
+
     const lightSwitchMessage =
       "Oh man, where'd the lights go? You've lost 5 minutes";
 
-    this.player.disableBody();
-    createMessage(this, lightSwitchMessage);
+    createMessage(
+      this,
+      lightSwitchMessage,
+      "center",
+      225,
+      this.sys.canvas.height
+    );
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("switch")) {
@@ -290,8 +353,10 @@ class Radiology extends Scene {
   }
 
   onXrayCollision() {
-    const popUp = this.add.image(400, 300, "comboCode");
     this.player.disableBody();
+    this.xrayOnSound.play();
+
+    const popUp = this.add.image(400, 300, "comboCode");
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -309,16 +374,31 @@ class Radiology extends Scene {
   }
 
   onXrayMachineCollision() {
-    const machineMessage = "Machine doesnt seem to work... Oh, well.";
     this.player.disableBody();
-    createMessage(this, machineMessage);
+    this.xrayMachineScound.play();
 
-    if (!this.collectedClues.includes("machine")) {
-      this.collectedClues.push("machine");
-      this.completed();
-    }
+    //WRAPED ALL ACTIONS TO RUN AFTER SOUND FINSIHES PLAYING
+    this.time.addEvent({
+      delay: 2250,
+      callback: () => {
+        const machineMessage = "Machine doesnt seem to work... Oh, well.";
+        createMessage(
+          this,
+          machineMessage,
+          "center",
+          125,
+          this.sys.canvas.height / 2
+        );
 
-    nextSceneFunc(this, "MainScene");
+        if (!this.collectedClues.includes("machine")) {
+          this.collectedClues.push("machine");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      },
+      loop: false,
+    });
   }
 }
 

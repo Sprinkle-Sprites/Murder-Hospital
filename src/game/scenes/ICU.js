@@ -6,8 +6,8 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -17,6 +17,12 @@ import eventEmitter from "../eventEmitter";
 
 import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
+
+//AUDIO
+import bloodSlip from "@/game/assets/audio/action-squelch03.wav";
+import IVBloodBag from "@/game/assets/audio/object-plasticbag02.wav";
+import monitorSound from "@/game/assets/audio/action-lighton01.wav";
+import posterCrumble from "@/game/assets/audio/object-paperbagcrunch04.wav";
 
 class ICU extends Scene {
   constructor() {
@@ -48,8 +54,14 @@ class ICU extends Scene {
     this.load.image("poster", poster);
     this.load.image("IVbag", ivBag);
 
+    //AUDIO
+    this.load.audio("blood", bloodSlip);
+    this.load.audio("IVBag", IVBloodBag);
+    this.load.audio("monitor", monitorSound);
+    this.load.audio("poster", posterCrumble);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -62,11 +74,16 @@ class ICU extends Scene {
     this.createPoster();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -99,6 +116,10 @@ class ICU extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createTimer() {
@@ -210,40 +231,57 @@ class ICU extends Scene {
       .setSize(15, 10);
 
     this.blood3 = this.physics.add
-      .sprite(420, 475, "Blood pool 3")
-      .setDepth(-2)
-      .setSize(15, 10);
+      .sprite(423, 476, "Blood pool 3")
+      // .setDepth(-2)
+      .setSize(17, 17)
+      .setScale(0.8, 0.5)
+      .setVisible(false);
   }
 
   createIVs() {
     this.IVBag1 = this.physics.add
       .sprite(617, 55, "IV bag 1")
       .setDepth(-2)
-      .setSize(15, 10);
+      .setSize(15, 15)
+      .setScale(0.7, 0.7);
 
     this.IVBag2 = this.physics.add
-      .sprite(193, 543, "IV bag 2")
-      .setDepth(-2)
-      .setSize(15, 10);
+      .sprite(194, 542, "IV bag 2")
+      // .setDepth(-2)
+      .setSize(15, 15)
+      .setScale(0.7, 0.7)
+      .setVisible(false);
   }
 
   createMonitors() {
     this.monitor1 = this.physics.add
       .sprite(125, 63, "Monitor 1")
-      .setDepth(-2)
-      .setSize(25, 28);
+      // .setDepth(-2)
+      .setSize(21, 25)
+      .setScale(1.2, 1.3)
+      .setVisible(false);
 
     this.monitor2 = this.physics.add
-      .sprite(685, 63, "Monitor 2")
+      .sprite(684, 63, "Monitor 2")
       .setDepth(-2)
-      .setSize(25, 28);
+      .setSize(21, 25)
+      .setScale(1.2, 1.3);
   }
 
   createPoster() {
     this.posterC = this.physics.add
       .sprite(725, 440, "poster-collider")
-      .setDepth(-2)
-      .setSize(20, 28, true);
+      // .setDepth(-2)
+      .setSize(20, 25, true)
+      .setScale(1, 1.1)
+      .setVisible(false);
+  }
+
+  createSounds() {
+    this.slipSound = this.sound.add("blood");
+    this.IVBloodBagSound = this.sound.add("IVBag");
+    this.monitorTurnOnSound = this.sound.add("monitor");
+    this.posterGrabSound = this.sound.add("poster");
   }
 
   createColliders() {
@@ -257,23 +295,6 @@ class ICU extends Scene {
     this.physics.add.collider(this.player, this.wallLayer);
     this.physics.add.collider(this.player, this.nurseStationLayer2);
 
-    //PLAYER AND BLOOD COLLIDERS
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.blood1,
-    //   this.onBloodCollision,
-    //   null,
-    //   this
-    // );
-
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.blood2,
-    //   this.onBloodCollision,
-    //   null,
-    //   this
-    // );
-
     this.physics.add.overlap(
       this.player,
       this.blood3,
@@ -281,15 +302,6 @@ class ICU extends Scene {
       null,
       this
     );
-
-    //PLAYER AND IV BAG COLLIDERS
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.IVBag1,
-    //   this.onIVCollision,
-    //   null,
-    //   this
-    // );
 
     this.physics.add.overlap(
       this.player,
@@ -299,7 +311,6 @@ class ICU extends Scene {
       this
     );
 
-    //PLAYER AND MONITOR COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.monitor1,
@@ -308,15 +319,6 @@ class ICU extends Scene {
       this
     );
 
-    // this.physics.add.overlap(
-    //   this.player,
-    //   this.monitor2,
-    //   this.onMonitorCollision,
-    //   null,
-    //   this
-    // );
-
-    //POSTER COLLIDER
     this.physics.add.overlap(
       this.player,
       this.posterC,
@@ -324,13 +326,48 @@ class ICU extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.blood3,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.IVBag2,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.monitor1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.posterC,
+      onZoneCollision,
+      null,
+      this
+    );
   }
 
   onBloodCollision() {
     this.player.disableBody();
+    this.slipSound.play();
+
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
-    createMessage(this, bloodMessage);
+    createMessage(this, bloodMessage, "center", 200, this.sys.canvas.height);
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("bloodPool")) {
@@ -343,9 +380,12 @@ class ICU extends Scene {
 
   onIVCollision() {
     this.player.disableBody();
+    this.IVBloodBagSound.play();
+
     const IVMessage =
       "Oh, hey, a bag of blood. If you lose a bunch later, maybe this will come in handy?";
-    createMessageForImage(this, IVMessage);
+    createMessage(this, IVMessage, "top", 50, this.sys.canvas.height / 2);
+
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "IVbag").setScale(0.5, 0.5);
       this.time.addEvent({
@@ -365,9 +405,17 @@ class ICU extends Scene {
   }
 
   onMonitorCollision() {
-    const monitorMessage = "How is this monitor supposed to help you?";
     this.player.disableBody();
-    createMessage(this, monitorMessage);
+    this.monitorTurnOnSound.play();
+
+    const monitorMessage = "How is this monitor supposed to help you?";
+    createMessage(
+      this,
+      monitorMessage,
+      "center",
+      75,
+      this.sys.canvas.height / 2
+    );
 
     if (!this.collectedClues.includes("monitor")) {
       this.collectedClues.push("monitor");
@@ -378,8 +426,10 @@ class ICU extends Scene {
   }
 
   onPosterCollision() {
-    const popUp = this.add.image(400, 300, "poster").setScale(0.5, 0.5);
     this.player.disableBody();
+    this.posterGrabSound.play();
+
+    const popUp = this.add.image(400, 300, "poster").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "poster");
     this.time.addEvent({
       delay: 4750,

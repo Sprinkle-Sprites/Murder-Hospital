@@ -9,7 +9,7 @@ export function resizeMapLayer(scene, layer) {
   layer.displayHeight = scene.sys.canvas.height - 50;
 }
 
-export function createMessage(scene, message) {
+export function createMessage(scene, message, align, padding, backgroundSize) {
   const width = scene.sys.canvas.width;
   const height = scene.sys.canvas.height;
 
@@ -21,28 +21,11 @@ export function createMessage(scene, message) {
       strokeThickness: 5,
       stroke: "#69070c",
       padding: {
-        top: 200,
+        top: padding,
       },
-      align: "center",
+      align: align, //"center",
       fixedWidth: width,
-      fixedHeight: height,
-    })
-    .setOrigin(0.5, 0.5);
-}
-
-export function createMessageForImage(scene, message) {
-  const width = scene.sys.canvas.width;
-  const height = scene.sys.canvas.height;
-  scene.add
-    .text(width * 0.5, height * 0.5, message, {
-      fontSize: 30,
-      backgroundColor: "black",
-      wordWrap: { width: 300, useAdvancedWrap: true },
-      strokeThickness: 5,
-      stroke: "#69070c",
-      align: "top",
-      fixedWidth: width,
-      fixedHeight: height / 2,
+      fixedHeight: backgroundSize,
     })
     .setOrigin(0.5, 0.5);
 }
@@ -94,14 +77,26 @@ export function diceNextSceneFunc(scene, nextScene) {
   }, 2000);
 }
 
-export function changeDieClass() {
-  let className = document.getElementById("die").className;
-
-  if (className === "container") {
-    document.getElementById("die").classList.remove("container");
-    document.getElementById("die").classList.add("hide");
-  } else if (className === "hide") {
+export function changeDieFunc(scene) {
+  if (scene.key === "MainScene") {
     document.getElementById("die").classList.remove("hide");
     document.getElementById("die").classList.add("container");
+  } else {
+    document.getElementById("die").classList.remove("container");
+    document.getElementById("die").classList.add("hide");
   }
+}
+
+export function onZoneCollision(zone, obj) {
+  obj.setVisible(true);
+  obj.setTintFill(0xfc0303);
+
+  this.time.addEvent({
+    delay: 500,
+    callback: () => {
+      obj.setVisible(false);
+      obj.clearTint();
+    },
+    loop: false,
+  });
 }

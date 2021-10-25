@@ -6,10 +6,15 @@ import {
   resizeCollider,
   createMessage,
   nextSceneFunc,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
+
+//AUDIO
+import openDoor from "@/game/assets/audio/object-doorcreak03.wav";
+import loserLaugh from "@/game/assets/audio/human-giggle04.wav";
 
 class Exit extends Scene {
   constructor() {
@@ -23,8 +28,11 @@ class Exit extends Scene {
     //exit panel
     this.load.image("panel", collider);
 
+    this.load.audio("open door", openDoor);
+    this.load.audio("laugh", loserLaugh);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -32,6 +40,7 @@ class Exit extends Scene {
     this.createMap();
     this.createPanel();
     this.createColliders();
+    this.createSounds();
   }
 
   createMap() {
@@ -73,37 +82,26 @@ class Exit extends Scene {
     );
 
     //LAYERS
-    const floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
-    const wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
-    const backgroundLayer = map
+    this.floorLayer = map.createLayer("exitFloors", InteriorB).setDepth(-1);
+    this.wallLayer = map.createLayer("exitWalls", InteriorA).setDepth(-1);
+    this.backgroundLayer = map
       .createLayer("exitBackground", InteriorAlt)
       .setDepth(-1);
-    const detailsCLayer = map
+    this.detailsCLayer = map
       .createLayer("exitDetailsC", InteriorC)
       .setDepth(-1);
 
     //SCALES TILED MAP TO FIT WORLD SIZE
-    const layers = [floorLayer, wallLayer, backgroundLayer, detailsCLayer];
+    const layers = [
+      this.floorLayer,
+      this.wallLayer,
+      this.backgroundLayer,
+      this.detailsCLayer,
+    ];
 
     for (let i = 0; i < layers.length; i++) {
       resizeMapLayer(this, layers[i]);
     }
-
-    //LAYER COLLIDERS
-    wallLayer.setCollisionByProperty({ collides: true });
-    detailsCLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, wallLayer);
-    this.physics.add.collider(this.player, detailsCLayer);
-
-    // //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // detailsAltLayer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
   }
 
   createPlayer() {
@@ -122,17 +120,35 @@ class Exit extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createPanel() {
     this.panel = this.physics.add
-      .sprite(410, 10, "panel")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 15, true);
+      .sprite(425, 25, "panel")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(1.2, 0.6)
+      .setVisible(false);
+  }
+
+  createSounds() {
+    this.openDoorSound = this.sound.add("open door");
+    this.laughSound = this.sound.add("laugh");
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.wallLayer.setCollisionByProperty({ collides: true });
+    this.detailsCLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.wallLayer);
+    this.physics.add.collider(this.player, this.detailsCLayer);
+
     this.physics.add.overlap(
       this.player,
       this.panel,
@@ -140,9 +156,23 @@ class Exit extends Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.panel,
+      onZoneCollision,
+      null,
+      this
+    );
   }
 
   onPanelCollision() {
+    this.player.disableBody();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(
         400,
@@ -166,37 +196,57 @@ class Exit extends Scene {
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.rexUI.edit(text2);
+      });
 
-    text2.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text2);
-    });
-
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 428395) {
-        const width = this.sys.canvas.width;
-        const height = this.sys.canvas.height;
-        this.player.disableBody();
+        this.openDoorSound.play();
         nextSceneFunc(this, "Victory");
-      }
-      if (this.combination !== 428395 && !isNaN(this.combination)) {
+      } else {
+        this.laughSound.play();
         const wrongCodeMessage = "Whoops. That ain't it!";
-        this.player.disableBody();
-        createMessage(this, wrongCodeMessage);
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          135,
+          this.sys.canvas.height / 2
+        );
+
         nextSceneFunc(this, "MainScene");
-        //THIS CURRENT SET UP ALLOWS FOR UNLIMITED TRIES. WHILE THIS IS AN OPTION, WE SHOULD TRY TO FIGURE OUT HOW TO LIMIT.
       }
+
+      // if (this.combination !== 428395 && !isNaN(this.combination)) {
+      //   this.laughSound.play();
+      //   const wrongCodeMessage = "Whoops. That ain't it!";
+      //   createMessage(
+      //     this,
+      //     wrongCodeMessage,
+      //     "center",
+      //     135,
+      //     this.sys.canvas.height / 2
+      //   );
+
+      //   nextSceneFunc(this, "MainScene");
+      //   //THIS CURRENT SET UP ALLOWS FOR UNLIMITED TRIES. WHILE THIS IS AN OPTION, WE SHOULD TRY TO FIGURE OUT HOW TO LIMIT.
+      // }
       text2.destroy();
     });
   }
 
   update() {
     this.player.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 }
 

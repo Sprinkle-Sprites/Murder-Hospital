@@ -8,15 +8,21 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
 import bar_of_soap from "@/game/assets/popups/bar_of_soap.png";
 import rubber_glove from "@/game/assets/popups/rubber_glove.png";
 import scapel from "@/game/assets/popups/scapel.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import glove from "@/game/assets/audio/rubber-glove.wav";
+import fireExtinguisher from "@/game/assets/audio/object-rockdrag02.wav";
+import soap from "@/game/assets/audio/object-gateclang01.wav";
+import scalpelAudio from "@/game/assets/audio/gasp1.wav";
 
 class Surgery extends Scene {
   constructor() {
@@ -53,8 +59,14 @@ class Surgery extends Scene {
     this.load.image("soap", bar_of_soap);
     this.load.image("scapel", scapel);
 
+    //AUDIO
+    this.load.audio("glove", glove);
+    this.load.audio("fire extinguisher", fireExtinguisher);
+    this.load.audio("soap", soap);
+    this.load.audio("scalpel", scalpelAudio);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -67,6 +79,7 @@ class Surgery extends Scene {
     this.createTable();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -164,14 +177,19 @@ class Surgery extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createGurney() {
     this.gurney1 = this.physics.add
-      .sprite(555, 90, "gurney1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(85, 35, true);
+      .sprite(582, 103, "gurney1")
+      // .setDepth(-2)
+      .setSize(20, 26)
+      .setScale(3.1, 1.1)
+      .setVisible(false);
 
     this.gurney2 = this.physics.add
       .sprite(690, 400, "gurney2")
@@ -188,10 +206,10 @@ class Surgery extends Scene {
 
   createCannister() {
     this.cannister1 = this.physics.add
-      .sprite(50, 72, "gasCannister1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(22, 32, true);
+      .sprite(66, 91, "gasCannister1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.8, 1);
 
     this.cannister2 = this.physics.add
       .sprite(740, 195, "gasCannister2")
@@ -208,10 +226,11 @@ class Surgery extends Scene {
 
   createSink() {
     this.sink1 = this.physics.add
-      .sprite(45, 160, "sink1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(45, 83, true);
+      .sprite(60, 172, "sink1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(1.3, 2)
+      .setVisible(false);
 
     this.sink2 = this.physics.add
       .sprite(260, 130, "sink2")
@@ -240,16 +259,24 @@ class Surgery extends Scene {
 
   createTable() {
     this.table1 = this.physics.add
-      .sprite(400, 188, "table1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(30, 30, true);
+      .sprite(417, 196, "table1")
+      // .setDepth(-2)
+      .setSize(20, 25)
+      .setScale(1.4, 0.6)
+      .setVisible(false);
 
     this.table2 = this.physics.add
       .sprite(620, 114, "table2")
       .setOrigin(0, 0)
       .setDepth(-2)
       .setSize(30, 30, true);
+  }
+
+  createSounds() {
+    this.gloveSound = this.sound.add("glove");
+    this.fireExtinguisherSound = this.sound.add("fire extinguisher");
+    this.soapSound = this.sound.add("soap");
+    this.scalpelSound = this.sound.add("scalpel");
   }
 
   createColliders() {
@@ -294,12 +321,47 @@ class Surgery extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.gurney1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cannister1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.sink1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.table1,
+      onZoneCollision,
+      null,
+      this
+    );
   }
 
   onGurneyCollision() {
-    const popUp = this.add.image(400, 300, "glove");
-    popUp.setScale(0.5, 0.5);
     this.player.disableBody();
+    this.gloveSound.play();
+
+    const popUp = this.add.image(400, 300, "glove").setScale(0.5, 0.5);
+
     eventsCenter.emit("update-bank", "glove");
     this.time.addEvent({
       delay: 4750,
@@ -316,22 +378,40 @@ class Surgery extends Scene {
   }
 
   onCannisterCollision() {
-    const cannisterMessage = "Huh, it's a gas cannister. It's heavy.";
     this.player.disableBody();
-    createMessage(this, cannisterMessage);
+    this.fireExtinguisherSound.play();
 
-    if (!this.collectedClues.includes("gasCannister")) {
-      this.collectedClues.push("gasCannister");
-      this.completed();
-    }
+    //ADDED DELAY ON THE REST OF THE FUNCTION TO RESUME ONCE SOUND IS FINISHED
+    this.time.addEvent({
+      delay: 2000,
+      callback: () => {
+        const cannisterMessage = "Huh, it's a gas cannister. It's heavy.";
+        createMessage(
+          this,
+          cannisterMessage,
+          "center",
+          120,
+          this.sys.canvas.height / 2
+        );
 
-    nextSceneFunc(this, "MainScene");
+        if (!this.collectedClues.includes("gasCannister")) {
+          this.collectedClues.push("gasCannister");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      },
+      loop: false,
+    });
   }
 
   onSinkCollision() {
-    const popUp = this.add.image(400, 300, "soap").setScale(0.5, 0.5);
     this.player.disableBody();
+    this.soapSound.play();
+
+    const popUp = this.add.image(400, 300, "soap").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "soap");
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -347,9 +427,12 @@ class Surgery extends Scene {
   }
 
   onTableCollision() {
-    const popUp = this.add.image(400, 300, "scapel").setScale(0.5, 0.5);
     this.player.disableBody();
+    this.scalpelSound.play();
+
+    const popUp = this.add.image(400, 300, "scapel").setScale(0.5, 0.5);
     eventsCenter.emit("update-bank", "scapel");
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -367,6 +450,10 @@ class Surgery extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
