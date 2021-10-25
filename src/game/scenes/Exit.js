@@ -10,6 +10,7 @@ import {
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
+import openDoor from "@/game/assets/audio/object-doorcreak03.wav";
 
 class Exit extends Scene {
   constructor() {
@@ -23,6 +24,8 @@ class Exit extends Scene {
     //exit panel
     this.load.image("panel", collider);
 
+    this.load.audio("open door", openDoor);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
   }
@@ -32,6 +35,7 @@ class Exit extends Scene {
     this.createMap();
     this.createPanel();
     this.createColliders();
+    this.createSounds();
   }
 
   createMap() {
@@ -116,9 +120,14 @@ class Exit extends Scene {
   createPanel() {
     this.panel = this.physics.add
       .sprite(410, 10, "panel")
-      .setOrigin(0, 0)
+      // .setOrigin(0, 0)
       .setDepth(-2)
-      .setSize(25, 15, true);
+      .setSize(25, 25)
+      .setScale(1, 1);
+  }
+
+  createSounds() {
+    this.openDoorSound = this.sound.add("open door");
   }
 
   createColliders() {
@@ -180,6 +189,7 @@ class Exit extends Scene {
       text1.destroy();
 
       if (this.combination === 428395) {
+        this.openDoorSound.play();
         nextSceneFunc(this, "Victory");
       }
 
