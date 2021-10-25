@@ -19,7 +19,7 @@ export default class TitleScene extends Scene {
   createBackground() {
     this.add.image(200, 200, "hospital").setScale(0.9);
     this.add
-      .text(280, 50, "Murder Hospital", {
+      .text(295, 50, "Murder Hospital", {
         fontFamily: "GypsyCurse",
         fontSize: 125,
         color: "red",
@@ -30,7 +30,7 @@ export default class TitleScene extends Scene {
 
   createPlayButton() {
     // CREATE PLAY SPRITE AND SET INTERACTION
-    this.playButton = this.add.sprite(500, 310, "blueButton").setInteractive();
+    this.playButton = this.add.sprite(520, 310, "blueButton").setInteractive();
 
     this.gameText = this.add.text(0, 0, "Enter", {
       fontSize: "32px",
@@ -55,7 +55,7 @@ export default class TitleScene extends Scene {
 
   createOptionsButton() {
     this.optionsButton = this.add
-      .sprite(500, 360, "blueButton2")
+      .sprite(520, 360, "blueButton2")
       .setInteractive();
 
     this.optionsText = this.add.text(0, 0, "Options", {
@@ -78,7 +78,7 @@ export default class TitleScene extends Scene {
 
   createCreditsButton() {
     this.creditsButton = this.add
-      .sprite(500, 410, "blueButton2")
+      .sprite(520, 410, "blueButton2")
       .setInteractive();
 
     this.creditsText = this.add.text(0, 0, "Credits", {
