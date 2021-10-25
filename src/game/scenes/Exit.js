@@ -7,6 +7,7 @@ import {
   createMessage,
   nextSceneFunc,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -119,15 +120,19 @@ class Exit extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createPanel() {
     this.panel = this.physics.add
-      .sprite(410, 10, "panel")
-      // .setOrigin(0, 0)
-      .setDepth(-2)
+      .sprite(425, 25, "panel")
+      // .setDepth(-2)
       .setSize(25, 25)
-      .setScale(1, 1);
+      .setScale(1.2, 0.6)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -148,6 +153,14 @@ class Exit extends Scene {
       this.player,
       this.panel,
       this.onPanelCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.panel,
+      onZoneCollision,
       null,
       this
     );
@@ -230,6 +243,10 @@ class Exit extends Scene {
 
   update() {
     this.player.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 }
 
