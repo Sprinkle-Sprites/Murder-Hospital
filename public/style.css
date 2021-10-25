@@ -1,7 +1,7 @@
 body {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   flex-wrap: wrap;
@@ -22,11 +22,6 @@ body {
 .exit-wrapper {
   padding: 10px;
 }
-
-/* #game-container {
-  width: 800px;
-  height: 800px;
-} */
 
 /* #game-container canvas {
   width: 800px;

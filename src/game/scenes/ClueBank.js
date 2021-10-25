@@ -101,9 +101,9 @@ class ClueBank extends Scene {
 
   closestX(xAxis) {
     let arrOfValues = Object.values(this.bank);
-    let columnADiff = Math.abs(750 - xAxis);
-    let columnBDiff = Math.abs(850 - xAxis);
-    let columnCDiff = Math.abs(950 - xAxis);
+    let columnADiff = Math.abs(850 - xAxis);
+    let columnBDiff = Math.abs(950 - xAxis);
+    let columnCDiff = Math.abs(1050 - xAxis);
     if (columnADiff < columnBDiff && columnADiff < columnCDiff) {
       let aCol = arrOfValues.filter((val) => {
         return val.x === 850;
