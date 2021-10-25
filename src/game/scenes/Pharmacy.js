@@ -422,7 +422,7 @@ class Pharmacy extends Scene {
         }
 
         nextSceneFunc(this, "MainScene");
-      } else if (this.combination !== 1022 && !isNaN(this.combination)) {
+      } else {
         const wrongCodeMessage =
           "You try to open the lock box, but it won't budge. Better keep looking for the code";
 

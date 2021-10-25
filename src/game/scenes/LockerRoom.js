@@ -396,7 +396,7 @@ class LockerRoom extends Scene {
         }
 
         nextSceneFunc(this, "MainScene");
-      } else if (this.combination !== 15931 && !isNaN(this.combination)) {
+      } else {
         const wrongCodeMessage =
           "You try to open the locker, but it won't budge. Better keep looking for the combo";
 
