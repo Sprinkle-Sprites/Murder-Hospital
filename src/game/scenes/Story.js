@@ -1,5 +1,4 @@
 import Phaser, { Scene } from "phaser";
-import config from "../game";
 
 export default class Story extends Scene {
   constructor() {
@@ -10,6 +9,7 @@ export default class Story extends Scene {
     this.createBackground();
     this.createStory();
     this.createPlayButton();
+    this.createReturnButton();
   }
 
   createBackground() {
@@ -64,7 +64,7 @@ export default class Story extends Scene {
   }
 
   createPlayButton() {
-    this.playButton = this.add.sprite(500, 550, "blueButton").setInteractive();
+    this.playButton = this.add.sprite(390, 550, "blueButton").setInteractive();
 
     this.gameText = this.add.text(0, 0, "Enter", {
       fontSize: "32px",
@@ -91,5 +91,29 @@ export default class Story extends Scene {
 
   centerButtonText(gameText, playButton) {
     Phaser.Display.Align.In.Center(gameText, playButton);
+  }
+
+  createReturnButton() {
+    this.returnButton = this.add
+      .sprite(690, 550, "blueButton2")
+      .setInteractive();
+
+    this.returnText = this.add.text(0, 0, "Return", {
+      fontSize: "32px",
+      fill: "#fff",
+    });
+
+    this.centerButtonText(this.returnText, this.returnButton);
+
+    this.returnButton.on(
+      "pointerdown",
+      function() {
+        this.scene.start("TitleScene");
+      }.bind(this)
+    );
+
+    this.input.on("pointerover", function(event, gameObjects) {
+      gameObjects[0].setTexture("blueButton2");
+    });
   }
 }

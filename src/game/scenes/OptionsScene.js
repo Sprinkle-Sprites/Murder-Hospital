@@ -11,6 +11,7 @@ export default class OptionsScene extends Scene {
     this.createTitleText();
     this.createAudio();
     this.createReturnButton();
+    console.log("this", this);
   }
 
   createBackground() {
