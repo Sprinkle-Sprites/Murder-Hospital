@@ -25,9 +25,9 @@ export default class CreditsScene extends Scene {
 
   createTitleText() {
     this.add
-      .text(this.width * 0.5, this.height * 0.1, "Murder Hospital", {
+      .text(this.width * 0.49, this.height * 0.1, "Murder Hospital", {
         fontFamily: "GypsyCurse",
-        fontSize: "50px",
+        fontSize: "60px",
       })
       .setOrigin(0.5, 0.5)
       .setColor("red")
@@ -175,7 +175,7 @@ export default class CreditsScene extends Scene {
 
   createSpecialThanks() {
     this.add
-      .text(this.width * 0.18, this.height * 0.85, "Special Thanks : ", {
+      .text(this.width * 0.18, this.height * 0.75, "Special Thanks : ", {
         fontFamily: "GypsyCurse",
         fontSize: "40px",
       })
@@ -186,7 +186,7 @@ export default class CreditsScene extends Scene {
     this.add
       .text(
         this.width * 0.25,
-        this.height * 0.85,
+        this.height * 0.75,
         " Mac Mcinerney (instructor), Joe Alves (instructor), and McKenna Warren (PM)",
         {
           fontFamily: "Oswald",
@@ -200,12 +200,12 @@ export default class CreditsScene extends Scene {
 
   createReturnButton() {
     this.returnButton = this.add
-      .sprite(this.width * 0.9, this.height * 0.95, "blueButton2")
-      .setScale(0.5)
+      .sprite(this.width * 0.5, this.height * 0.87, "blueButton2")
+
       .setInteractive();
 
     this.returnText = this.add.text(0, 0, "Return", {
-      fontSize: "16px",
+      fontSize: "32px",
       fill: "#fff",
     });
 
