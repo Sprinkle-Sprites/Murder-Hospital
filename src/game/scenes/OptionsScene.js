@@ -9,9 +9,10 @@ export default class OptionsScene extends Scene {
     this.createBackground();
     this.createScale();
     this.createTitleText();
-    this.createAudio();
+    this.createMusic();
+    this.createSounds();
     this.createReturnButton();
-    console.log("this", this);
+    console.log("sounds", this.sound);
   }
 
   createBackground() {
@@ -33,11 +34,11 @@ export default class OptionsScene extends Scene {
       .setShadow(5, 5, "black", 5, false, true);
   }
 
-  createAudio() {
-    this.audioButton = this.add
+  createMusic() {
+    this.musicButton = this.add
       .image(this.width * 0.35, this.height * 0.27, "blackCheckmark")
       .setInteractive();
-    this.audioText = this.add.text(
+    this.musicText = this.add.text(
       this.width * 0.37,
       this.height * 0.25,
       "Music Enabled",
@@ -45,9 +46,32 @@ export default class OptionsScene extends Scene {
         fontSize: "32px",
       }
     );
+    this.musicOn = true;
+
+    this.musicButton.on(
+      "pointerdown",
+      function() {
+        this.musicOn = !this.musicOn;
+        this.updateAudio();
+      }.bind(this)
+    );
+  }
+
+  createSounds() {
+    this.soundButton = this.add
+      .image(this.width * 0.35, this.height * 0.37, "blackCheckmark")
+      .setInteractive();
+    this.soundText = this.add.text(
+      this.width * 0.37,
+      this.height * 0.35,
+      "Sound Enabled",
+      {
+        fontSize: "32px",
+      }
+    );
     this.soundOn = true;
 
-    this.audioButton.on(
+    this.soundButton.on(
       "pointerdown",
       function() {
         this.soundOn = !this.soundOn;
@@ -56,22 +80,12 @@ export default class OptionsScene extends Scene {
     );
   }
 
-  updateAudio() {
-    if (this.soundOn === false) {
-      this.audioButton.setTexture("greyButton");
-      this.sound.removeByKey("bgMusic");
-    } else {
-      this.audioButton.setTexture("blackCheckmark");
-      this.sound.play("bgMusic");
-    }
-  }
-
   createReturnButton() {
     this.returnButton = this.add
       .sprite(this.width * 0.48, this.height * 0.8, "blueButton2")
       .setInteractive();
 
-    this.returnText = this.add.text(0, 0, "Return", {
+    this.returnText = this.add.text(0, 0, "Menu", {
       fontSize: "32px",
       fill: "#fff",
       color: "#ffffff",
@@ -89,5 +103,26 @@ export default class OptionsScene extends Scene {
 
   centerButtonText(returnText, returnButton) {
     Phaser.Display.Align.In.Center(returnText, returnButton);
+  }
+
+  updateAudio() {
+    if (this.musicOn === false) {
+      this.musicButton.setTexture("greyButton");
+      this.sound.stopByKey("bgMusic");
+    } else {
+      this.musicButton.setTexture("blackCheckmark");
+      this.sound.play("bgMusic");
+    }
+
+    if (this.soundOn === false) {
+      this.soundButton.setTexture("greyButton");
+      this.sound.removeAll();
+      if (this.musicOn === true) {
+        this.sound.play("bgMusic");
+      }
+    } else {
+      this.soundButton.setTexture("blackCheckmark");
+      //this.sound.resumeAll()
+    }
   }
 }
