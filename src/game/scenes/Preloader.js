@@ -156,15 +156,15 @@ export default class Preloader extends Phaser.Scene {
   }
 
   bgAudio() {
-    const bgMusic = this.sound.add("bgMusic", {
+    this.bgMusic = this.sound.add("bgMusic", {
       loop: true,
     });
 
     if (!this.sound.locked) {
-      bgMusic.play();
+      this.bgMusic.play();
     } else {
       this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
-        bgMusic.play();
+        this.bgMusic.play();
       });
     }
 

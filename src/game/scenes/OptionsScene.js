@@ -10,6 +10,7 @@ export default class OptionsScene extends Scene {
     this.createScale();
     this.createTitleText();
     this.createAudio();
+    this.createReturnButton();
   }
 
   createBackground() {
@@ -54,9 +55,35 @@ export default class OptionsScene extends Scene {
   updateAudio() {
     if (this.soundOn === false) {
       this.audioButton.setTexture("greyButton");
+      this.sound.destroy();
       console.log("this", this);
     } else {
       this.audioButton.setTexture("blackCheckmark");
     }
+  }
+
+  createReturnButton() {
+    this.returnButton = this.add
+      .sprite(this.width * 0.9, this.height * 0.95, "blueButton2")
+      .setScale(0.5)
+      .setInteractive();
+
+    this.returnText = this.add.text(0, 0, "Return", {
+      fontSize: "16px",
+      fill: "#fff",
+    });
+
+    this.centerButtonText(this.returnText, this.returnButton);
+
+    this.returnButton.on(
+      "pointerdown",
+      function() {
+        this.scene.start("TitleScene");
+      }.bind(this)
+    );
+  }
+
+  centerButtonText(returnText, returnButton) {
+    Phaser.Display.Align.In.Center(returnText, returnButton);
   }
 }
