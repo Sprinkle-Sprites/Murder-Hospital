@@ -32,6 +32,7 @@ class ClueBank extends Scene {
     eventsCenter.on("update-bank", this.addImage, this);
     eventsCenter.on("check-scapel", this.checker, this);
     eventsCenter.on("check-key", this.checker, this);
+    this.input.on('pointerdown', this.embiggen, this)
   }
 
   addImage(key) {
@@ -43,12 +44,10 @@ class ClueBank extends Scene {
         .setScale(0.1, 0.1)
         .setInteractive()
     }
-    this.input.on('pointerdown', this.embiggen, this)
   }
 
   determineCoordinates(key) {
     this.count++;
-
     if (this.count === 1) {
       this.bank[key] = {
         x: this.x,
@@ -62,7 +61,6 @@ class ClueBank extends Scene {
       this.y = this.y + 65;
       this.x = 850;
     }
-
     this.bank[key] = {
       x: this.x,
       y: this.y,
@@ -80,13 +78,19 @@ class ClueBank extends Scene {
 
   embiggen() {
     const xAxis = this.input.mousePointer.x;
+    console.log("this is the xAxis", xAxis)
     const yAxis = this.input.mousePointer.y;
+    console.log("this is the yAxis", yAxis)
     let a = Object.values(this.bank).find((item) => {
       let closestXs = this.closestX(xAxis);
+      console.log("this is the array of Xs", closestXs)
       let closest = this.closestY(closestXs, yAxis);
+      console.log("this is the closest Y", closest)
+      console.log("this is the boolean", item === closest)
       return item === closest
     })
     let key = this.isValueInArary(a)
+    console.log("this is the key", key)
     const popUp = this.add.image(400, 300, key).setScale(0.5, 0.5);
     this.time.addEvent({
       delay: 4750,
