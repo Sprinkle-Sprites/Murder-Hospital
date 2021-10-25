@@ -2,7 +2,7 @@ import Phaser, { Scene } from "phaser";
 
 export default class CreditsScene extends Scene {
   constructor() {
-    super({ key: "CreditsScene" });
+    super("CreditsScene");
   }
 
   create() {
@@ -11,6 +11,8 @@ export default class CreditsScene extends Scene {
     this.createTitleText();
     this.createTeam();
     this.createFeatureLogos();
+    this.createSpecialThanks();
+    this.createReturnButton();
   }
 
   createBackground() {
@@ -169,5 +171,55 @@ export default class CreditsScene extends Scene {
     for (let i = 0; i < this.logos.length; i++) {
       this.logos[i].on("pointerup", () => this.goToLink(urls[i]), this);
     }
+  }
+
+  createSpecialThanks() {
+    this.add
+      .text(this.width * 0.18, this.height * 0.85, "Special Thanks : ", {
+        fontFamily: "GypsyCurse",
+        fontSize: "40px",
+      })
+      .setOrigin(0.5, 0.5)
+      .setColor("red")
+      .setShadow(5, 5, "black", 5, false, true);
+
+    this.add
+      .text(
+        this.width * 0.25,
+        this.height * 0.85,
+        " Mac Mcinerney (instructor), Joe Alves (instructor), and McKenna Warren (PM)",
+        {
+          fontFamily: "Oswald",
+          fontSize: "25px",
+          stroke: "#D9B48FFF",
+        }
+      )
+      .setOrigin(0, 0.5)
+      .setShadow(5, 5, "black", 5, false, true);
+  }
+
+  createReturnButton() {
+    this.returnButton = this.add
+      .sprite(this.width * 0.9, this.height * 0.95, "blueButton2")
+      .setScale(0.5)
+      .setInteractive();
+
+    this.returnText = this.add.text(0, 0, "Return", {
+      fontSize: "16px",
+      fill: "#fff",
+    });
+
+    this.centerButtonText(this.returnText, this.returnButton);
+
+    this.returnButton.on(
+      "pointerdown",
+      function() {
+        this.scene.start("TitleScene");
+      }.bind(this)
+    );
+  }
+
+  centerButtonText(returnText, returnButton) {
+    Phaser.Display.Align.In.Center(returnText, returnButton);
   }
 }
