@@ -19,6 +19,7 @@ import LockerRoom from "@/game/scenes/LockerRoom";
 import ICU from "@/game/scenes/ICU";
 import EndScene from "./scenes/EndScene";
 import VictoryScene from "@/game/scenes/Victory";
+import OptionsScene from "@/game/scenes/OptionsScene";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -52,6 +53,7 @@ function launch(containerId) {
     scene: [
       Preloader,
       TitleScene,
+      OptionsScene,
       CreditsScene,
       Story,
       Radiology,

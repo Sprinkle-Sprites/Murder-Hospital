@@ -30,6 +30,8 @@ import blueButton from "@/game/assets/buttons/blue_button01.png";
 import blueButton2 from "@/game/assets/buttons/blue_button02.png";
 import githubLogo from "@/game/assets/buttons/github.png";
 import linkedinLogo from "@/game/assets/buttons/linkedin.png";
+import greyButton from "@/game/assets/buttons/grey_box.png";
+import blackCheckmark from "@/game/assets/buttons/black-checkmark.png";
 
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
@@ -117,6 +119,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("credits-Background", creditBackground);
     this.load.image("githubLogo", githubLogo);
     this.load.image("linkedinLogo", linkedinLogo);
+    this.load.image("greyButton", greyButton);
+    this.load.image("blackCheckmark", blackCheckmark);
     this.load.image("victory", victory);
 
     // load any assets needed for game
