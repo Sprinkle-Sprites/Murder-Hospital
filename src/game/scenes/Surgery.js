@@ -9,6 +9,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -176,14 +177,19 @@ class Surgery extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createGurney() {
     this.gurney1 = this.physics.add
-      .sprite(555, 90, "gurney1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(85, 35, true);
+      .sprite(582, 103, "gurney1")
+      // .setDepth(-2)
+      .setSize(20, 26)
+      .setScale(3.1, 1.1)
+      .setVisible(false);
 
     this.gurney2 = this.physics.add
       .sprite(690, 400, "gurney2")
@@ -200,10 +206,10 @@ class Surgery extends Scene {
 
   createCannister() {
     this.cannister1 = this.physics.add
-      .sprite(50, 72, "gasCannister1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(22, 32, true);
+      .sprite(66, 91, "gasCannister1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.8, 1);
 
     this.cannister2 = this.physics.add
       .sprite(740, 195, "gasCannister2")
@@ -220,10 +226,11 @@ class Surgery extends Scene {
 
   createSink() {
     this.sink1 = this.physics.add
-      .sprite(45, 160, "sink1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(45, 83, true);
+      .sprite(60, 172, "sink1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(1.3, 2)
+      .setVisible(false);
 
     this.sink2 = this.physics.add
       .sprite(260, 130, "sink2")
@@ -252,10 +259,11 @@ class Surgery extends Scene {
 
   createTable() {
     this.table1 = this.physics.add
-      .sprite(400, 188, "table1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(30, 30, true);
+      .sprite(417, 196, "table1")
+      // .setDepth(-2)
+      .setSize(20, 25)
+      .setScale(1.4, 0.6)
+      .setVisible(false);
 
     this.table2 = this.physics.add
       .sprite(620, 114, "table2")
@@ -310,6 +318,39 @@ class Surgery extends Scene {
       this.player,
       this.table1,
       this.onTableCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.gurney1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cannister1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.sink1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.table1,
+      onZoneCollision,
       null,
       this
     );
@@ -409,6 +450,10 @@ class Surgery extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
