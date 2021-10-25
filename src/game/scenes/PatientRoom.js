@@ -9,6 +9,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -192,11 +193,19 @@ class PatientRoom extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -207,10 +216,11 @@ class PatientRoom extends Scene {
 
   createFlower() {
     this.flowers1 = this.physics.add
-      .sprite(40, 360, "flowers1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(31, 33, true);
+      .sprite(55, 370, "flowers1")
+      // .setDepth(-2)
+      .setSize(25, 20)
+      .setScale(0.7, 0.9)
+      .setVisible(false);
 
     this.flowers2 = this.physics.add
       .sprite(620, 440, "flowers2")
@@ -227,18 +237,20 @@ class PatientRoom extends Scene {
       .setSize(58, 31, true);
 
     this.bed2 = this.physics.add
-      .sprite(715, 516, "bed2")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(58, 31, true);
+      .sprite(725, 530, "bed2")
+      // .setDepth(-2)
+      .setSize(18, 24)
+      .setScale(2, 1)
+      .setVisible(false);
   }
 
   createDoll() {
     this.doll = this.physics.add
-      .sprite(585, 290, "creepy")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(25, 25, true);
+      .sprite(602, 310, "creepy")
+      // .setDepth(-2)
+      .setSize(23, 23)
+      .setScale(0.8, 0.8)
+      .setVisible(false);
   }
 
   createDrawer() {
@@ -253,10 +265,11 @@ class PatientRoom extends Scene {
       .setDepth(-2);
 
     this.drawer3 = this.physics.add
-      .sprite(490, 53, "drawer3")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(30, 37, true);
+      .sprite(505, 74, "drawer3")
+      // .setDepth(-2)
+      .setSize(30, 37)
+      .setScale(1.2, 0.4)
+      .setVisible(false);
   }
 
   createColliders() {
@@ -300,6 +313,27 @@ class PatientRoom extends Scene {
       this.player,
       this.drawer3,
       this.onDrawerCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.flowers1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(this.zone, this.bed2, onZoneCollision, null, this);
+
+    this.physics.add.overlap(this.zone, this.doll, onZoneCollision, null, this);
+
+    this.physics.add.overlap(
+      this.zone,
+      this.drawer3,
+      onZoneCollision,
       null,
       this
     );
