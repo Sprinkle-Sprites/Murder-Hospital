@@ -10,7 +10,7 @@
 - [Creators](#creators)
 - [Docs](#docs)
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Introduction
 
@@ -20,7 +20,7 @@ We took features of some of our favorite board games and combined it with puzzle
 
 Watch our full 4-minute demo video [here](linktbd).
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Tech Stack
 
@@ -32,7 +32,7 @@ Watch our full 4-minute demo video [here](linktbd).
 - Vue.js
 - Heroku
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Game Play
 - When your character arrives in the waiting room, roll the dice by clicking “Investigate a Room” to the right of the board. It will send you into a room in the hospital to explore.
@@ -43,7 +43,7 @@ Watch our full 4-minute demo video [here](linktbd).
 - If your code is right, you’ll be able to leave. If not, you’ll have to try again.
 - You have one hour to find all the clues and escape. If not, we’re sorry. The Doctor is not what you’d call a “good guy.”
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Getting Started
 
@@ -64,7 +64,7 @@ Serve your production build
 npm start
 ````
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Next Steps
 
@@ -77,7 +77,7 @@ In addition to multiplayer-functionality, we'd also like to add the following:
 - Text animation for the pop-up messages
 - Randomize the clue colliders and clues to allow for repeat play
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Creators
 
@@ -86,7 +86,7 @@ In addition to multiplayer-functionality, we'd also like to add the following:
 * Nicole Buendia: [GitHub](https://github.com/nbuendia) | [LinkedIn](https://www.linkedin.com/in/nicole-buendia/)
 * Sarah Sheppard: [GitHub](https://github.com/sheppas) | [LinkedIn](https://www.linkedin.com/in/sheppas/)
 
-![Surgeon](/assets/background/horror-doc.png)
+![Surgeon](src/game/assets/background/horror-doc.png)
 
 # Docs
 Boilerplate: https://github.com/Sun0fABeach/vue-phaser3
