@@ -34,7 +34,7 @@ export default class OptionsScene extends Scene {
 
   createAudio() {
     this.audioButton = this.add
-      .image(this.width * 0.39, this.height * 0.2, "blackCheckmark")
+      .image(this.width * 0.39, this.height * 0.22, "blackCheckmark")
       .setInteractive();
     this.audioText = this.add.text(
       this.width * 0.41,
@@ -42,6 +42,7 @@ export default class OptionsScene extends Scene {
       "Music Enabled",
       { fontSize: 24 }
     );
+    this.soundOn = true;
 
     this.audioButton.on(
       "pointerdown",
@@ -53,7 +54,6 @@ export default class OptionsScene extends Scene {
   }
 
   updateAudio() {
-    console.log("soundOn", this.soundOn);
     if (this.soundOn === false) {
       this.audioButton.setTexture("greyButton");
       this.sound.removeAll();
