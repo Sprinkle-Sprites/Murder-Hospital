@@ -21,9 +21,6 @@ export default class CreditsScene extends Scene {
   createScale() {
     this.width = this.cameras.main.width;
     this.height = this.cameras.main.height;
-
-    console.log("width", this.width);
-    console.log("height", this.height);
   }
 
   createTitleText() {
