@@ -11,6 +11,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -46,7 +47,7 @@ class Pharmacy extends Scene {
     this.load.image("cabinet2", collider);
 
     //Lock Box
-    this.load.image("lockBoax", collider);
+    this.load.image("lockBox", collider);
 
     //TABLES
 
@@ -186,38 +187,46 @@ class Pharmacy extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createPills() {
     this.pills = this.physics.add
-      .sprite(132, 410, "pills1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(50, 60, true);
+      .sprite(155, 425, "pills1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.5, 0.5)
+      .setVisible(false);
   }
 
   createCabinet() {
     this.cabinet = this.physics.add
-      .sprite(733, 245, "cabinet")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(40, 45, true);
+      .sprite(745, 255, "cabinet")
+      // .setDepth(-2)
+      .setSize(22, 22)
+      .setScale(1, 1.3)
+      .setVisible(false);
   }
 
   createLockBox() {
     this.lockBox = this.physics.add
-      .sprite(210, 60, "lockBox")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(30, 30, true);
+      .sprite(225, 72, "lockBox")
+      // .setDepth(-2)
+      .setSize(22, 22)
+      .setScale(1, 0.6)
+      .setVisible(false);
   }
 
   createCabinet2() {
     this.cabinet2 = this.physics.add
-      .sprite(715, 62, "cabinet2")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(55, 63, true);
+      .sprite(717, 56, "cabinet2")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.7, 0.4)
+      .setVisible(false);
   }
 
   createSounds() {
@@ -270,6 +279,39 @@ class Pharmacy extends Scene {
       this.player,
       this.cabinet2,
       this.onCabinet2Collision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.pills,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cabinet,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.lockBox,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cabinet2,
+      onZoneCollision,
       null,
       this
     );
@@ -423,6 +465,10 @@ class Pharmacy extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
