@@ -19,7 +19,7 @@ import eventEmitter from "../eventEmitter";
 
 //AUDIO
 import bodyLocker from "@/game/assets/audio/action-doorhandle01.wav";
-import bodyLocker2 from "@/game/assets/audio/human-giggle05.wav";
+import bodyLocker2 from "@/game/assets/audio/object-gateswing01.wav";
 import chainsawLoveNote from "@/game/assets/audio/zipper_1.wav";
 import notebook from "@/game/assets/audio/action-objectmove.wav";
 import photo from "@/game/assets/audio/object-paperbagcrunch04.wav";
@@ -416,22 +416,29 @@ export default class Morgue extends Phaser.Scene {
     this.player.disableBody();
     this.bodyLockerSound2.play();
 
-    const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
-    createMessage(
-      this,
-      lockedBodyMessage,
-      "center",
-      50,
-      this.sys.canvas.height / 2
-    );
-    this.mainTimer.minusFive();
+    //WRAPED ALL ACTIONS TO RUN AFTER SOUND FINSIHES PLAYING
+    this.time.addEvent({
+      delay: 2000,
+      callback: () => {
+        const lockedBodyMessage = `How dare you bother the dead? Sit out for 5 minutes and go call MeeMaw`;
+        createMessage(
+          this,
+          lockedBodyMessage,
+          "center",
+          50,
+          this.sys.canvas.height / 2
+        );
+        this.mainTimer.minusFive();
 
-    if (!this.collectedClues.includes("ghostDrawer")) {
-      this.collectedClues.push("ghostDrawer");
-      this.completed();
-    }
+        if (!this.collectedClues.includes("ghostDrawer")) {
+          this.collectedClues.push("ghostDrawer");
+          this.completed();
+        }
 
-    nextSceneFunc(this, "MainScene");
+        nextSceneFunc(this, "MainScene");
+      },
+      loop: false,
+    });
   }
 
   onBoneSawCollision() {
