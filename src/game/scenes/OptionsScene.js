@@ -11,6 +11,7 @@ export default class OptionsScene extends Scene {
     this.createTitleText();
     this.createAudio();
     this.createReturnButton();
+    console.log("this", this);
   }
 
   createBackground() {
@@ -25,7 +26,7 @@ export default class OptionsScene extends Scene {
     this.add
       .text(this.width * 0.48, this.height * 0.1, "Options", {
         fontFamily: "GypsyCurse",
-        fontSize: "50px",
+        fontSize: "60px",
       })
       .setOrigin(0.5, 0.5)
       .setColor("red")
@@ -34,14 +35,17 @@ export default class OptionsScene extends Scene {
 
   createAudio() {
     this.audioButton = this.add
-      .image(this.width * 0.39, this.height * 0.2, "blackCheckmark")
+      .image(this.width * 0.35, this.height * 0.27, "blackCheckmark")
       .setInteractive();
     this.audioText = this.add.text(
-      this.width * 0.41,
-      this.height * 0.2,
+      this.width * 0.37,
+      this.height * 0.25,
       "Music Enabled",
-      { fontSize: 24 }
+      {
+        fontSize: "32px",
+      }
     );
+    this.soundOn = true;
 
     this.audioButton.on(
       "pointerdown",
@@ -53,10 +57,9 @@ export default class OptionsScene extends Scene {
   }
 
   updateAudio() {
-    console.log("soundOn", this.soundOn);
     if (this.soundOn === false) {
       this.audioButton.setTexture("greyButton");
-      this.sound.removeAll();
+      this.sound.removeByKey("bgMusic");
     } else {
       this.audioButton.setTexture("blackCheckmark");
       this.sound.play("bgMusic");
@@ -65,13 +68,13 @@ export default class OptionsScene extends Scene {
 
   createReturnButton() {
     this.returnButton = this.add
-      .sprite(this.width * 0.9, this.height * 0.95, "blueButton2")
-      .setScale(0.5)
+      .sprite(this.width * 0.48, this.height * 0.8, "blueButton2")
       .setInteractive();
 
     this.returnText = this.add.text(0, 0, "Return", {
-      fontSize: "16px",
+      fontSize: "32px",
       fill: "#fff",
+      color: "#ffffff",
     });
 
     this.centerButtonText(this.returnText, this.returnButton);
