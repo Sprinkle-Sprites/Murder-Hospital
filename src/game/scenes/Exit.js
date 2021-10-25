@@ -10,7 +10,10 @@ import {
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
+
+//AUDIO
 import openDoor from "@/game/assets/audio/object-doorcreak03.wav";
+import loserLaugh from "@/game/assets/audio/human-giggle04.wav";
 
 class Exit extends Scene {
   constructor() {
@@ -25,6 +28,7 @@ class Exit extends Scene {
     this.load.image("panel", collider);
 
     this.load.audio("open door", openDoor);
+    this.load.audio("laugh", loserLaugh);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -128,6 +132,7 @@ class Exit extends Scene {
 
   createSounds() {
     this.openDoorSound = this.sound.add("open door");
+    this.laughSound = this.sound.add("laugh");
   }
 
   createColliders() {
@@ -191,9 +196,8 @@ class Exit extends Scene {
       if (this.combination === 428395) {
         this.openDoorSound.play();
         nextSceneFunc(this, "Victory");
-      }
-
-      if (this.combination !== 428395 && !isNaN(this.combination)) {
+      } else {
+        this.laughSound.play();
         const wrongCodeMessage = "Whoops. That ain't it!";
         createMessage(
           this,
@@ -204,8 +208,22 @@ class Exit extends Scene {
         );
 
         nextSceneFunc(this, "MainScene");
-        //THIS CURRENT SET UP ALLOWS FOR UNLIMITED TRIES. WHILE THIS IS AN OPTION, WE SHOULD TRY TO FIGURE OUT HOW TO LIMIT.
       }
+
+      // if (this.combination !== 428395 && !isNaN(this.combination)) {
+      //   this.laughSound.play();
+      //   const wrongCodeMessage = "Whoops. That ain't it!";
+      //   createMessage(
+      //     this,
+      //     wrongCodeMessage,
+      //     "center",
+      //     135,
+      //     this.sys.canvas.height / 2
+      //   );
+
+      //   nextSceneFunc(this, "MainScene");
+      //   //THIS CURRENT SET UP ALLOWS FOR UNLIMITED TRIES. WHILE THIS IS AN OPTION, WE SHOULD TRY TO FIGURE OUT HOW TO LIMIT.
+      // }
       text2.destroy();
     });
   }
