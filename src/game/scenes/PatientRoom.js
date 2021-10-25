@@ -267,7 +267,7 @@ class PatientRoom extends Scene {
     this.drawer3 = this.physics.add
       .sprite(505, 74, "drawer3")
       // .setDepth(-2)
-      .setSize(30, 37)
+      .setSize(25, 25)
       .setScale(1.2, 0.4)
       .setVisible(false);
   }
