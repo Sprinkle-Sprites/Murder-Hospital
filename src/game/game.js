@@ -5,6 +5,7 @@ import MainScene from "@/game/scenes/MainScene";
 import TitleScene from "@/game/scenes/TitleScene";
 import Story from "@/game/scenes/Story";
 import Preloader from "@/game/scenes/Preloader";
+import CreditsScene from "@/game/scenes/CreditsScene";
 import Radiology from "@/game/scenes/Radiology";
 import MainTimerScene from "@/game/scenes/MainTimerScene";
 import Surgery from "@/game/scenes/Surgery";
@@ -18,6 +19,7 @@ import LockerRoom from "@/game/scenes/LockerRoom";
 import ICU from "@/game/scenes/ICU";
 import EndScene from "./scenes/EndScene";
 import VictoryScene from "@/game/scenes/Victory";
+import OptionsScene from "@/game/scenes/OptionsScene";
 
 function launch(containerId) {
   return new Phaser.Game({
@@ -51,6 +53,8 @@ function launch(containerId) {
     scene: [
       Preloader,
       TitleScene,
+      OptionsScene,
+      CreditsScene,
       Story,
       Radiology,
       Surgery,
@@ -59,11 +63,11 @@ function launch(containerId) {
       Laboratory,
       PatientRoom,
       Pharmacy,
-      ClueBank,
       Morgue,
       Exit,
       LockerRoom,
       ICU,
+      ClueBank,
       EndScene,
       VictoryScene,
     ],

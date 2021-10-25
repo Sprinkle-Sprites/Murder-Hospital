@@ -13,7 +13,7 @@ export default class Story extends Scene {
   }
 
   createBackground() {
-    this.add.image(200, 200, "hospital2").setScale(0.9);
+    this.add.image(200, 200, "hospital").setScale(0.9);
   }
 
   createStory() {
