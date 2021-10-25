@@ -7,6 +7,7 @@ import {
   nextSceneFunc,
   handleRoomCountdownFinished,
   changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -41,8 +42,8 @@ class Radiology extends Scene {
     this.load.image("Xray 3", collider);
 
     //XRAY MACHINES
-    this.load.image("Xray Machine 1");
-    this.load.image("Xray Machine 2");
+    this.load.image("Xray Machine 1", collider);
+    this.load.image("Xray Machine 2", collider);
 
     //POP UP
     this.load.image("comboCode", combination_code);
@@ -71,6 +72,10 @@ class Radiology extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
@@ -177,6 +182,10 @@ class Radiology extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createTimer() {
@@ -195,8 +204,10 @@ class Radiology extends Scene {
   createSwitch() {
     this.switch1 = this.physics.add
       .sprite(205, 45, "lightSwitch 1")
-      .setDepth(-2)
-      .setSize(10, 10);
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.5, 0.5)
+      .setVisible(false);
 
     this.switch2 = this.physics.add
       .sprite(665, 45, "lightSwitch 2")
@@ -216,9 +227,11 @@ class Radiology extends Scene {
 
   createXrayBoards() {
     this.xray1 = this.physics.add
-      .sprite(710, 37, "Xray 1")
-      .setDepth(-2)
-      .setSize(50, 25);
+      .sprite(711, 38, "Xray 1")
+      // .setDepth(-2)
+      .setSize(22, 25)
+      .setScale(2.4, 1.1)
+      .setVisible(false);
 
     this.xray2 = this.physics.add
       .sprite(627, 315, "Xray 2")
@@ -233,9 +246,11 @@ class Radiology extends Scene {
 
   createXrayMachines() {
     this.xrayMachine1 = this.physics.add
-      .sprite(325, 440, "Xray Machine 1")
-      .setDepth(-2)
-      .setSize(60, 25);
+      .sprite(326, 441, "Xray Machine 1")
+      // .setDepth(-2)
+      .setSize(22, 25)
+      .setScale(2.8, 1)
+      .setVisible(false);
 
     this.xrayMachine2 = this.physics.add
       .sprite(475, 43, "Xray Machine 2")
@@ -256,7 +271,7 @@ class Radiology extends Scene {
     this.physics.add.collider(this.player, this.wallLayer2Lab);
     this.physics.add.collider(this.player, this.bedsLayer);
 
-    //PLAYER AND SWITCH COLLIDERS
+    //PLAYER COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.switch1,
@@ -265,7 +280,6 @@ class Radiology extends Scene {
       this
     );
 
-    //PLAYER AND XRAY COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.xray1,
@@ -274,11 +288,35 @@ class Radiology extends Scene {
       this
     );
 
-    //PLAYER AND XRAY MACHINE COLLIDERS
     this.physics.add.overlap(
       this.player,
       this.xrayMachine1,
       this.onXrayMachineCollision,
+      null,
+      this
+    );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.switch1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.xray1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.xrayMachine1,
+      onZoneCollision,
       null,
       this
     );
