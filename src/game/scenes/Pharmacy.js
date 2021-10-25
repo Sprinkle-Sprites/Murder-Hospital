@@ -10,8 +10,8 @@ import {
   createMessage,
   nextSceneFunc,
   handleRoomCountdownFinished,
-  createMessageForImage,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import collider from "@/game/assets/collider.png";
@@ -19,8 +19,13 @@ import pillBottle from "@/game/assets/popups/pill-bottle.png";
 import keyPop from "@/game/assets/popups/key.png";
 import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import pills from "@/game/assets/audio/pill-shake.wav";
+import keys from "@/game/assets/audio/key-jingle.wav";
+import boxUnlock from "@/game/assets/audio/action-unlock02.wav";
+import bandaid from "@/game/assets/audio/object-paper02.wav";
 
 class Pharmacy extends Scene {
   constructor() {
@@ -42,7 +47,7 @@ class Pharmacy extends Scene {
     this.load.image("cabinet2", collider);
 
     //Lock Box
-    this.load.image("lockBoax", collider);
+    this.load.image("lockBox", collider);
 
     //TABLES
 
@@ -52,8 +57,14 @@ class Pharmacy extends Scene {
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
 
+    //AUDIO
+    this.load.audio("pills", pills);
+    this.load.audio("keys", keys);
+    this.load.audio("box", boxUnlock);
+    this.load.audio("bandaid", bandaid);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -66,6 +77,7 @@ class Pharmacy extends Scene {
     this.createCabinet2();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -175,38 +187,53 @@ class Pharmacy extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createPills() {
     this.pills = this.physics.add
-      .sprite(132, 410, "pills1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(50, 60, true);
+      .sprite(155, 425, "pills1")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.5, 0.5)
+      .setVisible(false);
   }
 
   createCabinet() {
     this.cabinet = this.physics.add
-      .sprite(733, 245, "cabinet")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(40, 45, true);
+      .sprite(745, 255, "cabinet")
+      // .setDepth(-2)
+      .setSize(22, 22)
+      .setScale(1, 1.3)
+      .setVisible(false);
   }
 
   createLockBox() {
     this.lockBox = this.physics.add
-      .sprite(210, 60, "lockBox")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(30, 30, true);
+      .sprite(225, 72, "lockBox")
+      // .setDepth(-2)
+      .setSize(22, 22)
+      .setScale(1, 0.6)
+      .setVisible(false);
   }
 
   createCabinet2() {
     this.cabinet2 = this.physics.add
-      .sprite(715, 62, "cabinet2")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(55, 63, true);
+      .sprite(717, 56, "cabinet2")
+      // .setDepth(-2)
+      .setSize(25, 25)
+      .setScale(0.7, 0.4)
+      .setVisible(false);
+  }
+
+  createSounds() {
+    this.pillSound = this.sound.add("pills");
+    this.keySound = this.sound.add("keys");
+    this.boxSound = this.sound.add("box");
+    this.bandaidSound = this.sound.add("bandaid");
   }
 
   createColliders() {
@@ -255,15 +282,50 @@ class Pharmacy extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.pills,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cabinet,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.lockBox,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.cabinet2,
+      onZoneCollision,
+      null,
+      this
+    );
   }
 
   onPillsCollision() {
+    this.player.disableBody();
+    this.pillSound.play();
+
     const pillMessage =
       "You take a mystery pill. What were you thinking? Lose 5 minutes";
-    createMessageForImage(this, pillMessage);
+    createMessage(this, pillMessage, "top", 50, this.sys.canvas.height / 2);
 
     const pillsPopUp = this.add.image(400, 300, "pillBottle");
-    this.player.disableBody();
     this.time.addEvent({
       delay: 4750,
       callback: () => pillsPopUp.destroy(),
@@ -282,9 +344,10 @@ class Pharmacy extends Scene {
   }
 
   onCabinetCollision() {
-    const keyPopUp = this.add.image(400, 300, "key");
-    keyPopUp.setScale(0.25, 0.25);
     this.player.disableBody();
+    this.keySound.play();
+
+    const keyPopUp = this.add.image(400, 300, "key").setScale(0.25, 0.25);
     this.time.addEvent({
       delay: 4750,
       callback: () => keyPopUp.destroy(),
@@ -302,6 +365,13 @@ class Pharmacy extends Scene {
   }
 
   onLockBoxCollision() {
+    this.player.disableBody();
+    this.boxSound.play();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(
         400,
@@ -331,16 +401,14 @@ class Pharmacy extends Scene {
       this.rexUI.edit(text2);
     });
 
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 1022) {
         const popup = this.add.image(400, 300, "twoDollar");
         popup.setScale(0.25, 0.25);
-        this.player.disableBody();
+
         this.time.addEvent({
           delay: 4000,
           callback: () => popup.destroy(),
@@ -354,11 +422,17 @@ class Pharmacy extends Scene {
         }
 
         nextSceneFunc(this, "MainScene");
-      } else if (this.combination !== 1022 && !isNaN(this.combination)) {
+      } else {
         const wrongCodeMessage =
           "You try to open the lock box, but it won't budge. Better keep looking for the code";
-        this.player.disableBody();
-        createMessage(this, wrongCodeMessage);
+
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          50,
+          this.sys.canvas.height / 2
+        );
         nextSceneFunc(this, "MainScene");
       }
       text2.destroy();
@@ -366,9 +440,13 @@ class Pharmacy extends Scene {
   }
 
   onCabinet2Collision() {
-    const bandagesPopUp = this.add.image(400, 300, "bandages");
-    bandagesPopUp.setScale(0.5, 0.5);
     this.player.disableBody();
+    this.bandaidSound.play();
+
+    const bandagesPopUp = this.add
+      .image(400, 300, "bandages")
+      .setScale(0.5, 0.5);
+
     this.time.addEvent({
       delay: 4750,
       callback: () => bandagesPopUp.destroy(),
@@ -387,6 +465,10 @@ class Pharmacy extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {

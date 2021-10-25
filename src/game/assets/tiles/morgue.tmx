@@ -11166,7 +11166,7 @@
   </tile>
   <tile id="831">
    <properties>
-    <property name="collides" type="bool" value="true"/>
+    <property name="collides" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="832">
@@ -11176,7 +11176,7 @@
   </tile>
   <tile id="833">
    <properties>
-    <property name="collides" type="bool" value="true"/>
+    <property name="collides" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="834">

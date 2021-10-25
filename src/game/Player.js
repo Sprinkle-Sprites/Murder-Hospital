@@ -22,6 +22,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.texture = texture;
 
     this.scene.add.existing(this);
+
     //PLAYER KEY INPUTS
     const { LEFT, RIGHT, UP, DOWN } = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.scene.input.keyboard.addKeys({
@@ -30,7 +31,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       up: UP,
       down: DOWN,
     });
+
+    // this.zone = this.scene.add.zone(this.x, this.y, 125, 125);
+    // this.scene.physics.world.enable(this.zone);
   }
+
   static preload(scene) {
     scene.load.spritesheet("player-down", playerDown, {
       frameWidth: 72,
@@ -84,6 +89,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     this.handleInputs();
+    // this.zone.x = this.x;
+    // this.zone.y = this.y;
   }
 
   handleInputs() {
@@ -126,40 +133,40 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   createAnims() {
     // if (this.texture === 1) {
-      this.anims.create({
-        key: "player_down_anim",
-        frames: this.anims.generateFrameNumbers("player-down"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    this.anims.create({
+      key: "player_down_anim",
+      frames: this.anims.generateFrameNumbers("player-down"),
+      frameRate: 7,
+      repeat: -1,
+    });
 
-      this.anims.create({
-        key: "player_up_anim",
-        frames: this.anims.generateFrameNumbers("player-up"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    this.anims.create({
+      key: "player_up_anim",
+      frames: this.anims.generateFrameNumbers("player-up"),
+      frameRate: 7,
+      repeat: -1,
+    });
 
-      this.anims.create({
-        key: "player_right_anim",
-        frames: this.anims.generateFrameNumbers("player-right"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    this.anims.create({
+      key: "player_right_anim",
+      frames: this.anims.generateFrameNumbers("player-right"),
+      frameRate: 7,
+      repeat: -1,
+    });
 
-      this.anims.create({
-        key: "player_left_anim",
-        frames: this.anims.generateFrameNumbers("player-left"),
-        frameRate: 7,
-        repeat: -1,
-      });
+    this.anims.create({
+      key: "player_left_anim",
+      frames: this.anims.generateFrameNumbers("player-left"),
+      frameRate: 7,
+      repeat: -1,
+    });
 
-      this.anims.create({
-        key: "player_idle_anim",
-        frames: this.anims.generateFrameNumbers("player-idle"),
-        frameRate: 5,
-        repeat: -1,
-      });
+    this.anims.create({
+      key: "player_idle_anim",
+      frames: this.anims.generateFrameNumbers("player-idle"),
+      frameRate: 5,
+      repeat: -1,
+    });
     // } else if (this.texture === 2) {
     //   this.anims.create({
     //     key: "player_down_anim",
@@ -195,7 +202,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     //     frameRate: 5,
     //     repeat: -1,
     //   });
-    }
   }
+}
 
 export default Player;

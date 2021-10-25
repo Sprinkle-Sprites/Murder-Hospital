@@ -167,8 +167,6 @@ export default class Preloader extends Phaser.Scene {
         bgMusic.play();
       });
     }
-
-    // bgMusic.play();
   }
 
   readyScene() {

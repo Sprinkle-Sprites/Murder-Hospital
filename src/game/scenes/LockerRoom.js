@@ -7,21 +7,25 @@ import Player from "@/game/Player";
 import {
   resizeMapLayer,
   resizeCollider,
-  createMessageForImage,
   nextSceneFunc,
   createMessage,
   handleRoomCountdownFinished,
-  changeDieClass,
+  changeDieFunc,
+  onZoneCollision,
 } from "@/game/HelperFunctions";
 
 import deoderant from "@/game/assets/popups/deoderant.png";
 import groceryList from "@/game/assets/popups/grocery-list.png";
 import mirror from "@/game/assets/popups/mirror.png";
 import toothbrush from "@/game/assets/popups/toothbrush.png";
-
 import collider from "@/game/assets/collider.png";
-
 import RoomTimer from "@/game/scenes/RoomTimer";
+
+//AUDIO
+import lockerDoor from "@/game/assets/audio/object-gateswing04.wav";
+import lockerDoor2 from "@/game/assets/audio/action-doorhandle01.wav";
+import toothbrushSink from "@/game/assets/audio/object-gateclang01.wav";
+import showerNote from "@/game/assets/audio/water-drop04.wav";
 
 class LockerRoom extends Scene {
   constructor() {
@@ -49,8 +53,14 @@ class LockerRoom extends Scene {
     this.load.image("toothbrush", toothbrush);
     this.load.image("note", groceryList);
 
+    //ADUIO
+    this.load.audio("locker", lockerDoor);
+    this.load.audio("locker 2", lockerDoor2);
+    this.load.audio("toothbrush", toothbrushSink);
+    this.load.audio("shower", showerNote);
+
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
-    changeDieClass();
+    changeDieFunc(this.scene);
   }
 
   create() {
@@ -64,6 +74,7 @@ class LockerRoom extends Scene {
     this.createShower();
     this.createColliders();
     this.createTimer();
+    this.createSounds();
   }
 
   createTitle() {
@@ -161,40 +172,6 @@ class LockerRoom extends Scene {
       resizeMapLayer(this, layers[i]);
       layers[i].setDepth(-1);
     }
-
-    //LAYER COLLIDERS
-    this.borderLayer.setCollisionByProperty({ collides: true });
-    this.stallsLayer.setCollisionByProperty({ collides: true });
-    this.bathroomLayer.setCollisionByProperty({ collides: true });
-    this.extra2Layer.setCollisionByProperty({ collides: true });
-    this.lockersLayer.setCollisionByProperty({ collides: true });
-
-    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
-    this.physics.add.collider(this.player, this.borderLayer);
-    this.physics.add.collider(this.player, this.stallsLayer);
-    this.physics.add.collider(this.player, this.bathroomLayer);
-    this.physics.add.collider(this.player, this.extra2Layer);
-    this.physics.add.collider(this.player, this.lockersLayer);
-
-    //     //COLLIDER DEBUG COLOR
-    // const debugGraphics = this.add.graphics().setAlpha(0.7);
-    // extra2Layer.renderDebug(debugGraphics, {
-    //   tileColor: null,
-    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    // });
-  }
-
-  handleRoomCountdownFinished() {
-    this.player.active = false;
-    const { width, height } = this.scale;
-    this.add
-      .text(width * 0.5, height * 0.5, "Time's up, your turn is over", {
-        fontSize: 30,
-        backgroundColor: "black",
-      })
-      .setOrigin(0.5);
-    nextSceneFunc(this, "MainScene");
   }
 
   createPlayer() {
@@ -213,41 +190,70 @@ class LockerRoom extends Scene {
       callbackScope: this,
       loop: false,
     });
+
+    //RADIUS
+    this.zone = this.add.zone(this.x, this.y, 125, 125);
+    this.physics.world.enable(this.zone);
   }
 
   createLocker1() {
     this.locker1 = this.physics.add
-      .sprite(500, 60, "locker1")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(20, 50, true);
+      .sprite(503, 80, "locker1")
+      // .setDepth(-2)
+      .setSize(20, 22)
+      .setScale(0.6, 1.5)
+      .setVisible(false);
   }
 
   createLocker2() {
     this.locker2 = this.physics.add
-      .sprite(690, 60, "locker2")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(20, 50, true);
+      .sprite(712, 80, "locker2")
+      // .setDepth(-2)
+      .setSize(20, 22)
+      .setScale(0.6, 1.5)
+      .setVisible(false);
   }
 
   createSink() {
     this.sink = this.physics.add
-      .sprite(734, 511, "sink")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(19, 20, true);
+      .sprite(752, 527, "sink")
+      // .setDepth(-2)
+      .setSize(19, 20)
+      .setScale(0.8, 0.7)
+      .setVisible(false);
   }
 
   createShower() {
     this.shower = this.physics.add
-      .sprite(229, 50, "shower")
-      .setOrigin(0, 0)
-      .setDepth(-2)
-      .setSize(35, 20, true);
+      .sprite(245, 82, "shower")
+      // .setDepth(-2)
+      .setSize(18, 23)
+      .setScale(1.6, 2.5)
+      .setVisible(false);
+  }
+
+  createSounds() {
+    this.lockerSound = this.sound.add("locker");
+    this.lockerSound2 = this.sound.add("locker 2");
+    this.toothbrushSound = this.sound.add("toothbrush");
+    this.showerSound = this.sound.add("shower");
   }
 
   createColliders() {
+    //LAYER COLLIDERS
+    this.borderLayer.setCollisionByProperty({ collides: true });
+    this.stallsLayer.setCollisionByProperty({ collides: true });
+    this.bathroomLayer.setCollisionByProperty({ collides: true });
+    this.extra2Layer.setCollisionByProperty({ collides: true });
+    this.lockersLayer.setCollisionByProperty({ collides: true });
+
+    //CREATES INTERACTION BETWEEN PLAYER AND LAYER COLLIDERS
+    this.physics.add.collider(this.player, this.borderLayer);
+    this.physics.add.collider(this.player, this.stallsLayer);
+    this.physics.add.collider(this.player, this.bathroomLayer);
+    this.physics.add.collider(this.player, this.extra2Layer);
+    this.physics.add.collider(this.player, this.lockersLayer);
+
     this.physics.add.overlap(
       this.player,
       this.locker1,
@@ -279,28 +285,73 @@ class LockerRoom extends Scene {
       null,
       this
     );
+
+    //ZONES
+    this.physics.add.overlap(
+      this.zone,
+      this.locker1,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.zone,
+      this.locker2,
+      onZoneCollision,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(this.zone, this.sink, onZoneCollision, null, this);
+
+    this.physics.add.overlap(
+      this.zone,
+      this.shower,
+      onZoneCollision,
+      null,
+      this
+    );
   }
 
   onLocker1Collision() {
-    const popUp = this.add.image(400, 300, "deoderant");
-    popUp.setScale(0.75, 0.75);
     this.player.disableBody();
+    this.lockerSound.play();
+
+    //WRAPED ALL ACTIONS TO RUN AFTER SOUND FINSIHES PLAYING
     this.time.addEvent({
-      delay: 4750,
-      callback: () => popUp.destroy(),
+      delay: 1500,
+      callback: () => {
+        const popUp = this.add
+          .image(400, 300, "deoderant")
+          .setScale(0.75, 0.75);
+
+        this.time.addEvent({
+          delay: 4750,
+          callback: () => popUp.destroy(),
+          loop: false,
+        });
+        eventsCenter.emit("update-bank", "deoderant");
+
+        if (!this.collectedClues.includes("deoderant")) {
+          this.collectedClues.push("deoderant");
+          this.completed();
+        }
+
+        nextSceneFunc(this, "MainScene");
+      },
       loop: false,
     });
-    eventsCenter.emit("update-bank", "deoderant");
-
-    if (!this.collectedClues.includes("deoderant")) {
-      this.collectedClues.push("deoderant");
-      this.completed();
-    }
-
-    nextSceneFunc(this, "MainScene");
   }
 
   onLocker2Collision() {
+    this.player.disableBody();
+    this.lockerSound2.play();
+
+    const enter = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
+    );
+
     const text1 = this.add
       .text(400, 300, "This locker is locked. Enter the combination below...", {
         fixedWidth: 700,
@@ -319,23 +370,19 @@ class LockerRoom extends Scene {
         align: "center",
         wordWrap: { width: 300, useAdvancedWrap: true },
       })
-      .setOrigin(0.5, 0.5);
-
-    text2.setInteractive().on("pointerdown", () => {
-      this.rexUI.edit(text2);
-    });
-
-    const enter = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ENTER
-    );
+      .setOrigin(0.5, 0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.rexUI.edit(text2);
+      });
 
     enter.on("down", () => {
       this.combination = parseInt(text2._text);
       text1.destroy();
+
       if (this.combination === 15931) {
-        const popUp = this.add.image(400, 300, "mirror");
-        popUp.setScale(0.25, 0.25);
-        this.player.disableBody();
+        const popUp = this.add.image(400, 300, "mirror").setScale(0.25, 0.25);
+
         this.time.addEvent({
           delay: 4750,
           callback: () => popUp.destroy(),
@@ -349,21 +396,30 @@ class LockerRoom extends Scene {
         }
 
         nextSceneFunc(this, "MainScene");
-      } else if (this.combination !== 15931 && !isNaN(this.combination)) {
+      } else {
         const wrongCodeMessage =
           "You try to open the locker, but it won't budge. Better keep looking for the combo";
-        this.player.disableBody();
-        createMessage(this, wrongCodeMessage);
+
+        createMessage(
+          this,
+          wrongCodeMessage,
+          "center",
+          50,
+          this.sys.canvas.height / 2
+        );
         nextSceneFunc(this, "MainScene");
       }
+
       text2.destroy();
     });
   }
 
   onSinkCollision() {
-    const popUp = this.add.image(400, 300, "toothbrush");
-    popUp.setScale(0.25, 0.25);
     this.player.disableBody();
+    this.toothbrushSound.play();
+
+    const popUp = this.add.image(400, 300, "toothbrush").setScale(0.25, 0.25);
+
     this.time.addEvent({
       delay: 4750,
       callback: () => popUp.destroy(),
@@ -381,9 +437,12 @@ class LockerRoom extends Scene {
 
   onShowerCollision() {
     this.player.disableBody();
+    this.showerSound.play();
+
     const openMessage =
       "You find a grocery list stuck to the wall of the shower. Strange contents...";
-    createMessageForImage(this, openMessage);
+    createMessage(this, openMessage, "top", 50, this.sys.canvas.height / 2);
+
     setTimeout(() => {
       const popUp = this.add.image(400, 300, "note").setScale(0.5, 0.5);
       this.time.addEvent({
@@ -405,6 +464,10 @@ class LockerRoom extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+
+    //MOVES PLAYER ZONE WITH PLAYER
+    this.zone.x = this.player.x;
+    this.zone.y = this.player.y;
   }
 
   completed() {
