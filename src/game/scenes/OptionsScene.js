@@ -59,7 +59,7 @@ export default class OptionsScene extends Scene {
   updateAudio() {
     if (this.soundOn === false) {
       this.audioButton.setTexture("greyButton");
-      this.sound.removeAll();
+      this.sound.removeByKey("bgMusic");
     } else {
       this.audioButton.setTexture("blackCheckmark");
       this.sound.play("bgMusic");
