@@ -377,6 +377,7 @@ class Radiology extends Scene {
     this.player.disableBody();
     this.xrayMachineScound.play();
 
+    //WRAPED ALL ACTIONS TO RUN AFTER SOUND FINSIHES PLAYING
     this.time.addEvent({
       delay: 2250,
       callback: () => {
