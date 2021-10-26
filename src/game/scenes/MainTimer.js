@@ -78,8 +78,8 @@ export default class MainTimer {
     const elapsed = this.timerEvent.getElapsed();
     const remaining = this.duration - elapsed;
     const seconds = remaining / 1000;
-    const minutes = this.zeroPad(Math.floor(seconds / 60), 2);
-    const partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
-    this.label.text = `Game Time: ${minutes}:${partInSeconds}`;
+    this.minutes = this.zeroPad(Math.floor(seconds / 60), 2);
+    this.partInSeconds = this.zeroPad((seconds % 60).toFixed(0), 2);
+    this.label.text = `Game Time: ${this.minutes}:${this.partInSeconds}`;
   }
 }
