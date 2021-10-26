@@ -1,5 +1,7 @@
 # Murder Hospital
 
+![Surgeon](src/game/assets/background/horror-doc.png)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -27,6 +29,8 @@ Watch our full 4-minute demo video [here](linktbd).
 - Tiled
 - Vue.js
 - Heroku
+
+
 
 # Game Play
 - When your character arrives in the waiting room, roll the dice by clicking “Investigate a Room” to the right of the board. It will send you into a room in the hospital to explore.
