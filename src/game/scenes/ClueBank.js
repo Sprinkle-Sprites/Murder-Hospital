@@ -79,15 +79,12 @@ class ClueBank extends Scene {
   embiggen() {
     const xAxis = this.input.mousePointer.x;
     const yAxis = this.input.mousePointer.y;
-
     let a = Object.values(this.bank).find((item) => {
       let closestXs = this.closestX(xAxis);
       let closest = this.closestY(closestXs, yAxis);
-
       return item === closest;
     });
     let key = this.isValueInArary(a);
-
     const popUp = this.add.image(400, 300, key).setScale(0.5, 0.5);
     this.time.addEvent({
       delay: 4750,
@@ -102,6 +99,12 @@ class ClueBank extends Scene {
     let columnBDiff = Math.abs(950 - xAxis);
     let columnCDiff = Math.abs(1050 - xAxis);
     if (columnADiff < columnBDiff && columnADiff < columnCDiff) {
+      if (xAxis < 800) {
+        let aCol = arrOfValues.filter((val) => {
+          return val.x === 800;
+        });
+        return aCol;
+      }
       let aCol = arrOfValues.filter((val) => {
         return val.x === 850;
       });
@@ -111,11 +114,13 @@ class ClueBank extends Scene {
         return val.x === 950;
       });
       return bCol;
-    } else {
+    } else if (xAxis > 1000) {
       let cCol = arrOfValues.filter((val) => {
         return val.x === 1050;
       });
       return cCol;
+    } else {
+      return;
     }
   }
 
