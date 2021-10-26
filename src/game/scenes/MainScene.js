@@ -312,7 +312,7 @@ class MainScene extends Scene {
   goToExit() {
     let value = document.getElementById("leave-button").getAttribute("value");
 
-    if (value === "readMe") {
+    if (value === "leave") {
       nextSceneFunc(this, "Exit");
       document.querySelector("#leave-button").setAttribute("value", "stay");
     } else {
