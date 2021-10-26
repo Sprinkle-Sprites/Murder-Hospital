@@ -78,19 +78,16 @@ class ClueBank extends Scene {
 
   embiggen() {
     const xAxis = this.input.mousePointer.x;
-    console.log("this is the xAxis", xAxis);
     const yAxis = this.input.mousePointer.y;
-    console.log("this is the yAxis", yAxis);
+
     let a = Object.values(this.bank).find((item) => {
       let closestXs = this.closestX(xAxis);
-      console.log("this is the array of Xs", closestXs);
       let closest = this.closestY(closestXs, yAxis);
-      console.log("this is the closest Y", closest);
-      console.log("this is the boolean", item === closest);
+
       return item === closest;
     });
     let key = this.isValueInArary(a);
-    console.log("this is the key", key);
+
     const popUp = this.add.image(400, 300, key).setScale(0.5, 0.5);
     this.time.addEvent({
       delay: 4750,

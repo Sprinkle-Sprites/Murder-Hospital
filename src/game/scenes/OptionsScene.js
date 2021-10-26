@@ -11,8 +11,8 @@ export default class OptionsScene extends Scene {
     this.createTitleText();
     this.createMusic();
     this.createSounds();
+    // this.getSounds();
     this.createReturnButton();
-    console.log("sounds", this.sound);
   }
 
   createBackground() {
@@ -116,13 +116,14 @@ export default class OptionsScene extends Scene {
 
     if (this.soundOn === false) {
       this.soundButton.setTexture("greyButton");
-      this.sound.removeAll();
+      this.sound.setMute(true);
+
       if (this.musicOn === true) {
         this.sound.play("bgMusic");
       }
     } else {
       this.soundButton.setTexture("blackCheckmark");
-      //this.sound.resumeAll()
+      this.sound.setMute(false);
     }
   }
 }
