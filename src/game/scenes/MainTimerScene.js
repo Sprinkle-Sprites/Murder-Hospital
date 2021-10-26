@@ -1,11 +1,16 @@
 import Phaser, { Scene } from "phaser";
 import MainTimer from "@/game/scenes/MainTimer";
 import { diceNextSceneFunc } from "@/game/HelperFunctions";
+import laughter from "@/game/assets/audio/human-giggle05.wav";
 //NOTE: MainTimer functionality has not been removed from homepage, and is commented out in Radiology
 
 class MainSceneTimer extends Phaser.Scene {
   constructor() {
     super({ key: "MainTimerScene" });
+  }
+
+  preload() {
+    this.load.audio("laughter", laughter);
   }
 
   create() {
@@ -14,8 +19,12 @@ class MainSceneTimer extends Phaser.Scene {
       backgroundColor: "black",
       padding: 10,
     });
+
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
+
+    //AUDIO
+    this.laughterSound = this.sound.add("laughter");
   }
 
   handleCountdownFinished() {
@@ -30,6 +39,16 @@ class MainSceneTimer extends Phaser.Scene {
 
   update() {
     this.mainTimer.update();
+
+    const minutes = Number(this.mainTimer.minutes);
+    const seconds = Number(this.mainTimer.partInSeconds);
+
+    //AUDIO
+    if (minutes % 5 === 0) {
+      if (seconds === 59) {
+        this.laughterSound.play();
+      }
+    }
   }
 }
 
