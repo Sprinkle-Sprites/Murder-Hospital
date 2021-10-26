@@ -7,7 +7,6 @@ class EndScene extends Phaser.Scene {
   }
 
   preload() {
-    //HAVE TO HARD CODE DIE CLASS TO MAKE SURE IT HIDES
     changeDieFunc(this.scene);
 
     this.scene.setVisible(false, "MainScene");
