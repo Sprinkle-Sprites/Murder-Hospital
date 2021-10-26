@@ -14,8 +14,12 @@ class MainSceneTimer extends Phaser.Scene {
       backgroundColor: "black",
       padding: 10,
     });
+
     this.mainTimer = new MainTimer(this, timerLabel);
     this.mainTimer.start(this.handleCountdownFinished.bind(this));
+
+    //AUDIO
+    this.laughterSound = this.sound.add("laughter");
   }
 
   handleCountdownFinished() {
@@ -30,6 +34,16 @@ class MainSceneTimer extends Phaser.Scene {
 
   update() {
     this.mainTimer.update();
+
+    //ADDING LAUGHING AUDIO EVERY 5ish MINS
+    const minutes = Number(this.mainTimer.minutes);
+    const seconds = Number(this.mainTimer.partInSeconds);
+
+    if (minutes % 5 === 0) {
+      if (seconds === 59) {
+        this.laughterSound.play();
+      }
+    }
   }
 }
 
