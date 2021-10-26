@@ -20,7 +20,7 @@ class EndScene extends Phaser.Scene {
   }
 
   createBackground() {
-    this.add.image(200, 200, "hospital2").setScale(0.9);
+    this.add.image(200, 200, "hospital").setScale(0.9);
   }
 
   captureMessage() {
