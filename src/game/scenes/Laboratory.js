@@ -20,14 +20,6 @@ import computerScreen from "@/game/assets/popups/computerScreen.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import directions from "@/game/assets/popups/directionsFinal.png";
 
-//AUDIO
-import calendarCrumble from "@/game/assets/audio/object-paper05.wav";
-import skeletonMovement from "@/game/assets/audio/action-openbook02.wav";
-import testTubeGrab from "@/game/assets/audio/action-lightclick01.wav";
-import beakerGrab from "@/game/assets/audio/action-unlock04.wav";
-import candyTray from "@/game/assets/audio/action-objectmove.wav";
-import deskDrawer from "@/game/assets/audio/action-doorshut01.wav";
-
 class Laboratory extends Scene {
   constructor() {
     super({ key: "Laboratory" });
@@ -61,14 +53,6 @@ class Laboratory extends Scene {
     this.load.image("test_tube", test_tube);
     this.load.image("specimenFlask", specimen_flask);
     this.load.image("computerScreen", computerScreen);
-
-    //AUDIO
-    this.load.audio("calendar", calendarCrumble);
-    this.load.audio("skeleton", skeletonMovement);
-    this.load.audio("test tube", testTubeGrab);
-    this.load.audio("beaker", beakerGrab);
-    this.load.audio("candy", candyTray);
-    this.load.audio("desk", deskDrawer);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -390,6 +374,7 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.calendarSound.play();
 
@@ -413,6 +398,7 @@ class Laboratory extends Scene {
   }
 
   onSkeletonCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.skeletonSound.play();
 
@@ -434,6 +420,7 @@ class Laboratory extends Scene {
   }
 
   onTestTubeCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.testTubeSound.play();
 
@@ -458,6 +445,7 @@ class Laboratory extends Scene {
   }
 
   onSpecimenFlaskCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.beakerSound.play();
 
@@ -478,6 +466,7 @@ class Laboratory extends Scene {
   }
 
   onCandyBarCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.candySound.play();
 
@@ -502,6 +491,7 @@ class Laboratory extends Scene {
   }
 
   onDeskCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.deskSound.play();
 

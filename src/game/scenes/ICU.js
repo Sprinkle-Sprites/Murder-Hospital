@@ -19,12 +19,6 @@ import directions from "@/game/assets/popups/directionsFinal.png";
 import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
 
-//AUDIO
-import bloodSlip from "@/game/assets/audio/action-squelch03.wav";
-import IVBloodBag from "@/game/assets/audio/object-plasticbag02.wav";
-import monitorSound from "@/game/assets/audio/action-lighton01.wav";
-import posterCrumble from "@/game/assets/audio/object-paperbagcrunch04.wav";
-
 class ICU extends Scene {
   constructor() {
     super({ key: "ICU" });
@@ -55,12 +49,6 @@ class ICU extends Scene {
     //POSTER IMAGE
     this.load.image("poster", poster);
     this.load.image("IVbag", ivBag);
-
-    //AUDIO
-    this.load.audio("blood", bloodSlip);
-    this.load.audio("IVBag", IVBloodBag);
-    this.load.audio("monitor", monitorSound);
-    this.load.audio("poster", posterCrumble);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -365,12 +353,14 @@ class ICU extends Scene {
   }
 
   onBloodCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.slipSound.play();
 
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
-    createMessage(this, bloodMessage, "center", 200, this.sys.canvas.height);
+    createMessage(this, bloodMessage, "center", 60, this.sys.canvas.height / 2);
+
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("bloodPool")) {
@@ -382,6 +372,7 @@ class ICU extends Scene {
   }
 
   onIVCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.IVBloodBagSound.play();
 
@@ -408,6 +399,7 @@ class ICU extends Scene {
   }
 
   onMonitorCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.monitorTurnOnSound.play();
 
@@ -429,6 +421,7 @@ class ICU extends Scene {
   }
 
   onPosterCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.posterGrabSound.play();
 

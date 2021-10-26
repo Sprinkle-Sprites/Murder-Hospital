@@ -19,12 +19,6 @@ import scapel from "@/game/assets/popups/scapel.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import directions from "@/game/assets/popups/directionsFinal.png";
 
-//AUDIO
-import glove from "@/game/assets/audio/rubber-glove.wav";
-import fireExtinguisher from "@/game/assets/audio/object-rockdrag02.wav";
-import soap from "@/game/assets/audio/object-gateclang01.wav";
-import scalpelAudio from "@/game/assets/audio/gasp1.wav";
-
 class Surgery extends Scene {
   constructor() {
     super({ key: "Surgery" });
@@ -60,12 +54,6 @@ class Surgery extends Scene {
     this.load.image("glove", rubber_glove);
     this.load.image("soap", bar_of_soap);
     this.load.image("scapel", scapel);
-
-    //AUDIO
-    this.load.audio("glove", glove);
-    this.load.audio("fire extinguisher", fireExtinguisher);
-    this.load.audio("soap", soap);
-    this.load.audio("scalpel", scalpelAudio);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -359,6 +347,7 @@ class Surgery extends Scene {
   }
 
   onGurneyCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.gloveSound.play();
 
@@ -380,6 +369,7 @@ class Surgery extends Scene {
   }
 
   onCannisterCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.fireExtinguisherSound.play();
 
@@ -408,6 +398,7 @@ class Surgery extends Scene {
   }
 
   onSinkCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.soapSound.play();
 
@@ -429,6 +420,7 @@ class Surgery extends Scene {
   }
 
   onTableCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.scalpelSound.play();
 

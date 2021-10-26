@@ -204,7 +204,7 @@ export default class CreditsScene extends Scene {
 
       .setInteractive();
 
-    this.returnText = this.add.text(0, 0, "Return", {
+    this.returnText = this.add.text(0, 0, "Menu", {
       fontSize: "32px",
       fill: "#fff",
     });

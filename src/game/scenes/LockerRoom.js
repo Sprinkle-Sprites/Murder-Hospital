@@ -22,12 +22,6 @@ import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import directions from "@/game/assets/popups/directionsFinal.png";
 
-//AUDIO
-import lockerDoor from "@/game/assets/audio/object-gateswing04.wav";
-import lockerDoor2 from "@/game/assets/audio/action-doorhandle01.wav";
-import toothbrushSink from "@/game/assets/audio/object-gateclang01.wav";
-import showerNote from "@/game/assets/audio/water-drop04.wav";
-
 class LockerRoom extends Scene {
   constructor() {
     super({ key: "LockerRoom" });
@@ -53,12 +47,6 @@ class LockerRoom extends Scene {
     this.load.image("deoderant", deoderant);
     this.load.image("toothbrush", toothbrush);
     this.load.image("note", groceryList);
-
-    //ADUIO
-    this.load.audio("locker", lockerDoor);
-    this.load.audio("locker 2", lockerDoor2);
-    this.load.audio("toothbrush", toothbrushSink);
-    this.load.audio("shower", showerNote);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -316,6 +304,7 @@ class LockerRoom extends Scene {
   }
 
   onLocker1Collision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lockerSound.play();
 
@@ -346,6 +335,7 @@ class LockerRoom extends Scene {
   }
 
   onLocker2Collision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lockerSound2.play();
 
@@ -416,6 +406,7 @@ class LockerRoom extends Scene {
   }
 
   onSinkCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.toothbrushSound.play();
 
@@ -437,6 +428,7 @@ class LockerRoom extends Scene {
   }
 
   onShowerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.showerSound.play();
 

@@ -18,13 +18,6 @@ import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
 import directions from "@/game/assets/popups/directionsFinal.png";
 
-//AUDIO
-import bodyLocker from "@/game/assets/audio/action-doorhandle01.wav";
-import bodyLocker2 from "@/game/assets/audio/object-gateswing01.wav";
-import chainsawLoveNote from "@/game/assets/audio/zipper_1.wav";
-import notebook from "@/game/assets/audio/action-objectmove.wav";
-import photo from "@/game/assets/audio/object-paperbagcrunch04.wav";
-
 export default class Morgue extends Phaser.Scene {
   constructor() {
     super({ key: "Morgue" });
@@ -50,13 +43,6 @@ export default class Morgue extends Phaser.Scene {
     //POP UPS
     this.load.image("password", password);
     this.load.image("toeTag", toeTag);
-
-    //AUDIO
-    this.load.audio("body locker", bodyLocker);
-    this.load.audio("body locker 2", bodyLocker2);
-    this.load.audio("love note", chainsawLoveNote);
-    this.load.audio("notebook", notebook);
-    this.load.audio("photo", photo);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -348,6 +334,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onNoteBookCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.notebookSound.play();
 
@@ -376,6 +363,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onLockedLockerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bodyLockerSound.play();
 
@@ -416,6 +404,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onUnlockedBodyDrawerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bodyLockerSound2.play();
 
@@ -445,6 +434,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onBoneSawCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.loveNoteSound.play();
 
