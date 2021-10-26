@@ -14,6 +14,7 @@ import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
@@ -26,6 +27,7 @@ class ICU extends Scene {
 
   preload() {
     Player.preload(this);
+    this.load.image("directionsPopUp", directions);
 
     //BLOOD COLLIDERS
     this.load.image("Blood pool 1", collider);
@@ -68,6 +70,7 @@ class ICU extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;
@@ -436,6 +439,23 @@ class ICU extends Scene {
     }
 
     nextSceneFunc(this, "MainScene");
+  }
+
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
   }
 }
 

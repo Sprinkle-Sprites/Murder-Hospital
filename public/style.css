@@ -23,6 +23,9 @@ body {
   padding: 10px;
 }
 
+#directions {
+  padding: 10px;
+}
 /* #game-container canvas {
   width: 800px;
   height: 700px;

@@ -32,6 +32,7 @@ import githubLogo from "@/game/assets/buttons/github.png";
 import linkedinLogo from "@/game/assets/buttons/linkedin.png";
 import greyButton from "@/game/assets/buttons/grey_box.png";
 import blackCheckmark from "@/game/assets/buttons/black-checkmark.png";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
@@ -192,11 +193,13 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("ICU", ICU);
     this.load.tilemapTiledJSON("exit", exit_room);
     this.load.tilemapTiledJSON("LockerRoom", locker_room);
+    this.load.image("directionsPopUp", directions);
   } //end of preload
 
   preloadAudio() {
     //BACKGROUND
     this.load.audio("bgMusic", bgMusic);
+
     this.load.audio("laughter", laughter);
 
     //ICU

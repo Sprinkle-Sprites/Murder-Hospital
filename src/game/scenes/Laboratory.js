@@ -18,6 +18,7 @@ import test_tube from "@/game/assets/popups/test_tube.png";
 import specimen_flask from "@/game/assets/popups/specimen_flask.png";
 import computerScreen from "@/game/assets/popups/computerScreen.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 class Laboratory extends Scene {
   constructor() {
@@ -28,7 +29,7 @@ class Laboratory extends Scene {
 
   preload() {
     Player.preload(this);
-
+    this.load.image("directionsPopUp", directions);
     //Calendar
     this.load.image("calendar", collider);
 
@@ -189,6 +190,7 @@ class Laboratory extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;
@@ -557,6 +559,23 @@ class Laboratory extends Scene {
 
       text2.destroy();
     });
+  }
+
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
   }
 }
 

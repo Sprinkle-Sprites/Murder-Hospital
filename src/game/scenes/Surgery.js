@@ -17,6 +17,7 @@ import bar_of_soap from "@/game/assets/popups/bar_of_soap.png";
 import rubber_glove from "@/game/assets/popups/rubber_glove.png";
 import scapel from "@/game/assets/popups/scapel.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 class Surgery extends Scene {
   constructor() {
@@ -26,6 +27,7 @@ class Surgery extends Scene {
 
   preload() {
     Player.preload(this);
+    this.load.image("directionsPopUp", directions);
 
     //GURNEYS
     this.load.image("gurney1", collider);
@@ -439,9 +441,27 @@ class Surgery extends Scene {
     nextSceneFunc(this, "MainScene");
   }
 
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
+  }
+
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;

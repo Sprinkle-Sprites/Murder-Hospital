@@ -16,6 +16,7 @@ import password from "@/game/assets/popups/password.png";
 import toeTag from "@/game/assets/popups/toeTag.png";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 export default class Morgue extends Phaser.Scene {
   constructor() {
@@ -26,6 +27,7 @@ export default class Morgue extends Phaser.Scene {
 
   preload() {
     Player.preload(this);
+    this.load.image("directionsPopUp", directions);
 
     // BODY LOCKERS
     this.load.image("bodyLocker 1", collider);
@@ -85,6 +87,7 @@ export default class Morgue extends Phaser.Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;
@@ -454,5 +457,22 @@ export default class Morgue extends Phaser.Scene {
 
   returnConfirmation(bool) {
     this.check = bool;
+  }
+
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
   }
 }
