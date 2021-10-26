@@ -18,13 +18,6 @@ import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-//AUDIO
-import flowerWater from "@/game/assets/audio/water-drop03.wav";
-import bedSheets from "@/game/assets/audio/action-objectmove.wav";
-import doll from "@/game/assets/audio/action-objectmove.wav";
-import lockedDrawer from "@/game/assets/audio/action-doorhandle01.wav";
-import openedDrawer from "@/game/assets/audio/object-doorcreak10.wav";
-
 class PatientRoom extends Scene {
   constructor() {
     super({ key: "PatientRoom" });
@@ -55,13 +48,6 @@ class PatientRoom extends Scene {
     this.load.image("flowers", flowers);
     this.load.image("blanket", blanket);
     this.load.image("paperScrap", paperScrap);
-
-    //AUDIO
-    this.load.audio("flower", flowerWater);
-    this.load.audio("sheets", bedSheets);
-    this.load.audio("doll", doll);
-    this.load.audio("locked drawer", lockedDrawer);
-    this.load.audio("opened drawer", openedDrawer);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -348,6 +334,7 @@ class PatientRoom extends Scene {
   }
 
   onFlowerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.flowerWaterSound.play();
 
@@ -369,6 +356,7 @@ class PatientRoom extends Scene {
   }
 
   onBedCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bedSheetSound.play();
 
@@ -390,6 +378,7 @@ class PatientRoom extends Scene {
   }
 
   onDollCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.dollSound.play();
 
@@ -408,6 +397,7 @@ class PatientRoom extends Scene {
   }
 
   onDrawerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
 
     eventsCenter.emit("check-scapel", "scapel");

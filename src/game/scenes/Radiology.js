@@ -16,11 +16,6 @@ import combination_code from "@/game/assets/popups/locker_combo.png";
 import eventsCenter from "@/game/eventsCenter";
 import eventEmitter from "../eventEmitter";
 
-//AUDIO
-import lightClick from "@/game/assets/audio/action-lightclick01.wav";
-import xrayOn from "@/game/assets/audio/action-lighton01.wav";
-import xrayMachine from "@/game/assets/audio/typing.wav";
-
 class Radiology extends Scene {
   constructor() {
     super({ key: "Radiology" });
@@ -47,11 +42,6 @@ class Radiology extends Scene {
 
     //POP UP
     this.load.image("comboCode", combination_code);
-
-    //AUDIO
-    this.load.audio("light", lightClick);
-    this.load.audio("xray on", xrayOn);
-    this.load.audio("xray machine", xrayMachine);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
@@ -329,6 +319,7 @@ class Radiology extends Scene {
   }
 
   onSwitchCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lightClickSound.play();
 
@@ -353,6 +344,7 @@ class Radiology extends Scene {
   }
 
   onXrayCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.xrayOnSound.play();
 
@@ -374,6 +366,7 @@ class Radiology extends Scene {
   }
 
   onXrayMachineCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.xrayMachineScound.play();
 
