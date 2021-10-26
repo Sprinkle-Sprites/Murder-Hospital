@@ -17,6 +17,7 @@ import flowers from "@/game/assets/popups/flowers.png";
 import blanket from "@/game/assets/popups/blanket.png";
 import paperScrap from "@/game/assets/popups/paperScrap.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 //AUDIO
 import flowerWater from "@/game/assets/audio/water-drop03.wav";
@@ -34,6 +35,7 @@ class PatientRoom extends Scene {
 
   preload() {
     Player.preload(this);
+    this.load.image("directionsPopUp", directions);
 
     //Flowers
     this.load.image("flowers1", collider);
@@ -202,6 +204,7 @@ class PatientRoom extends Scene {
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;
@@ -455,6 +458,23 @@ class PatientRoom extends Scene {
 
   returnConfirmation(bool) {
     this.check = bool;
+  }
+
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
   }
 }
 

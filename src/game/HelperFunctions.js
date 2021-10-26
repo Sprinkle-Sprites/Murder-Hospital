@@ -81,6 +81,8 @@ export function changeDieFunc(scene) {
   if (scene.key === "MainScene") {
     document.getElementById("die").classList.remove("hide");
     document.getElementById("die").classList.add("container");
+    document.getElementById("directions").classList.remove("hide");
+    document.getElementById("directions").classList.add("container");
   } else {
     document.getElementById("die").classList.remove("container");
     document.getElementById("die").classList.add("hide");

@@ -20,6 +20,7 @@ import mirror from "@/game/assets/popups/mirror.png";
 import toothbrush from "@/game/assets/popups/toothbrush.png";
 import collider from "@/game/assets/collider.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 //AUDIO
 import lockerDoor from "@/game/assets/audio/object-gateswing04.wav";
@@ -36,7 +37,7 @@ class LockerRoom extends Scene {
 
   preload() {
     Player.preload(this);
-
+    this.load.image("directionsPopUp", directions);
     //lockers (deoderant) (mirror, doorclue)
     this.load.image("locker1", collider);
     this.load.image("locker2", collider);
@@ -461,9 +462,27 @@ class LockerRoom extends Scene {
     }, 3000);
   }
 
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
+    } else {
+      return;
+    }
+  }
+
   update() {
     this.player.update();
     this.roomTimer.update();
+    this.getDirections();
 
     //MOVES PLAYER ZONE WITH PLAYER
     this.zone.x = this.player.x;

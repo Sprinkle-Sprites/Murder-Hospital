@@ -4,6 +4,9 @@ import MainTimerScene from "@/game/scenes/MainTimerScene";
 import rollDie from "../Dice";
 import exitButton from "../ExitButton";
 import { io } from "socket.io-client";
+import eventEmitter from "../eventEmitter";
+import directionsButton from "../DirectionsButton";
+import directions from "@/game/assets/popups/directionsFinal.png";
 // import { socket } from "../../components/Chat.vue";
 
 import { resizeCollider, resizeMapLayer } from "@/game/HelperFunctions";
@@ -28,6 +31,7 @@ class MainScene extends Scene {
 
   preload() {
     Player.preload(this);
+    this.load.image("directionsPopUp", directions);
 
     //REMOVES HIDE CLASS TO DISPLAY DIE, BUTTONS AND ADDS STYLING CLASS
     changeDieFunc(this.scene);
@@ -308,9 +312,26 @@ class MainScene extends Scene {
   goToExit() {
     let value = document.getElementById("leave-button").getAttribute("value");
 
-    if (value === "leave") {
+    if (value === "readMe") {
       nextSceneFunc(this, "Exit");
       document.querySelector("#leave-button").setAttribute("value", "stay");
+    } else {
+      return;
+    }
+  }
+
+  getDirections() {
+    let value = document.getElementById("directions").getAttribute("value");
+
+    if (value === "readMe") {
+      const popUp1 = this.add
+        .image(400, 320, "directionsPopUp")
+        .setScale(0.95, 0.9);
+      this.input.on("pointerdown", () => {
+        popUp1.destroy();
+      });
+
+      document.querySelector("#directions").setAttribute("value", "wait");
     } else {
       return;
     }
@@ -320,6 +341,7 @@ class MainScene extends Scene {
     this.player.update();
     this.rollRoom();
     this.goToExit();
+    this.getDirections();
   }
 }
 

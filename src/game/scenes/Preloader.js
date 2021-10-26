@@ -32,6 +32,7 @@ import githubLogo from "@/game/assets/buttons/github.png";
 import linkedinLogo from "@/game/assets/buttons/linkedin.png";
 import greyButton from "@/game/assets/buttons/grey_box.png";
 import blackCheckmark from "@/game/assets/buttons/black-checkmark.png";
+import directions from "@/game/assets/popups/directionsFinal.png";
 
 // BACKGROUND IMAGES
 import hospital from "@/game/assets/background/abandoned_Hospital.jpg";
@@ -149,6 +150,8 @@ export default class Preloader extends Phaser.Scene {
 
     //AUDIO
     this.load.audio("bgMusic", bgMusic);
+
+    this.load.image("directionsPopUp", directions);
   } //end of preload
 
   create() {
