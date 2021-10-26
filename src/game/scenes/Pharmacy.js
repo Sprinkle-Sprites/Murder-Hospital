@@ -21,12 +21,6 @@ import bandagesPop from "@/game/assets/popups/bandages.png";
 import twoDollarBill from "@/game/assets/popups/two-dollar-bill.png";
 import RoomTimer from "@/game/scenes/RoomTimer";
 
-//AUDIO
-import pills from "@/game/assets/audio/pill-shake.wav";
-import keys from "@/game/assets/audio/key-jingle.wav";
-import boxUnlock from "@/game/assets/audio/action-unlock02.wav";
-import bandaid from "@/game/assets/audio/object-paper02.wav";
-
 class Pharmacy extends Scene {
   constructor() {
     super({ key: "Pharmacy" });
@@ -56,12 +50,6 @@ class Pharmacy extends Scene {
     this.load.image("key", keyPop);
     this.load.image("bandages", bandagesPop);
     this.load.image("twoDollar", twoDollarBill);
-
-    //AUDIO
-    this.load.audio("pills", pills);
-    this.load.audio("keys", keys);
-    this.load.audio("box", boxUnlock);
-    this.load.audio("bandaid", bandaid);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);

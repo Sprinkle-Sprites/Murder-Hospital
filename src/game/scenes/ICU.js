@@ -18,12 +18,6 @@ import eventEmitter from "../eventEmitter";
 import poster from "@/game/assets/popups/hang-in-there-blood.png";
 import ivBag from "@/game/assets/popups/iv-bag.png";
 
-//AUDIO
-import bloodSlip from "@/game/assets/audio/action-squelch03.wav";
-import IVBloodBag from "@/game/assets/audio/object-plasticbag02.wav";
-import monitorSound from "@/game/assets/audio/action-lighton01.wav";
-import posterCrumble from "@/game/assets/audio/object-paperbagcrunch04.wav";
-
 class ICU extends Scene {
   constructor() {
     super({ key: "ICU" });
@@ -53,12 +47,6 @@ class ICU extends Scene {
     //POSTER IMAGE
     this.load.image("poster", poster);
     this.load.image("IVbag", ivBag);
-
-    //AUDIO
-    this.load.audio("blood", bloodSlip);
-    this.load.audio("IVBag", IVBloodBag);
-    this.load.audio("monitor", monitorSound);
-    this.load.audio("poster", posterCrumble);
 
     //REMOVES CONTAINER CLASS TO HIDE DIE/BUTTONS AND ADDS HIDE CLASS
     changeDieFunc(this.scene);
