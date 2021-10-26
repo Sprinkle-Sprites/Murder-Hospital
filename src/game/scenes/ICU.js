@@ -367,7 +367,8 @@ class ICU extends Scene {
 
     const bloodMessage =
       "You slipped and fell in a pool of blood! YUCK! You Lose 5 minutes.";
-    createMessage(this, bloodMessage, "center", 200, this.sys.canvas.height);
+    createMessage(this, bloodMessage, "center", 60, this.sys.canvas.height / 2);
+
     this.mainTimer.minusFive();
 
     if (!this.collectedClues.includes("bloodPool")) {
