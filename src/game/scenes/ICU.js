@@ -362,6 +362,7 @@ class ICU extends Scene {
   }
 
   onBloodCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.slipSound.play();
 
@@ -380,6 +381,7 @@ class ICU extends Scene {
   }
 
   onIVCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.IVBloodBagSound.play();
 
@@ -406,6 +408,7 @@ class ICU extends Scene {
   }
 
   onMonitorCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.monitorTurnOnSound.play();
 
@@ -427,6 +430,7 @@ class ICU extends Scene {
   }
 
   onPosterCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.posterGrabSound.play();
 

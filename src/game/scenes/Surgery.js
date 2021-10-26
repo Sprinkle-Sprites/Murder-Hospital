@@ -357,6 +357,7 @@ class Surgery extends Scene {
   }
 
   onGurneyCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.gloveSound.play();
 
@@ -378,6 +379,7 @@ class Surgery extends Scene {
   }
 
   onCannisterCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.fireExtinguisherSound.play();
 
@@ -406,6 +408,7 @@ class Surgery extends Scene {
   }
 
   onSinkCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.soapSound.play();
 
@@ -427,6 +430,7 @@ class Surgery extends Scene {
   }
 
   onTableCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.scalpelSound.play();
 

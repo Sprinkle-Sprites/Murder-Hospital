@@ -388,6 +388,7 @@ class Laboratory extends Scene {
   }
 
   onCalendarCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.calendarSound.play();
 
@@ -411,6 +412,7 @@ class Laboratory extends Scene {
   }
 
   onSkeletonCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.skeletonSound.play();
 
@@ -432,6 +434,7 @@ class Laboratory extends Scene {
   }
 
   onTestTubeCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.testTubeSound.play();
 
@@ -456,6 +459,7 @@ class Laboratory extends Scene {
   }
 
   onSpecimenFlaskCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.beakerSound.play();
 
@@ -476,6 +480,7 @@ class Laboratory extends Scene {
   }
 
   onCandyBarCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.candySound.play();
 
@@ -500,6 +505,7 @@ class Laboratory extends Scene {
   }
 
   onDeskCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.deskSound.play();
 

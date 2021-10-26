@@ -345,6 +345,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onNoteBookCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.notebookSound.play();
 
@@ -373,6 +374,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onLockedLockerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bodyLockerSound.play();
 
@@ -413,6 +415,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onUnlockedBodyDrawerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bodyLockerSound2.play();
 
@@ -442,6 +445,7 @@ export default class Morgue extends Phaser.Scene {
   }
 
   onBoneSawCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.loveNoteSound.play();
 

@@ -318,6 +318,7 @@ class Pharmacy extends Scene {
   }
 
   onPillsCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.pillSound.play();
 
@@ -344,6 +345,7 @@ class Pharmacy extends Scene {
   }
 
   onCabinetCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.keySound.play();
 
@@ -365,6 +367,7 @@ class Pharmacy extends Scene {
   }
 
   onLockBoxCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.boxSound.play();
 
@@ -440,6 +443,7 @@ class Pharmacy extends Scene {
   }
 
   onCabinet2Collision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bandaidSound.play();
 

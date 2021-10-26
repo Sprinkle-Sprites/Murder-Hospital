@@ -315,6 +315,7 @@ class LockerRoom extends Scene {
   }
 
   onLocker1Collision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lockerSound.play();
 
@@ -345,6 +346,7 @@ class LockerRoom extends Scene {
   }
 
   onLocker2Collision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lockerSound2.play();
 
@@ -415,6 +417,7 @@ class LockerRoom extends Scene {
   }
 
   onSinkCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.toothbrushSound.play();
 
@@ -436,6 +439,7 @@ class LockerRoom extends Scene {
   }
 
   onShowerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.showerSound.play();
 

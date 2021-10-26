@@ -329,6 +329,7 @@ class Radiology extends Scene {
   }
 
   onSwitchCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.lightClickSound.play();
 
@@ -353,6 +354,7 @@ class Radiology extends Scene {
   }
 
   onXrayCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.xrayOnSound.play();
 
@@ -374,6 +376,7 @@ class Radiology extends Scene {
   }
 
   onXrayMachineCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.xrayMachineScound.play();
 

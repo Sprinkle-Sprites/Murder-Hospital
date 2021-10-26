@@ -348,6 +348,7 @@ class PatientRoom extends Scene {
   }
 
   onFlowerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.flowerWaterSound.play();
 
@@ -369,6 +370,7 @@ class PatientRoom extends Scene {
   }
 
   onBedCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.bedSheetSound.play();
 
@@ -390,6 +392,7 @@ class PatientRoom extends Scene {
   }
 
   onDollCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
     this.dollSound.play();
 
@@ -408,6 +411,7 @@ class PatientRoom extends Scene {
   }
 
   onDrawerCollision() {
+    this.roomTimer.stop();
     this.player.disableBody();
 
     eventsCenter.emit("check-scapel", "scapel");
